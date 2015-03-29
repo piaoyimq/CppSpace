@@ -13,13 +13,13 @@
 #include <string>
 #include <stdarg.h>
 #include <pthread.h>
-#include "block_queue.h"
+#include "BlockQueue.h"
 using namespace std;
 
 class Log
 {
 	public:
-		static Log* get_instance()
+		static Log* get_instance()	//Why not return a reference?
 		{
 			static Log instance;	//Use static implement a instance.
 			return &instance;

@@ -134,7 +134,7 @@ class block_queue
 		bool push(const T& item)
 		{
 			pthread_mutex_lock(m_mutex);
-			if(m_size >= m_max_size)
+			if(m_size >= m_max_size)	//If queue is full, then ignore the log, it would lead to lost logs.
 			{
 				pthread_cond_broadcast(m_cond);
 				pthread_mutex_unlock(m_mutex);
