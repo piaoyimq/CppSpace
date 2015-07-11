@@ -1,0 +1,28 @@
+Clock init 
+Clock_2 init 
+Date_2 init
+Date init
+
+Clock copy 
+Date copy
+Date_2 copy
+Clock_2 copy 
+Date_2 copy
+Clock copy 
+Date copy
+Time init
+
+Clock_2 over
+ Date_2 over
+Date over
+Clock over
+Time over
+Date over
+Clock over
+ Date_2 over
+
+Date over
+ Date_2 over
+Clock_2 over
+Clock over
+

@@ -1,0 +1,1 @@
+Note from Jeffrey Childs:  This program demonstrates how counting sort can be used to sort the objectsof a linked list.  The text, C++ Classes and Data Structures, does not discuss using counting sort for the objects of a linked list directly, although the slides do.  I've never seen such a use of counting sort myself, so I've provided it in case someone might find it useful.
