@@ -14,6 +14,7 @@
 #include <typeinfo> //typeid()
 #include <memory> //unique_ptr
 #include <assert.h>  //assert
+    
 
 #if 1// Todo:  why
 void pointer() {
@@ -660,7 +661,8 @@ void cpp11_smart_pointer_test() {   //c++11
 //    weak_ptr_test_1();
 //    weak_ptr_test_2();
 }
-
+//add branch log
+//add branch log2
 int main() {
 
 //    int_pointer();
@@ -687,5 +689,5 @@ int main() {
 
     stringstream_test();
 
-//    cpp11_smart_pointer_test();
+    // cpp11_smart_pointer_test();
 }
