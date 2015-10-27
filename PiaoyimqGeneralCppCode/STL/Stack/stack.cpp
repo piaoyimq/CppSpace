@@ -50,6 +50,7 @@ int main()
     // look at each value and pop it off the stack
     while (intStack.empty() == false) {
         int value = intStack.top();
+        cout << "  " << value;
         // read the top element of the stack
         if (value != --ix) {
             cerr << "oops! expected " << ix 
@@ -58,6 +59,7 @@ int main()
         }
         intStack.pop(); // pop the top element, and repeat
     }
+    cout << endl;
     cout << "Our program ran with " 
          << error_cnt << " errors!" << endl;
 
