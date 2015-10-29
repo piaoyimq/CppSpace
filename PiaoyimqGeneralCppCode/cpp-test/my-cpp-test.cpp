@@ -665,16 +665,63 @@ void coredump_1(){
     struct Apn_Entry_t{
         unsigned long int ApnFingerprint;
     };
-    // struct  Apn_Entry_t apn_entry = {9};
-    struct Apn_Entry_t *apn ;//= &apn_entry;
-    
-    // (void)apn->ApnFingerprint;
-    printf("apn->ApnFingerprint=%lu", apn->ApnFingerprint);
+    struct Apn_Entry_t *apn = NULL ;
+   
+    printf("an->ApnFingerprint=%lu", apn->ApnFingerprint);
     
 }
 
 void coredump_test(){
     coredump_1();
+}
+
+void const_and_non_test(){
+    int a;
+    const int b = 10;
+    double c = 12; // should initilize, otherwise produce a waring
+    
+    int& ra = a;
+    const int& cra = a;//Does it produce a temporary object? ==> no
+    
+    //int& rb = b; //error: nonconst reference to a const object reference.
+    const int& crb = b;
+    
+    // int& rc = c;//error, not the same type ,should use a const reference.
+    const int& crc = c ;//produce temporary object
+    
+    
+    // int& rNon = 99;//error, should use const reference
+    const int& crNon = 99;//produce a temporary object: int temp(99);
+    
+    const char *pc = "hello";
+    char *pNon = NULL;
+    const std::string& rpc = pc;
+    const std::string& srpc = std::string(pc);
+    // const std::string& rpNon = pNon;//produce core dump
+    // const std::string& srpNon = std::string(pNon);//produce core dump
+      
+    std::cout << "&a   = " << &a <<std::endl;
+    std::cout << "&ra  = " << &ra << std::endl;
+    std::cout << "&cra = " << &cra << std::endl;
+    
+    std::cout << "&b   = " << &b << std::endl;
+    // std::cout << "&rb = " << &rb << std::endl;
+    std::cout << "&crb = " << &crb << std::endl;
+    
+    
+    std::cout << "&c   = " << &c << std::endl;
+    // std::cout << "&rc  = " << &rc << std::endl;
+    std::cout << "&crc = " << &crc << std::endl;
+    
+    
+    // std::cout << "&rNon = " << &rNon << std::endl;
+    std::cout << "&crNon = " << &crNon << std::endl;
+    
+    
+    std::cout << "&rpc    = " << &rpc << std::endl;
+    std::cout << "&srpc   = " << &srpc << std::endl;
+    // std::cout << "&rpNon  = " << &rpNon << std::endl;
+    // std::cout << "&srpNon = " << &srpNon << std::endl;
 }
 
 int main() {
@@ -704,5 +751,6 @@ int main() {
     // stringstream_test();
 
 //    cpp11_smart_pointer_test();
-    coredump_test();
+    // coredump_test();
+    const_and_non_test();
 }
