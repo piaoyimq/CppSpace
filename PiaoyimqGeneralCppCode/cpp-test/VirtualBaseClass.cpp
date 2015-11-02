@@ -92,7 +92,7 @@ class VC:public VB1,public VB2
 
 int main()  
 {  
-#if 1
+#if 0
     C c(1);  
     c.display();  
 #else
