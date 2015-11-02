@@ -15,6 +15,7 @@
 #include <memory> //unique_ptr
 #include <assert.h>  //assert
 
+#if 0//c++11
 #if 1// Todo:  why
 void pointer() {
     int** ppUcProfileNames;
@@ -674,7 +675,7 @@ void coredump_1(){
 void coredump_test(){
     coredump_1();
 }
-
+#endif//c++11 
 void const_and_non_test(){
     int a;
     const int b = 10;
@@ -724,6 +725,52 @@ void const_and_non_test(){
     // std::cout << "&srpNon = " << &srpNon << std::endl;
 }
 
+void enum_memset_test(){
+    enum Radius_retry_method_t
+    {
+            RADIUS_SINGLE_SERVER,
+                RADIUS_MULTIPLE_SERVER
+    };
+
+     bool                  bQuarantineAll(false); 
+
+    Radius_retry_method_t retryMethod(RADIUS_MULTIPLE_SERVER);
+
+    std::cout << retryMethod << std::endl;
+    std::cout << bQuarantineAll << std::endl;
+}
+
+
+void constructor_call_test(){
+    
+    struct A{
+        A(){std::cout << "A was initilized." << std::endl;}
+    };
+
+    struct B{
+        struct A a;
+        int b;
+        bool c;
+        char *d;
+
+        B():
+         b(0),
+         c(false),
+         d(NULL)
+        {
+            std::cout << "B was initilized>" << std::endl;  
+        }
+    };
+
+    struct B  b;
+
+    if(!b.d){
+        std::cout << "d is null" << std::endl;
+    }
+}
+
+
+
 int main() {
 
 //    int_pointer();
@@ -752,5 +799,7 @@ int main() {
 
 //    cpp11_smart_pointer_test();
     // coredump_test();
-    const_and_non_test();
+//    const_and_non_test();
+//    enum_memset_test();
+    constructor_call_test();
 }

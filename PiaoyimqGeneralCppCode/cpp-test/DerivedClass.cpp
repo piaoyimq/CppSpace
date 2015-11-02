@@ -82,6 +82,13 @@ public:
 	{
 		cout<<"Class G constructor"<<endl;
 	}
+	G(int gg)
+	{
+        g = gg;
+		cout<<"Class G(g) constructor"<<endl;
+	}
+
+    int g;
 };
 
 //普通类D
@@ -101,13 +108,37 @@ public:
 	{
 		cout<<"Class M constructor"<<endl;
 	}
+	M(int mm)
+	{
+        m = mm;
+		cout<<"Class M(m) constructor"<<endl;
+	}
+
+    int m;
+};
+
+//普通类N
+class N
+{
+public:
+	N()
+	{
+		cout<<"Class N constructor"<<endl;
+	}
+	N(int nn)
+	{
+       n == nn; 
+		cout<<"Class N(n) constructor"<<endl;
+	}
+
+    int n;
 };
 
 /*class A and B is abstract class, others is generla class */
 class Test: public E,public B,virtual public C,public A,virtual public D,public F
 {
 public:
-	Test():B(),A(),D(),C(),F(),E()
+	Test():B(),A(),D(),C(),F(),E(),g(4),n(5),m1(6)
 	{
 		cout<<"Class Test constructor"<<endl;
 	}
@@ -119,8 +150,10 @@ public:
 	}
 private:
 	G g;
+    N n;
+    M m1;
 	static H h;
-	static M m;//没有初始化，不调用构造函数
+	static M m;//not initialize, won't invoke the constructor function
 };
 
 H Test::h;
