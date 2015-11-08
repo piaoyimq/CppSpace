@@ -769,6 +769,15 @@ void constructor_call_test(){
     }
 }
 
+void delete_null(){
+    int *p = new int;
+    p = NULL;
+    delete p;
+    p = NULL;
+}
+    
+
+
 
 
 int main() {
@@ -801,5 +810,6 @@ int main() {
     // coredump_test();
 //    const_and_non_test();
 //    enum_memset_test();
-    constructor_call_test();
+//    constructor_call_test();
+    delete_null();
 }
