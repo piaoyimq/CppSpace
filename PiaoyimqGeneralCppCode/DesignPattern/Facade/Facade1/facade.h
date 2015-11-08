@@ -43,4 +43,4 @@ private:
 	Subsystem2* _subs2;
 };
 
-#endif //~_FACAD E_H_
+#endif //_FACADE_H_
