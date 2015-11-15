@@ -14,6 +14,15 @@
 #include <typeinfo> //typeid()
 #include <memory> //unique_ptr
 #include <assert.h>  //assert
+static const double Pi = 3.14;
+static const char sgwStatsStr[] = "show services epg sgw statistics";
+enum Color{
+COLOR_RED,
+COLOR_GREEN,
+COLOR_YELLOW
+};
+Color myColor=COLOR_RED;
+#define OK 0
 
 #if 0//c++11
 #if 1// Todo:  why
@@ -776,12 +785,47 @@ void delete_null(){
     p = NULL;
 }
     
+void null_reference_test(){//???
+    //int *p = new int[10];
+    int *p = NULL;
+    //p[1]= 10;
+    int& rp = *p;
+    p = new int;
+    *p= 10;
+    rp =9;
+    //std::cout << rp << std::endl;
+}
 
+void private_constructor(){
+static const char Str[] = "hello statistics";
+    class Person{
+        public:
 
+            ~Person(){
+               std::cout << "Person destructor in public." << std::endl;
+            }
+
+            static Person* createInstance(){
+                Person* per = new Person();
+                return per;
+            }
+
+        private:
+
+            Person(){
+                std::cout << "Person constructor." << std::endl;
+            }
+           // ~Person(){
+            //    std::cout << "Person destructor in private." << std::endl;
+            //}
+    };
+
+    Person *pPer = Person::createInstance();
+    delete pPer;
+}
 
 
 int main() {
-
 //    int_pointer();
 
 //    int_and_char_pointer();
@@ -811,5 +855,7 @@ int main() {
 //    const_and_non_test();
 //    enum_memset_test();
 //    constructor_call_test();
-    delete_null();
+//    delete_null();
+//      null_reference_test();
+    private_constructor();
 }

@@ -7,7 +7,7 @@ TARGETS=cpp-test
 #BUFL=-L /opt/net-snmp/lis_d -lnetsnmpagent -lnetsnmpmibs -lnetsnmphelpers -lnetsnmp 
 
 
-CFLAGS= -Wall #-std=c++11
+CFLAGS= -g -Wall #-std=c++11
 #INC=-I /opt/net-snmp/include
 
 all:
