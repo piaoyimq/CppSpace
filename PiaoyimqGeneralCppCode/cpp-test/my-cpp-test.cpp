@@ -16,12 +16,10 @@
 #include <assert.h>  //assert
 static const double Pi = 3.14;
 static const char sgwStatsStr[] = "show services epg sgw statistics";
-enum Color{
-COLOR_RED,
-COLOR_GREEN,
-COLOR_YELLOW
+enum Color {
+    COLOR_RED, COLOR_GREEN, COLOR_YELLOW
 };
-Color myColor=COLOR_RED;
+Color myColor = COLOR_RED;
 #define OK 0
 
 #if 0//c++11
@@ -39,16 +37,16 @@ void int_and_char_pointer() {
     int *ptr = (int *) a;
     char *p2 = a;
     char (*p3)[36] = &a; //注意，此处不可以用 char *p3=&a， 编译会报错
-    ptr += 5;  //相当于 ptr +5*sizeof(int)
-    p2 += 5;  //相当于p2+5*sizeof(char)
-    p3 += 5;  //相当于 ptr +5*sizeof(a),
+    ptr += 5;//相当于 ptr +5*sizeof(int)
+    p2 += 5;//相当于p2+5*sizeof(char)
+    p3 += 5;//相当于 ptr +5*sizeof(a),
 
     printf("(char*)ptr=%s, p2=%s, (char*)p3=%s\n", (char *) ptr, p2, (char*) p3);
 }
 
 void int_pointer() {
     int a = 5;
-    int b[10] = { 1, 2, 3, 4, 5, 6, 7 };
+    int b[10] = {1, 2, 3, 4, 5, 6, 7};
 
     int *p1 = &a;
     int *p2 = b;
@@ -79,23 +77,23 @@ void sizeof_test() {
     ptr = &array;
 
     std::cout << "sizeof(int (*)[10])=" << sizeof(int (*)[10]) << std::endl; //4
-    std::cout << "sizeof(int [10])=" << sizeof(int[10]) << std::endl; //40
-    std::cout << "sizeof(ptr)=" << sizeof(ptr) << std::endl; //4
-    std::cout << "sizeof(array)=" << sizeof(array) << std::endl; //4
+    std::cout << "sizeof(int [10])=" << sizeof(int[10]) << std::endl;//40
+    std::cout << "sizeof(ptr)=" << sizeof(ptr) << std::endl;//4
+    std::cout << "sizeof(array)=" << sizeof(array) << std::endl;//4
 
     char *p[10];
-    char a[5] = { 1, 2, 3, 4, 5 };
+    char a[5] = {1, 2, 3, 4, 5};
     p[0] = a;
     std::cout << "sizeof(p): " << sizeof(p) << std::endl; //40
-    std::cout << "sizeof(*p): " << sizeof(*p) << std::endl; //*p == p[0], 4
+    std::cout << "sizeof(*p): " << sizeof(*p) << std::endl;//*p == p[0], 4
 
     apn_DB_t *apndb = new apn_DB_t();
-    std::cout << "sizeof(*apndb->apnByNumber): " << sizeof(*apndb->apnByNumber) << std::endl; //4
-    std::cout << "sizeof(**apndb->apnByNumber): " << sizeof(**apndb->apnByNumber) << std::endl; //12
+    std::cout << "sizeof(*apndb->apnByNumber): " << sizeof(*apndb->apnByNumber) << std::endl;//4
+    std::cout << "sizeof(**apndb->apnByNumber): " << sizeof(**apndb->apnByNumber) << std::endl;//12
 }
 
 void pointer_array() {
-    int a[10] = { 1, 2, 3, 4, 5, 6 };
+    int a[10] = {1, 2, 3, 4, 5, 6};
     int b = 9;
     int *p[5];
 
@@ -111,10 +109,10 @@ void pointer_array() {
 }
 
 void char_and_unsigned_char() {
-    unsigned char test_u[] = { 0xf };
+    unsigned char test_u[] = {0xf};
     printf("test_u[0]=%02x\n", test_u[0]);
 
-    char test[] = { 0xf };
+    char test[] = {0xf};
     printf("test=[0]%02x\n", test[0]);
 }
 
@@ -133,14 +131,14 @@ void run_get_user_name() {
 class Test {
 public:
     Test() :
-            num(0) {
+    num(0) {
     }
 
     Test(int number) :
-            num(number) {
+    num(number) {
     }
     Test(std::string s) :
-            st(s) {
+    st(s) {
     }
     void print() const {
         std::cout << "num = " << num << std::endl;
@@ -232,7 +230,7 @@ float &f2(float r = 5) {
 void run_f() {
     float a = f1();
 //    float &b = f1();  //error,见C++笔记
-    float c = f2();    //相当于把一个变量的引用赋值给另一个变量
+    float c = f2();//相当于把一个变量的引用赋值给另一个变量
     float &d = f2();
     c = c + 1;
     std::cout << "a=" << a << std::endl;
@@ -362,10 +360,10 @@ void time_adjusted() {
 
     std::cout << "reall_time_1= " << asctime(&local) << std::endl;
     int sec = (local.tm_min * 60 + local.tm_sec) % 900;
-    if(sec  > 120){
+    if(sec > 120) {
         addSeconds(900-sec);
     }
-    else{
+    else {
         addSeconds(-sec);
     }
 
@@ -384,8 +382,8 @@ template<class out_type, class in_value>
 out_type convert(const in_value & t) {
     std::stringstream stream;
     stream << t;         //向流中传值
-    out_type result;         //这里存储转换结果
-    stream >> result;         //向result中写入值
+    out_type result;//这里存储转换结果
+    stream >> result;//向result中写入值
     return result;
 }
 
@@ -400,24 +398,24 @@ void stringstream_test() {
     std::string first, second;
     int i = 1000;
     stream << i;
-    stream >> first; //从stream中抽取前面插入的int值
-    std::cout << "first: " << first << std::endl; // print the string "1000"
+    stream >> first;//从stream中抽取前面插入的int值
+    std::cout << "first: " << first << std::endl;// print the string "1000"
 
-    stream.clear(); //在进行多次转换前，必须清除stream  , stream.str（“”） ???
-    std::cout << "first: " << first << std::endl; // print the string "1000"
-    stream << true; //插入bool值
-    stream >> second; //提取出int
+    stream.clear();//在进行多次转换前，必须清除stream  , stream.str（“”） ???
+    std::cout << "first: " << first << std::endl;// print the string "1000"
+    stream << true;//插入bool值
+    stream >> second;//提取出int
     std::cout << "second: " << second << std::endl;
 
     double d, d2;
     std::string salary, salary2;
     std::string s = "12.56";
-    d = convert<double>(s); //d等于12.56
+    d = convert<double>(s);//d等于12.56
     d2 = d;
     printf("d2=%f\n", d2);
     std::cout << "d2: " << d2 << std::endl;
 
-    salary = convert<std::string>(9000.0); //salary等于”9000”
+    salary = convert<std::string>(9000.0);//salary等于”9000”
     salary2 = salary;
     printf("salary2: %s\n", salary2.c_str());
     std::cout << "typeid(d): " << typeid(d2).name() << std::endl;
@@ -444,16 +442,16 @@ void function_1(const Foo& foo) {
 void unique_ptr_test_1() {
     std::unique_ptr<Foo> p1(new Foo);  // p1 owns Foo
     if (p1)
-        p1->bar();
+    p1->bar();
 
-    std::unique_ptr<Foo> p2(std::move(p1));  // now p2 owns Foo
-    function_1(*p2);    //Notice: is *p2, not p2
+    std::unique_ptr<Foo> p2(std::move(p1));// now p2 owns Foo
+    function_1(*p2);//Notice: is *p2, not p2
 
-    p1 = std::move(p2);  // ownership returns to p1
+    p1 = std::move(p2);// ownership returns to p1
     std::cout << "destroying p2...\n";
 
     if (p1)
-        p1->bar();
+    p1->bar();
 
     // Foo instance is destroyed when p1 goes out of scope
 }
@@ -470,7 +468,7 @@ void unique_ptr_test_2() {
     /* 使用移动构造函数（move constructor）,unique_ptr具有移动语义，所以我们可以使用函数
      * unique_f()返回的右值对q进行初始化，这样就简单地将所有权传递给了q。*/
 //    q->DoSomething();                   // 使用q
-    int x = *q; //复制指针q所指向的对象
+    int x = *q;//复制指针q所指向的对象
     std::cout << "x="<<x<<std::endl;
 }    // 在函数退出的时候，q以及它所指向的对象都被删除释放
 
@@ -482,7 +480,7 @@ void shared_ptr_test_1() {
         assert(pInt2.use_count() == 1);        // new int(5)这个指针被引用1次
 
         pInt1 = pInt2;
-        assert(pInt2.use_count() == 2);       // new int(5)这个指针被引用2次
+        assert(pInt2.use_count() == 2);// new int(5)这个指针被引用2次
         assert(pInt1.use_count() == 2);
     }       //pInt2离开作用域, 所以new int(5)被引用次数-1
 
@@ -671,77 +669,71 @@ void cpp11_smart_pointer_test() {   //c++11
 //    weak_ptr_test_2();
 }
 
-void coredump_1(){
-    struct Apn_Entry_t{
+void coredump_1() {
+    struct Apn_Entry_t {
         unsigned long int ApnFingerprint;
     };
-    struct Apn_Entry_t *apn = NULL ;
-   
+    struct Apn_Entry_t *apn = NULL;
+
     printf("an->ApnFingerprint=%lu", apn->ApnFingerprint);
-    
+
 }
 
-void coredump_test(){
+void coredump_test() {
     coredump_1();
 }
 #endif//c++11 
-void const_and_non_test(){
+void const_and_non_test() {
     int a;
     const int b = 10;
     double c = 12; // should initilize, otherwise produce a waring
-    
+
     int& ra = a;
-    const int& cra = a;//Does it produce a temporary object? ==> no
-    
+    const int& cra = a; //Does it produce a temporary object? ==> no
+
     //int& rb = b; //error: nonconst reference to a const object reference.
     const int& crb = b;
-    
+
     // int& rc = c;//error, not the same type ,should use a const reference.
-    const int& crc = c ;//produce temporary object
-    
-    
+    const int& crc = c; //produce temporary object
+
     // int& rNon = 99;//error, should use const reference
-    const int& crNon = 99;//produce a temporary object: int temp(99);
-    
+    const int& crNon = 99; //produce a temporary object: int temp(99);
+
     const char *pc = "hello";
     char *pNon = NULL;
     const std::string& rpc = pc;
     const std::string& srpc = std::string(pc);
     // const std::string& rpNon = pNon;//produce core dump
     // const std::string& srpNon = std::string(pNon);//produce core dump
-      
-    std::cout << "&a   = " << &a <<std::endl;
+
+    std::cout << "&a   = " << &a << std::endl;
     std::cout << "&ra  = " << &ra << std::endl;
     std::cout << "&cra = " << &cra << std::endl;
-    
+
     std::cout << "&b   = " << &b << std::endl;
     // std::cout << "&rb = " << &rb << std::endl;
     std::cout << "&crb = " << &crb << std::endl;
-    
-    
+
     std::cout << "&c   = " << &c << std::endl;
     // std::cout << "&rc  = " << &rc << std::endl;
     std::cout << "&crc = " << &crc << std::endl;
-    
-    
+
     // std::cout << "&rNon = " << &rNon << std::endl;
     std::cout << "&crNon = " << &crNon << std::endl;
-    
-    
+
     std::cout << "&rpc    = " << &rpc << std::endl;
     std::cout << "&srpc   = " << &srpc << std::endl;
     // std::cout << "&rpNon  = " << &rpNon << std::endl;
     // std::cout << "&srpNon = " << &srpNon << std::endl;
 }
 
-void enum_memset_test(){
-    enum Radius_retry_method_t
-    {
-            RADIUS_SINGLE_SERVER,
-                RADIUS_MULTIPLE_SERVER
+void enum_memset_test() {
+    enum Radius_retry_method_t {
+        RADIUS_SINGLE_SERVER, RADIUS_MULTIPLE_SERVER
     };
 
-     bool                  bQuarantineAll(false); 
+    bool bQuarantineAll(false);
 
     Radius_retry_method_t retryMethod(RADIUS_MULTIPLE_SERVER);
 
@@ -749,81 +741,78 @@ void enum_memset_test(){
     std::cout << bQuarantineAll << std::endl;
 }
 
+void constructor_call_test() {
 
-void constructor_call_test(){
-    
-    struct A{
-        A(){std::cout << "A was initilized." << std::endl;}
+    struct A {
+        A() {
+            std::cout << "A was initilized." << std::endl;
+        }
     };
 
-    struct B{
+    struct B {
         struct A a;
         int b;
         bool c;
         char *d;
 
-        B():
-         b(0),
-         c(false),
-         d(NULL)
-        {
-            std::cout << "B was initilized>" << std::endl;  
+        B() :
+                b(0), c(false), d(NULL) {
+            std::cout << "B was initilized>" << std::endl;
         }
     };
 
-    struct B  b;
+    struct B b;
 
-    if(!b.d){
+    if (!b.d) {
         std::cout << "d is null" << std::endl;
     }
 }
 
-void delete_null(){
+void delete_null() {
     int *p = new int;
     p = NULL;
     delete p;
     p = NULL;
 }
-    
-void null_reference_test(){//???
+
+void null_reference_test() {    //???
     //int *p = new int[10];
     int *p = NULL;
     //p[1]= 10;
     int& rp = *p;
     p = new int;
-    *p= 10;
-    rp =9;
+    *p = 10;
+    rp = 9;
     //std::cout << rp << std::endl;
 }
 
-void private_constructor(){
-static const char Str[] = "hello statistics";
-    class Person{
-        public:
+void private_constructor() {
+    static const char Str[] = "hello statistics";
+    class Person {
+    public:
 
-            ~Person(){
-               std::cout << "Person destructor in public." << std::endl;
-            }
+        ~Person() {
+            std::cout << "Person destructor in public." << std::endl;
+        }
 
-            static Person* createInstance(){
-                Person* per = new Person();
-                return per;
-            }
+        static Person* createInstance() {
+            Person* per = new Person();
+            return per;
+        }
 
-        private:
+    private:
 
-            Person(){
-                std::cout << "Person constructor." << std::endl;
-            }
-           // ~Person(){
-            //    std::cout << "Person destructor in private." << std::endl;
-            //}
+        Person() {
+            std::cout << "Person constructor." << std::endl;
+        }
+        // ~Person(){
+        //    std::cout << "Person destructor in private." << std::endl;
+        //}
     };
 
     Person *pPer = Person::createInstance();
     delete pPer;
 }
-
 
 int main() {
 //    int_pointer();
@@ -859,3 +848,5 @@ int main() {
 //      null_reference_test();
     private_constructor();
 }
+
+
