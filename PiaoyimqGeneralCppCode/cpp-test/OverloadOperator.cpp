@@ -272,3 +272,280 @@ int main(int argc, char *argv[]) {
 //~String()
 //~String()
 //~String()
+
+
+
+#if 0
+
+
+#include <iostream>
+#include <string.h>
+using namespace std;
+
+class MyString
+{
+public:
+    MyString();
+    ~MyString(){}
+    MyString(const char* str);
+    MyString(MyString & str);
+    MyString & operator=(const MyString & str);
+    MyString & operator=(const char * c_str);
+
+    char operator[](const unsigned int index);
+
+    MyString operator+(const MyString & str);
+    MyString operator+(const char *);
+    MyString operator+=(const MyString & str);
+    MyString operator+=(const char * c_str);
+    bool operator>(const MyString &str);
+    bool operator>(const char * c_str);
+    bool operator>=(const MyString &str);
+    bool operator>=(const char * c_str);
+    bool operator<(const MyString &str);
+    bool operator<(const char * c_str);
+    bool operator<=(const MyString & str);
+    bool operator<=(const char * c_str);
+    bool operator==(const MyString & str);
+    bool operator==(const char * c_str);
+    bool operator!=(const MyString & str);
+    bool operator!=(const char * c_str);
+
+    friend ostream & operator<<(ostream &ostr, MyString & str);
+    friend istream & operator>>(istream &istr, MyString & str);
+    friend MyString operator+(char * c_str, MyString & str);
+    friend MyString operator!=(char * c_str, MyString & str);
+    friend bool operator>(const char * c_str, const MyString & str);
+    friend bool operator>=(const char * c_str, const MyString &str);
+    friend bool operator<(const char * c_str, const MyString &str);
+    friend bool operator<=(const char *c_str, const MyString & str);
+    friend bool operator==(const char * c_str, const MyString & str);
+    friend bool operator!=(const char * c_str, const MyString & str);
+
+public:
+    char* getString() const;
+    int getSize() const;
+
+private:
+    char * m_string;
+    unsigned int m_size;
+};
+
+int MyString::getSize() const
+{
+    return m_size;
+}
+
+char * MyString::getString() const
+{
+    return m_string;
+}
+
+MyString::MyString()
+{
+    m_string = new char[1];
+    m_string[0] = '';
+    m_size = 0;
+}
+
+MyString::MyString(const char * c_str)
+{
+    m_size = (unsigned int)strlen(c_str);
+    m_string = new char[m_size+1];
+    strcpy(m_string, c_str);
+}
+
+MyString::MyString(MyString &str)
+{
+    m_size = str.getSize();
+    m_string = new char (m_size + 1);
+    strcpy(m_string, str.getString());
+}
+
+MyString & MyString::operator =(const char *str)
+{
+    if (strcmp(str, m_string) == 0)
+        return *this;
+    if (m_string)
+        delete [] m_string;
+    m_size = (unsigned int)strlen(str);
+    m_string = new char(m_size + 1);
+    strcpy(m_string, str);
+    return *this;
+}
+
+MyString & MyString::operator=(const MyString & str)
+{
+    if (strcmp(str.getString(), m_string) == 0)
+    {
+        return * this;
+    }
+    if (m_string)
+        delete m_string;
+    m_size = str.getSize();
+    m_string = new char (m_size + 1);
+    strcpy(m_string, str.getString());
+    return * this;
+}
+
+
+char MyString::operator [](unsigned int index)
+{
+    if (index > m_size)
+    {
+        index = m_size - 1;
+    }
+    return m_string[index];
+}
+
+MyString MyString::operator+(const MyString & str)
+{
+    int i = m_size + str.getSize() + 1;
+    char * p = new char (i);
+    strcpy(p, m_string);
+    strcat(p, str.getString());
+    return MyString(p);
+}
+
+MyString MyString::operator +(const char * c_str)
+{
+    size_t i = strlen(c_str) + m_size + 1;
+    char * p = new char ((int)i);
+    strcpy(p, m_string);
+    strcat(p, c_str);
+    return MyString(p);
+}
+
+MyString MyString::operator +=(const char *str)
+{
+    strcpy(m_string, str);
+    return * this;
+}
+
+MyString MyString::operator +=(const MyString &str)
+{
+    strcpy(m_string, str.getString());
+    return * this;
+}
+
+bool MyString::operator >(const char *str)
+{
+    return (strcmp(m_string, str) < 0);
+}
+
+bool MyString::operator>(const MyString & str)
+{
+    return (strcmp(m_string, str.getString())>0);
+}
+
+bool MyString::operator>=(const char * c_str)
+{
+    return (strcmp(m_string, c_str)>=0);
+}
+
+bool MyString::operator>=(const MyString & str)
+{
+    return (strcmp(m_string, str.getString())>=0);
+}
+
+bool MyString::operator<(const char * c_str)
+{
+    return (strcmp(m_string, c_str)<0);
+}
+
+bool MyString::operator<(const MyString & str)
+{
+    return (strcmp(m_string, str.getString()) < 0);
+}
+
+bool MyString::operator<=(const char * c_str)
+{
+    return (strcmp(m_string, c_str)<=0);
+}
+
+bool MyString::operator<=(const MyString &str)
+{
+    return (strcmp(m_string, str.getString()) == 0);
+}
+
+bool MyString::operator==(const char * c_str)
+{
+    return (strcmp(m_string, c_str)==0);
+}
+
+bool MyString::operator==(const MyString & str)
+{
+    return (strcmp(m_string, str.getString()) == 0);
+}
+
+bool MyString::operator !=(const char * c_str)
+{
+    return (strcmp(m_string, c_str) != 0);
+}
+
+bool MyString::operator !=(const MyString &str)
+{
+    return (strcmp(m_string, str.getString()) != 0);
+}
+
+// Friend Function
+ostream & operator<<(ostream &ostr, MyString & str)
+{
+    ostr<<str.getString();
+    return ostr;
+}
+
+istream & operator>>(istream & istr, MyString &str)
+{
+    char tmp[255];
+    istr>>tmp;
+    str = tmp;
+    return istr;
+}
+
+MyString operator+(char * c_str, MyString & str)
+{
+    int new_size = strlen(c_str) + str.getSize() + 1;
+    char * newStr = new char [new_size];
+    strcpy (newStr, c_str);
+    strcat (newStr, str.getString());
+
+    return MyString(newStr);
+}
+
+bool operator!=(const char * c_str, MyString & str)
+{
+    return (strcmp(c_str, str.getString()) != 0);
+}
+
+bool operator>(const char * c_str, const MyString & str)
+{
+    return (strcmp(c_str, str.getString()) > 0);
+}
+bool operator>=(const char * c_str, const MyString &str)
+{
+    return (strcmp(c_str, str.getString()) > 0);
+}
+bool operator<(const char * c_str, const MyString &str)
+{
+    return (strcmp(c_str, str.getString()) < 0);
+}
+bool operator<=(const char *c_str, const MyString & str)
+{
+    return (strcmp(c_str, str.getString()) <= 0);
+}
+bool operator==(const char * c_str, const MyString & str)
+{
+    return (strcmp(c_str, str.getString()) == 0);
+}
+bool operator!=(const char * c_str, const MyString & str)
+{
+    return (strcmp(c_str, str.getString()) != 0);
+}
+
+bool operator>(char * c_str, const MyString & str)
+{
+    return (strcmp(c_str, str.getString()) > 0);
+}
+
+#endif
