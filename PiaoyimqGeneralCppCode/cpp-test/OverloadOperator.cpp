@@ -17,7 +17,7 @@ public:
     String();
     String(const char *);
     String(const String &);
-//    String(String&& str);
+    String(String&& str);
 
     ~String();
 
@@ -71,11 +71,11 @@ String::String(const char *str) {
     cout << "String(const char *str) call" << endl;
 }
 
-//String::String(String && str) {
-//    _size = str._size;
-//    _string = str._string;
-//    str._string = NULL;
-//}
+String::String(String && str) {
+    _size = str._size;
+    _string = str._string;
+    str._string = NULL;
+}
 
 String::String(const String &str) {
     if (!str._size) {
@@ -251,6 +251,7 @@ int main(int argc, char *argv[]) {
 
     String str1("Huang"), str2("Chen");
 
+    cout << "Please input a string:\n";
     cin >> str1;
     str1 = str1 + 'c' + "CC";
     str1 += 'a';
