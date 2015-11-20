@@ -8,25 +8,8 @@
 #include <iostream>
 #include <cstdint>
 
-class Event;
-
-class IEventReceiver {
-public:
-    virtual ~IEventReceiver() {
-    }
-
-    virtual void processEvent(Event& event) = 0;
-};
-
-class Sm: public IEventReceiver {
-public:
-    virtual ~Sm() {
-    }
-
-    virtual void processEvent(Event& event) {
-        std::cout << __FUNCTION__ << " invoked.\n";
-    }
-};
+namespace esc {
+class IEventReceiver;
 
 class Event {
 public:
@@ -70,10 +53,36 @@ private:
     std::string name_;
 };
 
+class IEventReceiver {
+public:
+    virtual ~IEventReceiver() {
+    }
+
+    virtual void processEvent(Event& event) = 0;
+};
+
+class Sm: public IEventReceiver {
+public:
+    virtual ~Sm() {
+    }
+
+    virtual void setDestination(Event* event) {
+        std::cout << "Sm this = " << this << std::endl;
+        event->setDestination(this);
+    }
+    virtual bool handleEvent(Event& event) = 0;
+
+    virtual void processEvent(Event& event) {
+        std::cout << __FUNCTION__ << " invoked.\n";
+    }
+private:
+    int _test;
+};
 
 class Student {
 public:
-    Student(const char* name):_name(name) {
+    Student(const char* name) :
+            _name(name) {
     }
 
     void print() {
@@ -83,17 +92,28 @@ public:
 private:
     std::string _name;
 };
+}
 
+namespace AgentSupport {
+class Sm: public esc::Sm {
+public:
+    bool handleEvent(esc::Event& ev) {
+        static_cast<void>(ev);
+        return true;
+    }
+};
+}
 
 int main() {
 //    Student s1= new Student("Lucy");
-    Sm* sm = new Sm();
-    Event* const ev = new Event(119, "test");
+//    esc::Sm* itsSm = new Sm(); //error, abstract class can't declare a object
+    AgentSupport::Sm* itsSm = new AgentSupport::Sm();
+    esc::Event* const ev = new esc::Event(119, "test");
+    itsSm->setDestination(ev);
 
-    ev->setDestination(sm);
+    esc::IEventReceiver* const dest = ev->getDestination();
 
-    IEventReceiver* const dest = ev->getDestination();
-    delete sm;
+    delete itsSm;
     if (dest != 0 && ev->isEnabled()) {
         std::cout << "Start to processEvent" << std::endl;
         dest->processEvent(*ev);
