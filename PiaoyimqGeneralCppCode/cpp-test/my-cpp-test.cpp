@@ -668,6 +668,7 @@ void cpp11_smart_pointer_test() {   //c++11
 //    weak_ptr_test_1();
 //    weak_ptr_test_2();
 }
+#endif//c++11 
 
 void coredump_1() {
     struct Apn_Entry_t {
@@ -682,7 +683,6 @@ void coredump_1() {
 void coredump_test() {
     coredump_1();
 }
-#endif//c++11 
 void const_and_non_test() {
     int a;
     const int b = 10;
@@ -840,12 +840,13 @@ int main() {
     // stringstream_test();
 
 //    cpp11_smart_pointer_test();
-    // coredump_test();
+     coredump_test();
 //    const_and_non_test();
 //    enum_memset_test();
 //    constructor_call_test();
 //    delete_null();
 //      null_reference_test();
+<<<<<<< HEAD
     private_constructor();
 
     printf("LINE= %d\n", __LINE__);
@@ -855,6 +856,9 @@ int main() {
     int b= 0;
     b-= 3-1;
     std::cout << "a=" << a << "b=" << b << std::endl;
+=======
+   // private_constructor();
+>>>>>>> Modify my-cpp-test.cpp
 }
 
 
