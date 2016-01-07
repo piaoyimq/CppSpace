@@ -104,29 +104,7 @@ public:
 };
 }
 
-struct SubTimer{
-    int a;
-};
-
-struct BaseTimeCore{
-    struct SubTimer a;
-    int b;
-};
-
-void testTimer2(struct SubTimer *p){
-    std::cout << p->a << std::endl;
-}
-
-void testTimer1(){
-    struct BaseTimeCore* bt = (struct BaseTimeCore*)0x2020202020202020;
-    testTimer2(&bt->a);
-}
-
-
-
 int main() {
-
-#if 1
 //    Student s1= new Student("Lucy");
 //    esc::Sm* itsSm = new Sm(); //error, abstract class can't declare a object
     AgentSupport::Sm* itsSm = new AgentSupport::Sm();
@@ -142,10 +120,5 @@ int main() {
     }
 
     delete ev;
-#else
-
-    testTimer1();
-
-#endif
 
 }
