@@ -847,6 +847,14 @@ int main() {
 //    delete_null();
 //      null_reference_test();
     private_constructor();
+
+    printf("LINE= %d\n", __LINE__);
+
+    int a= 0;
+    a-= (3-1);
+    int b= 0;
+    b-= 3-1;
+    std::cout << "a=" << a << "b=" << b << std::endl;
 }
 
 
