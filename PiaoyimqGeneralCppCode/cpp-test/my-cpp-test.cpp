@@ -14,6 +14,7 @@
 #include <typeinfo> //typeid()
 #include <memory> //unique_ptr
 #include <assert.h>  //assert
+#include <stdarg.h>
 static const double Pi = 3.14;
 static const char sgwStatsStr[] = "show services epg sgw statistics";
 enum Color {
@@ -26,16 +27,15 @@ Color myColor = COLOR_RED;
 #define PRINT_MACRO(x) #x"="__PRINT_MACRO(x)
 
 
-#define ANSI_COLOR_RED     "\x1b[31m"
-#define ANSI_COLOR_GREEN   "\x1b[32m"
-#define ANSI_COLOR_YELLOW  "\x1b[33m"
-#define ANSI_COLOR_BLUE    "\x1b[34m"
-#define ANSI_COLOR_MAGENTA "\x1b[35m"
-#define ANSI_COLOR_CYAN    "\x1b[36m"
-#define ANSI_COLOR_RESET   "\x1b[0m"
+#define RED     "\x1b[31m"
+#define GREEN   "\x1b[32m"
+#define YELLOW  "\x1b[33m"
+#define BLUE    "\x1b[34m"
+#define MAGENTA "\x1b[35m"
+#define CYAN    "\x1b[36m"
+#define RESET   "\x1b[0m"
 
-
-
+#define PRINT_COLOR(color, format, ...)  printf(color format RESET, ##__VA_ARGS__)
 #if 0//c++11
 #if 1// Todo:  why
 void pointer() {
@@ -715,7 +715,7 @@ void const_and_non_test() {
     const int& crNon = 99; //produce a temporary object: int temp(99);
 
     const char *pc = "hello";
-    char *pNon = NULL;
+    //char *pNon = NULL;
     const std::string& rpc = pc;
     const std::string& srpc = std::string(pc);
     // const std::string& rpNon = pNon;//produce core dump
@@ -801,7 +801,7 @@ void null_reference_test() {    //???
 }
 
 void private_constructor() {
-    static const char Str[] = "hello statistics";
+    //static const char Str[] = "hello statistics";
     class Person {
     public:
 
@@ -861,24 +861,26 @@ void PodTest(){
 }
 #endif
 
+#if 0
 void printInCompiling(){
 #define TEST_MACRO 512
 #pragma message("Print in Compileing:")
 #pragma message(PRINT_MACRO(TEST_MACRO))
 }
+#endif
+void runAfterMain(){
+    std::cout << __FUNCTION__ <<"would be run after main function\n";
+}
 
+#if 0
 static int runBeforeMain(){
     std::cout << __FUNCTION__ <<"would be run before main function\n";
     return 1;
 }
 
-//static void (*func)() = runBeforeMain;
-
-void runAfterMain(){
-    std::cout << __FUNCTION__ <<"would be run after main function\n";
-}
 
 static int a = runBeforeMain();
+#endif
 
 __attribute((constructor)) void before_main()
 {
@@ -890,11 +892,8 @@ __attribute((destructor)) void after_main()
     printf("%s\n",__FUNCTION__);
 }
 
-
-
 int main() {
-    printf(ANSI_COLOR_GREEN "\n\n===> Enter main\n\n"  ANSI_COLOR_RESET);
-
+    PRINT_COLOR(RED, "\n\n===> Enter main\n\n");
 //    int_pointer();
 
 //    int_and_char_pointer();
@@ -934,7 +933,7 @@ int main() {
 
 //    PodTest();
 //    printInCompiling();
-    printf(ANSI_COLOR_GREEN "\n\nExit main ===>\n\n"  ANSI_COLOR_RESET);
+    PRINT_COLOR(GREEN, "\n\nExit main ===>||\n\n");
 }
 
 
