@@ -22,6 +22,20 @@ enum Color {
 Color myColor = COLOR_RED;
 #define OK 0
 
+#define __PRINT_MACRO(x) #x
+#define PRINT_MACRO(x) #x"="__PRINT_MACRO(x)
+
+
+#define ANSI_COLOR_RED     "\x1b[31m"
+#define ANSI_COLOR_GREEN   "\x1b[32m"
+#define ANSI_COLOR_YELLOW  "\x1b[33m"
+#define ANSI_COLOR_BLUE    "\x1b[34m"
+#define ANSI_COLOR_MAGENTA "\x1b[35m"
+#define ANSI_COLOR_CYAN    "\x1b[36m"
+#define ANSI_COLOR_RESET   "\x1b[0m"
+
+
+
 #if 0//c++11
 #if 1// Todo:  why
 void pointer() {
@@ -814,7 +828,73 @@ void private_constructor() {
     delete pPer;
 }
 
+void const_test(const std::string& ss){
+    std::cout << __FUNCTION__ << ": " << ss << std::endl;
+}
+
+void run_const_test(){
+    std::string ss("hello");
+
+    const_test(ss);
+}
+
+#if 0// waiting for finishe
+class Cls{
+public:
+//    Cls(int a){this->a = a ;}
+//    Cls() {}
+    int a;
+};
+
+struct Str{
+//    Str():cls(3) {}
+    int a;
+    Cls cls;
+};
+
+void PodTest(){
+//    Cls* cls = new Cls(3) ;
+        Cls* cls = new Cls(3) ;
+    struct Str str;
+    std::cout << "cls.a=" << cls->a << std::endl;
+    std::cout << "str.a=" << str.a << std::endl;
+}
+#endif
+
+void printInCompiling(){
+#define TEST_MACRO 512
+#pragma message("Print in Compileing:")
+#pragma message(PRINT_MACRO(TEST_MACRO))
+}
+
+static int runBeforeMain(){
+    std::cout << __FUNCTION__ <<"would be run before main function\n";
+    return 1;
+}
+
+//static void (*func)() = runBeforeMain;
+
+void runAfterMain(){
+    std::cout << __FUNCTION__ <<"would be run after main function\n";
+}
+
+static int a = runBeforeMain();
+
+__attribute((constructor)) void before_main()
+{
+    printf("%s\n",__FUNCTION__);
+}
+
+__attribute((destructor)) void after_main()
+{
+    printf("%s\n",__FUNCTION__);
+}
+
+
+
 int main() {
+    printf(ANSI_COLOR_GREEN "\n\n===> Enter main\n\n"  ANSI_COLOR_RESET);
+
 //    int_pointer();
 
 //    int_and_char_pointer();
@@ -840,17 +920,21 @@ int main() {
     // stringstream_test();
 
 //    cpp11_smart_pointer_test();
-     coredump_test();
+//     coredump_test();
 //    const_and_non_test();
 //    enum_memset_test();
 //    constructor_call_test();
 //    delete_null();
 //      null_reference_test();
-<<<<<<< HEAD
-    private_constructor();
-=======
+
    // private_constructor();
->>>>>>> Modify my-cpp-test.cpp
+    atexit(runAfterMain);
+    run_const_test();
+
+
+//    PodTest();
+//    printInCompiling();
+    printf(ANSI_COLOR_GREEN "\n\nExit main ===>\n\n"  ANSI_COLOR_RESET);
 }
 
 
