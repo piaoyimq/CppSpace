@@ -15,17 +15,22 @@
 #include <memory> //unique_ptr
 #include <assert.h>  //assert
 #include <stdarg.h>
+
+#define C_PLUS_PLUS_ELEVEN 0
+
 static const double Pi = 3.14;
 static const char sgwStatsStr[] = "show services epg sgw statistics";
+
 enum Color {
     COLOR_RED, COLOR_GREEN, COLOR_YELLOW
 };
+
 Color myColor = COLOR_RED;
+
 #define OK 0
 
 #define __PRINT_MACRO(x) #x
 #define PRINT_MACRO(x) #x"="__PRINT_MACRO(x)
-
 
 #define RED     "\x1b[31m"
 #define GREEN   "\x1b[32m"
@@ -36,31 +41,83 @@ Color myColor = COLOR_RED;
 #define RESET   "\x1b[0m"
 
 #define PRINT_COLOR(color, format, ...)  printf(color format RESET, ##__VA_ARGS__)
-#if 0//c++11
-#if 1// Todo:  why
+
+class Test {
+public:
+    Test() :
+            num(0) {
+    }
+
+    Test(int number) :
+            num(number) {
+    }
+    Test(std::string s) :
+            st(s) {
+    }
+    void print() const {
+        std::cout << "num = " << num << std::endl;
+        std::cout << "st = " << st << std::endl;
+    }
+
+    void setValue() {
+        num = 10;
+        a = 9;
+        st = "temporary";
+    }
+
+    int getValue() {
+        std::cout << __FUNCTION__ << std::endl;
+        return 1;
+    }
+
+    void display() {
+        static int a = getValue();  // a static value in function, it would be not invoked before main function, same to run_const_test
+        static_cast<void>(a);
+
+        std::cout << "Test:a=" << Test::a << std::endl;
+    }
+
+    ~Test() {
+        std::cout << "destructor: this=" << this << ", num = " << num << std::endl;
+    }
+private:
+    int num;
+    std::string st;
+    static int a;   // a static value in a class, it would be invoked before main function , same to a global value, like runBeforeMain
+};
+
+int testFunction() {
+    std::cout << __FUNCTION__ << std::endl;
+    return 1;
+}
+
+#if 1
+int Test::a = 1;
+#else
+int Test::a = testFunction();
+#endif
+
 void pointer() {
     int** ppUcProfileNames;
     ppUcProfileNames = new int*[5]; //???
     memset(ppUcProfileNames, 0, sizeof(void*) * 5);
 }
 
-#endif
-
 void int_and_char_pointer() {
     char a[36] = "You _are _a_ girl_hello_how_are_you";
     int *ptr = (int *) a;
     char *p2 = a;
     char (*p3)[36] = &a; //注意，此处不可以用 char *p3=&a， 编译会报错
-    ptr += 5;//相当于 ptr +5*sizeof(int)
-    p2 += 5;//相当于p2+5*sizeof(char)
-    p3 += 5;//相当于 ptr +5*sizeof(a),
+    ptr += 5; //相当于 ptr +5*sizeof(int)
+    p2 += 5; //相当于p2+5*sizeof(char)
+    p3 += 5; //相当于 ptr +5*sizeof(a),
 
     printf("(char*)ptr=%s, p2=%s, (char*)p3=%s\n", (char *) ptr, p2, (char*) p3);
 }
 
 void int_pointer() {
     int a = 5;
-    int b[10] = {1, 2, 3, 4, 5, 6, 7};
+    int b[10] = { 1, 2, 3, 4, 5, 6, 7 };
 
     int *p1 = &a;
     int *p2 = b;
@@ -91,23 +148,23 @@ void sizeof_test() {
     ptr = &array;
 
     std::cout << "sizeof(int (*)[10])=" << sizeof(int (*)[10]) << std::endl; //4
-    std::cout << "sizeof(int [10])=" << sizeof(int[10]) << std::endl;//40
-    std::cout << "sizeof(ptr)=" << sizeof(ptr) << std::endl;//4
-    std::cout << "sizeof(array)=" << sizeof(array) << std::endl;//4
+    std::cout << "sizeof(int [10])=" << sizeof(int[10]) << std::endl; //40
+    std::cout << "sizeof(ptr)=" << sizeof(ptr) << std::endl; //4
+    std::cout << "sizeof(array)=" << sizeof(array) << std::endl; //4
 
     char *p[10];
-    char a[5] = {1, 2, 3, 4, 5};
+    char a[5] = { 1, 2, 3, 4, 5 };
     p[0] = a;
     std::cout << "sizeof(p): " << sizeof(p) << std::endl; //40
-    std::cout << "sizeof(*p): " << sizeof(*p) << std::endl;//*p == p[0], 4
+    std::cout << "sizeof(*p): " << sizeof(*p) << std::endl; //*p == p[0], 4
 
     apn_DB_t *apndb = new apn_DB_t();
-    std::cout << "sizeof(*apndb->apnByNumber): " << sizeof(*apndb->apnByNumber) << std::endl;//4
-    std::cout << "sizeof(**apndb->apnByNumber): " << sizeof(**apndb->apnByNumber) << std::endl;//12
+    std::cout << "sizeof(*apndb->apnByNumber): " << sizeof(*apndb->apnByNumber) << std::endl; //4
+    std::cout << "sizeof(**apndb->apnByNumber): " << sizeof(**apndb->apnByNumber) << std::endl; //12
 }
 
 void pointer_array() {
-    int a[10] = {1, 2, 3, 4, 5, 6};
+    int a[10] = { 1, 2, 3, 4, 5, 6 };
     int b = 9;
     int *p[5];
 
@@ -123,10 +180,10 @@ void pointer_array() {
 }
 
 void char_and_unsigned_char() {
-    unsigned char test_u[] = {0xf};
+    unsigned char test_u[] = { 0xf };
     printf("test_u[0]=%02x\n", test_u[0]);
 
-    char test[] = {0xf};
+    char test[] = { 0xf };
     printf("test=[0]%02x\n", test[0]);
 }
 
@@ -141,44 +198,6 @@ void run_get_user_name() {
     //    p[0] ='m';
     printf("p[0] =%c\n", p[0]);
 }
-
-class Test {
-public:
-    Test() :
-    num(0) {
-    }
-
-    Test(int number) :
-    num(number) {
-    }
-    Test(std::string s) :
-    st(s) {
-    }
-    void print() const {
-        std::cout << "num = " << num << std::endl;
-        std::cout << "st = " << st << std::endl;
-    }
-
-    void setValue() {
-        num = 10;
-        a = 9;
-        st = "temporary";
-    }
-
-    void display() {
-        std::cout << "Test:a=" << Test::a << std::endl;
-    }
-
-    ~Test() {
-        std::cout << "destructor: this=" << this << ", num = " << num << std::endl;
-    }
-private:
-    int num;
-    std::string st;
-    static int a;
-};
-
-int Test::a = 8;
 
 void call_static_variable(Test &test) {
     test.setValue();
@@ -244,7 +263,7 @@ float &f2(float r = 5) {
 void run_f() {
     float a = f1();
 //    float &b = f1();  //error,见C++笔记
-    float c = f2();//相当于把一个变量的引用赋值给另一个变量
+    float c = f2(); //相当于把一个变量的引用赋值给另一个变量
     float &d = f2();
     c = c + 1;
     std::cout << "a=" << a << std::endl;
@@ -374,10 +393,9 @@ void time_adjusted() {
 
     std::cout << "reall_time_1= " << asctime(&local) << std::endl;
     int sec = (local.tm_min * 60 + local.tm_sec) % 900;
-    if(sec > 120) {
-        addSeconds(900-sec);
-    }
-    else {
+    if (sec > 120) {
+        addSeconds(900 - sec);
+    } else {
         addSeconds(-sec);
     }
 
@@ -396,8 +414,8 @@ template<class out_type, class in_value>
 out_type convert(const in_value & t) {
     std::stringstream stream;
     stream << t;         //向流中传值
-    out_type result;//这里存储转换结果
-    stream >> result;//向result中写入值
+    out_type result;         //这里存储转换结果
+    stream >> result;         //向result中写入值
     return result;
 }
 
@@ -412,24 +430,24 @@ void stringstream_test() {
     std::string first, second;
     int i = 1000;
     stream << i;
-    stream >> first;//从stream中抽取前面插入的int值
-    std::cout << "first: " << first << std::endl;// print the string "1000"
+    stream >> first;         //从stream中抽取前面插入的int值
+    std::cout << "first: " << first << std::endl;         // print the string "1000"
 
-    stream.clear();//在进行多次转换前，必须清除stream  , stream.str（“”） ???
-    std::cout << "first: " << first << std::endl;// print the string "1000"
-    stream << true;//插入bool值
-    stream >> second;//提取出int
+    stream.clear();         //在进行多次转换前，必须清除stream  , stream.str（“”） ???
+    std::cout << "first: " << first << std::endl;         // print the string "1000"
+    stream << true;         //插入bool值
+    stream >> second;         //提取出int
     std::cout << "second: " << second << std::endl;
 
     double d, d2;
     std::string salary, salary2;
     std::string s = "12.56";
-    d = convert<double>(s);//d等于12.56
+    d = convert<double>(s);         //d等于12.56
     d2 = d;
     printf("d2=%f\n", d2);
     std::cout << "d2: " << d2 << std::endl;
 
-    salary = convert<std::string>(9000.0);//salary等于”9000”
+    salary = convert<std::string>(9000.0);         //salary等于”9000”
     salary2 = salary;
     printf("salary2: %s\n", salary2.c_str());
     std::cout << "typeid(d): " << typeid(d2).name() << std::endl;
@@ -453,6 +471,7 @@ void function_1(const Foo& foo) {
     std::cout << __FUNCTION__ << "(const Foo&)" << std::endl;
 }
 
+#if C_PLUS_PLUS_ELEVEN
 void unique_ptr_test_1() {
     std::unique_ptr<Foo> p1(new Foo);  // p1 owns Foo
     if (p1)
@@ -682,7 +701,7 @@ void cpp11_smart_pointer_test() {   //c++11
 //    weak_ptr_test_1();
 //    weak_ptr_test_2();
 }
-#endif//c++11 
+#endif//C_PLUS_PLUS_ELEVEN
 
 void coredump_1() {
     struct Apn_Entry_t {
@@ -828,33 +847,34 @@ void private_constructor() {
     delete pPer;
 }
 
-void const_test(const std::string& ss){
+int const_test(const std::string& ss) {
     std::cout << __FUNCTION__ << ": " << ss << std::endl;
+    return 1;
 }
 
-void run_const_test(){
+void run_const_test() {
     std::string ss("hello");
-
-    const_test(ss);
+    static int a = const_test(ss); //same to display
+    static_cast<void>(a);
 }
 
-#if 0// waiting for finishe
-class Cls{
+#if 0// waiting for finish
+class Cls {
 public:
 //    Cls(int a){this->a = a ;}
 //    Cls() {}
     int a;
 };
 
-struct Str{
+struct Str {
 //    Str():cls(3) {}
     int a;
     Cls cls;
 };
 
-void PodTest(){
+void PodTest() {
 //    Cls* cls = new Cls(3) ;
-        Cls* cls = new Cls(3) ;
+    Cls* cls = new Cls(3);
     struct Str str;
     std::cout << "cls.a=" << cls->a << std::endl;
     std::cout << "str.a=" << str.a << std::endl;
@@ -862,25 +882,22 @@ void PodTest(){
 #endif
 
 #if 0
-void printInCompiling(){
+void printInCompiling() {
 #define TEST_MACRO 512
 #pragma message("Print in Compileing:")
 #pragma message(PRINT_MACRO(TEST_MACRO))
 }
-#endif
-void runAfterMain(){
+
+void runAfterMain() {
     std::cout << __FUNCTION__ <<"would be run after main function\n";
 }
 
-#if 0
-static int runBeforeMain(){
+static int runBeforeMain() {
     std::cout << __FUNCTION__ <<"would be run before main function\n";
     return 1;
 }
 
-
-static int a = runBeforeMain();
-#endif
+int a = runBeforeMain();    // a global value, it would be invoked before main function , same to a attribute in a class, like Test class.
 
 __attribute((constructor)) void before_main()
 {
@@ -891,9 +908,10 @@ __attribute((destructor)) void after_main()
 {
     printf("%s\n",__FUNCTION__);
 }
+#endif
 
 int main() {
-    PRINT_COLOR(RED, "\n\n===> Enter main\n\n");
+    PRINT_COLOR(RED, "===> Enter main\n\n");
 //    int_pointer();
 
 //    int_and_char_pointer();
@@ -914,26 +932,34 @@ int main() {
 
 //    run_string_replace();
 
-    // time_adjusted();
+//    time_adjusted();
 
-    // stringstream_test();
+//    stringstream_test();
 
 //    cpp11_smart_pointer_test();
-//     coredump_test();
-//    const_and_non_test();
-//    enum_memset_test();
-//    constructor_call_test();
-//    delete_null();
-//      null_reference_test();
 
-   // private_constructor();
-    atexit(runAfterMain);
+//    coredump_test();
+
+//    const_and_non_test();
+
+//    enum_memset_test();
+
+//    constructor_call_test();
+
+//    delete_null();
+
+//    null_reference_test();
+
+//    private_constructor();
+
+//    atexit(runAfterMain);
+
     run_const_test();
 
-
 //    PodTest();
-//    printInCompiling();
-    PRINT_COLOR(GREEN, "\n\nExit main ===>||\n\n");
-}
 
+//    printInCompiling();
+
+    PRINT_COLOR(RED, "\n\nExit main ===>||\n");
+}
 
