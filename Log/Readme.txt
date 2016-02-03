@@ -1,0 +1,2 @@
+Function:
+    Some log procedure.
