@@ -25,35 +25,32 @@
  * 	75 Arlington Street, Suite 300
  * 	Boston, MA 02216
  * 	Fax: (617) 848-7047
-*/ 
+ */
 
 #include "assoc_preamble.h"
 #include <map>
 
-int main() 
-{
+int main() {
     // count number of times each word occurs in the input
     map<string, int> word_count;  // empty map from string to int
     string word;
-    while (cin >> word)
-      ++word_count[word];
+    while (cin >> word){//Press ctrl+D end the input
+        ++word_count[word]; // <==> word_count[word] += 1;
+    }
 
     // get iterator positioned on the first element
-    map<string, int>::const_iterator 
-                            map_it = word_count.begin();
+    map<string, int>::const_iterator map_it = word_count.begin();
     // for each element in the map
     while (map_it != word_count.end()) {
         // print the element key, value pairs
-        cout << map_it->first << " occurs " 
-             << map_it->second << " times" << endl;
+        cout << map_it->first << " occurs " << map_it->second << " times" << endl;
         ++map_it;  // increment iterator to denote the next element
     }
-return 0;
+    return 0;
 }
 
 // Alternative implementation using insert instead of subscript
-void alt_word_count()
-{
+void alt_word_count() {
     // count number of times each word occurs in the input
     map<string, int> word_count;  // empty map from string to int
     string word;
@@ -61,8 +58,7 @@ void alt_word_count()
     while (cin >> word) {
         // inserts element with key equal to word and value 1;
         // if word already in word_count, insert does nothing
-        pair<map<string, int>::iterator, bool> ret =
-                word_count.insert(make_pair(word, 1));
+        pair<map<string, int>::iterator, bool> ret = word_count.insert(make_pair(word, 1));
         if (!ret.second)         // word already in word_count
             ++ret.first->second; // increment counter
     }

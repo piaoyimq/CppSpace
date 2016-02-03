@@ -954,11 +954,11 @@ int main() {
 
 //    atexit(runAfterMain);
 
-    run_const_test();
-
 //    PodTest();
 
 //    printInCompiling();
+
+    run_const_test();
 
     PRINT_COLOR(RED, "\n\nExit main ===>||\n");
 }
