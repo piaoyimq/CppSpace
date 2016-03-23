@@ -59,6 +59,10 @@ public:
         std::cout << "st = " << st << std::endl;
     }
 
+    Test(int number, std::string s): st(s), num(number){
+    }
+
+
     void setValue() {
         num = 10;
         a = 9;
@@ -90,6 +94,8 @@ int testFunction() {
     std::cout << __FUNCTION__ << std::endl;
     return 1;
 }
+
+
 
 #if 1
 int Test::a = 1;
@@ -239,12 +245,15 @@ void run_Test() {
 //    const Test &test2 = m;  //const 引用可以引用一个与其类型完全不相同的类型，前提是可以进行类型转换
 //    (void) test2;
 //
-    std::string s("hello");
-    const Test &test3 = s;
-//    Test test3("he");
-//    test3.setValue();
-    test3.print();
-    (void) test3;
+//    std::string s("hello");
+//    const Test &test3 = s;
+//
+////    Test test3("he");
+////    test3.setValue();
+//    test3.print();
+//    (void) test3;
+
+    Test t4(3, "two");
 
 //    call_static_variable(t1);
 }
@@ -910,6 +919,18 @@ __attribute((destructor)) void after_main()
 }
 #endif
 
+const int appStartupSig(unsigned int instanceId){
+    std::cout << __FUNCTION__ << std::endl;
+    return instanceId;
+}
+
+
+void testAppStartupSig(){
+    int a;
+    a = appStartupSig(3);
+}
+
+
 int main() {
     PRINT_COLOR(RED, "===> Enter main\n\n");
 //    int_pointer();
@@ -924,7 +945,7 @@ int main() {
 
 //    run_get_user_name();
 
-//    run_Test();
+    run_Test();
 
 //    run_f();
 
@@ -958,7 +979,9 @@ int main() {
 
 //    printInCompiling();
 
-    run_const_test();
+//    run_const_test();
+
+//    testAppStartupSig();
 
     PRINT_COLOR(RED, "\n\nExit main ===>||\n");
 }

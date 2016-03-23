@@ -10,8 +10,73 @@
 #include <iomanip>
 #include <cassert>
 #include <utility> //move
+#include <sstream> //stringstream
+#include <stdint.h>
 using namespace std;
+class Printable
+{
+public:
 
+    virtual ~Printable();
+
+    // Print the contents of the class into the specified ostream
+    virtual void print(std::ostream& os) const = 0;
+
+    std::string toString() const;
+};
+
+Printable::~Printable()
+{
+}
+
+std::string Printable::toString() const
+{
+    std::stringstream ss;
+    print(ss);
+
+    return ss.str();
+
+}
+
+std::ostream & operator<<(std::ostream& os, const Printable& printable)
+{
+    printable.print(os);
+    return os;
+}
+
+
+ class Alarm: public Printable {
+public:
+     enum Severity{
+         Low,
+         Middle,
+         High
+     };
+    virtual ~Alarm();
+
+    explicit Alarm(uint32_t id, Severity severity, std::string problem, std::string display):
+            itsFaultId(id), itsAlarmSeverity(severity), itsSpecificProblem(problem), itsDisplayString(display)
+    {}
+    virtual void print(std::ostream& os) const;
+private:
+    uint32_t itsFaultId;
+    Severity itsAlarmSeverity;
+    std::string itsSpecificProblem;
+    std::string itsDisplayString;
+};
+
+
+ Alarm::print(std::ostream& os) const
+ {
+     os << "[";
+     os << " faultId=" << itsFaultId;
+     os << ", alarmSeverity=" << itsAlarmSeverity;
+     os << ", SpecificProblem=" << itsSpecificProblem;
+     os << ", displayString=" << itsDisplayString;
+     os << "]";
+ }
+
+#if 0
 class String {
 public:
     String();
@@ -238,8 +303,12 @@ istream &operator>>(istream &cin, String &str) {
 ostream &operator<<(ostream &cout, String &str) {
     return cout << str.c_str();
 }
+#endif
 
 int main(int argc, char *argv[]) {
+    Alarm alarm(32, Alarm::Low, "bad problem", "display" );
+       std::cout << "AlarmChecker " << alarm << std::endl;
+
     //int ia[7] = {0, 1, 1, 2, 3, 5, 8};
 
     ////vector<int> ivec = {0, 1, 1, 2, 3, 5, 8}; ³ö´í
@@ -248,15 +317,15 @@ int main(int argc, char *argv[]) {
     //vector<string> svec(10, string("null"));
     //for (int i = 0; i < svec.size(); i ++)
     //  cout << svec[i] << endl;
-
-    String str1("Huang"), str2("Chen");
-
-    cout << "Please input a string:\n";
-    cin >> str1;
-    str1 = str1 + 'c' + "CC";
-    str1 += 'a';
-    cout << str1 << " " << str2 << endl;
-    cout << (str2 == "Chen") << endl;
+//
+//    String str1("Huang"), str2("Chen");
+//
+//    cout << "Please input a string:\n";
+//    cin >> str1;
+//    str1 = str1 + 'c' + "CC";
+//    str1 += 'a';
+//    cout << str1 << " " << str2 << endl;
+//    cout << (str2 == "Chen") << endl;
     return 0;
 }
 
@@ -549,3 +618,5 @@ bool operator>(char * c_str, const MyString & str)
 }
 
 #endif
+
+
