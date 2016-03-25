@@ -52,7 +52,7 @@ public:
          Middle,
          High
      };
-    virtual ~Alarm();
+    virtual ~Alarm(){}
 
     explicit Alarm(uint32_t id, Severity severity, std::string problem, std::string display):
             itsFaultId(id), itsAlarmSeverity(severity), itsSpecificProblem(problem), itsDisplayString(display)
@@ -66,7 +66,7 @@ private:
 };
 
 
- Alarm::print(std::ostream& os) const
+void Alarm::print(std::ostream& os) const
  {
      os << "[";
      os << " faultId=" << itsFaultId;
