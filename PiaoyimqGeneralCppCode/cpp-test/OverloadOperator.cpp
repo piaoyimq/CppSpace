@@ -12,7 +12,11 @@
 #include <utility> //move
 #include <sstream> //stringstream
 #include <stdint.h>
+#include <stdio.h> //printf
 using namespace std;
+
+#define COUT_TEST 1
+
 class Printable
 {
 public:
@@ -305,9 +309,28 @@ ostream &operator<<(ostream &cout, String &str) {
 }
 #endif
 
+
+
 int main(int argc, char *argv[]) {
+#if COUT_TEST
     Alarm alarm(32, Alarm::Low, "bad problem", "display" );
-       std::cout << "AlarmChecker " << alarm << std::endl;
+    std::cout << "First: " << alarm << std::endl;
+    
+    std::cout << "Second: ";
+    operator<<(std::cout, alarm); //can not like "std::cout.operator()", because "operator<<(ostream&, Alarm&)"
+    //is not a memeber function of std::cout.
+   
+    printf("\n");
+    std::cout << "Third: " << alarm.toString(); 
+    
+    printf("\nFour: ");
+
+    std::cout.operator << (999); //"operator<<(int)" is a memeber function of cout.
+    // operator << (1111);   //error, no operator<<(ostream&, int) function
+    printf("\nFive: ");
+    std::cout.operator << ("good");//it will not output a string "good" , it output a address "0x4016b8", 
+    //because "operator<<(char*)" not a memeber function of std::cout.
+#endif
 
     //int ia[7] = {0, 1, 1, 2, 3, 5, 8};
 

@@ -59,7 +59,7 @@ public:
         std::cout << "st = " << st << std::endl;
     }
 
-    Test(int number, std::string s): st(s), num(number){
+    Test(int number, std::string s): st(s), num(number){//st should initialized after number, else report waring.
     }
 
 
@@ -931,6 +931,15 @@ void testAppStartupSig(){
 }
 
 
+void functionParameter(int a, int b, int c){
+    printf("a = %d，b = %d, c = %d", a, b, c);
+}
+
+void testFunctionParameter(){
+//    functionParameter(1, 2);
+}
+
+
 int main() {
     PRINT_COLOR(RED, "===> Enter main\n\n");
 //    int_pointer();
@@ -945,7 +954,7 @@ int main() {
 
 //    run_get_user_name();
 
-    run_Test();
+    // run_Test();
 
 //    run_f();
 
@@ -982,6 +991,10 @@ int main() {
 //    run_const_test();
 
 //    testAppStartupSig();
+
+    testFunctionParameter();
+    
+    std::cout.operator<<(9);
 
     PRINT_COLOR(RED, "\n\nExit main ===>||\n");
 }
