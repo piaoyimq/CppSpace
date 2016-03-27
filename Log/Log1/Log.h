@@ -9,12 +9,19 @@
 #define LOG_H
 
 #include <stdio.h>
+#include <map>
 #include <iostream>
 #include <string>
 #include <stdarg.h>
 #include <pthread.h>
+#include <sys/syscall.h>
 #include "BlockQueue.h"
 using namespace std;
+
+inline pid_t gettid()
+{
+     return syscall(SYS_gettid);  /*这才是内涵*/
+}
 
 class Log
 {
@@ -27,6 +34,7 @@ class Log
 
 		static void *flush_log_thread(void* args)
 		{
+			printf("Tid=%d\n", gettid());
 			Log::get_instance()->async_write_log();
 		}
 
@@ -51,6 +59,8 @@ class Log
 		}
 
 	private:
+		pid_t pid;
+		map<pid_t, int> mapThread;
 		pthread_mutex_t *m_mutex;
 		char dir_name[128];
 		char log_name[128];
