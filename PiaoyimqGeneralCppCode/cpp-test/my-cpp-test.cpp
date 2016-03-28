@@ -930,6 +930,20 @@ void testAppStartupSig(){
     a = appStartupSig(3);
 }
 
+void debugPrintf(int db_level, int module, const char *format, ...) {
+
+	va_list args;
+
+	va_start(args, format);
+	char *buf = new char[256];
+	if (NULL == buf)
+		return; // not good!
+
+	vsprintf(buf, format, args);
+	va_end(args);
+
+	printf("level=%d, module=%d, buf=%s", db_level, module, buf);
+}
 
 void functionParameter(int a, int b, int c){
     printf("a = %d，b = %d, c = %d", a, b, c);
@@ -992,9 +1006,9 @@ int main() {
 
 //    testAppStartupSig();
 
-    testFunctionParameter();
-    
-    std::cout.operator<<(9);
+    // testFunctionParameter();
+
+    debugPrintf(1, 2, "good");
 
     PRINT_COLOR(RED, "\n\nExit main ===>||\n");
 }

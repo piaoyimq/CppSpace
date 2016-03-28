@@ -1,7 +1,7 @@
 /*
  * main.cc
  *
- *  Created on: 2016Äê3ÔÂ26ÈÕ
+ *  Created on: 2016ï¿½ï¿½3ï¿½ï¿½26ï¿½ï¿½
  *      Author: vicky
  */
 
@@ -10,7 +10,7 @@
 
 
 #define THREAD_NUMBER 100
-
+#if 0
 void *f(void* args)
 {
 
@@ -29,15 +29,17 @@ void *f(void* args)
 	}
 }
 
-
+#endif
 int main()
 {
 	printf("Process id: %d\n", getpid());
 	Log::get_instance()->init("./mylog.log", 100, 1000000, 10);//asynchronization model
-//	Log::get_instance()->init("./mylog.log", 100, 1000000, 0);//synchronization model
-	sleep(1);
+// 	Log::get_instance()->init("./mylog.log", 100, 1000000, 0);//synchronization model
+	sleep(2);
 	int i = 0;
-	Log::get_instance()->write_log(1, "d=%d,c=%c,s=%s,f=%f", i,'a',"log", 1.000);
+	App_Log(1, 2, "First log:%d", 3);
+// 	Log::get_instance()->write_log(1, 2, "d=%d,c=%c,s=%s,f=%f", i,'a',"log", 1.000);
+#if 0
 	Log::get_instance()->write_log(2, "d=%d,c=%c,s=%s,f=%f", i,'a',"log", 1.000);
 	Log::get_instance()->write_log(3, "d=%d,c=%c,s=%s,f=%f", i,'a',"log", 1.000);
 	LOG_INFO("%d", 123456789);
@@ -64,21 +66,20 @@ int main()
 //					}
 	}
 
-	for(int i =0;i<THREAD_NUMBER;i++){
-		ret=pthread_join(id,NULL);
-			if(ret < 0){
-				printf("pthread_join error\n");
-				exit(1);
-			}
-	}
-
+// 	for(int i =0;i<THREAD_NUMBER;i++){
+// 		ret=pthread_join(id,NULL);
+// 			if(ret < 0){
+// 				printf("pthread_join error\n");
+// 				exit(1);
+// 			}
+// 	}
 
 	//for(;;)
 	{
 //		sleep(15);
 		Log::get_instance()->flush();
 	}
+	#endif
 	return 0;
 }
-
 

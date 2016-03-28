@@ -1,17 +1,17 @@
 /*
  * log.cc
  *
- *  Created on: 2016Äê3ÔÂ26ÈÕ
+ *  Created on: 2016ï¿½ï¿½3ï¿½ï¿½26ï¿½ï¿½
  *      Author: vicky
  */
 
 /*
- * ¸ÃÈÕÖ¾²ÉÓÃµÄÊÇµ¥ÀýÄ£Ê½£¬Ö§³Ö×Ô¶¯°´Ìì·ÖÎÄ¼þ£¬°´ÈÕÖ¾ÐÐÊý×Ô¶¯·ÖÎÄ¼þ£¬ÊÇ¶àÏß³Ì°²È«µÄµ¥ÀýÄ£Ê½£¬Ã»ÓÐÍâ²¿ÒÀÀµ£¬linux²Ù×÷ÏµÍ³¾ù¿ÉÒÔÊ¹ÓÃ¡£
- * ÔÚÈÕÖ¾°²È«¼¶±ð¸ßµÄÇé¿ö£¬²»ÄÜ¶ªÊ§ÈÕÖ¾µÄÇé¿ö£¬¿ÉÒÔÊ¹ÓÃÍ¬²½Ä£Ê½£¬ ÔÚÒªÇóÓ¦ÓÃ³ÌÐòÐÔÄÜ¸ß¶ÔÈÕÖ¾°²È«¼¶±ð²»¸ßµÄÇé¿ö¿ÉÒÔÊ¹ÓÃÒì²½Ä£Ê½£¬Òì²½Ä£
- * Ê½¾ÍÊÇÔÚ³ÌÐòÒì³£±¼À£»òÕßÊÇÖØÆô·þÎñµÄÇé¿ö¿ÉÄÜÓÐÈÕÖ¾¶ªÊ§¡£
+ * ï¿½ï¿½ï¿½ï¿½Ö¾ï¿½ï¿½ï¿½Ãµï¿½ï¿½Çµï¿½ï¿½ï¿½Ä£Ê½ï¿½ï¿½Ö§ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¾ï¿½ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½Ç¶ï¿½ï¿½ß³Ì°ï¿½È«ï¿½Äµï¿½ï¿½ï¿½Ä£Ê½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½â²¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½linuxï¿½ï¿½ï¿½ï¿½ÏµÍ³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½Ã¡ï¿½
+ * ï¿½ï¿½ï¿½ï¿½Ö¾ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½ßµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü¶ï¿½Ê§ï¿½ï¿½Ö¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½Í¬ï¿½ï¿½Ä£Ê½ï¿½ï¿½ ï¿½ï¿½Òªï¿½ï¿½Ó¦ï¿½Ã³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü¸ß¶ï¿½ï¿½ï¿½Ö¾ï¿½ï¿½È«ï¿½ï¿½ï¿½ð²»¸ßµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ì²½Ä£Ê½ï¿½ï¿½ï¿½ì²½Ä£
+ * Ê½ï¿½ï¿½ï¿½ï¿½ï¿½Ú³ï¿½ï¿½ï¿½ï¿½ì³£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¾ï¿½ï¿½Ê§ï¿½ï¿½
  *
- * µ±µ¥ÌõÈÕÖ¾±È½Ï´óµÄÊ±ºò£¬Í¬²½Ä£Ê½»á×èÈûÕû¸ö´¦ÀíÁ÷³Ì£¬ÄÇÃ´ÄãµÄÓ¦ÓÃÄÜ´¦ÀíµÄ²¢·¢ÄÜÁ¦½«ÓÐËùÏÂ½µ£¬ÓÈÆäÊÇÔÚ·åÖµµÄÊ±ºò£¬Ð´ÈÕÖ¾¿ÉÄÜ³ÉÎªÏµÍ³µÄÆ¿¾±£¬
- * Òì²½µÄºÃ´¦¾ÍÊÇÔÚ·åÖµµÄÊ±ºòÄÜ¹»Æ½»¬¹ý¶É£¬½µµÍÐ´ÈÕÖ¾µÄÑ¹Á¦
+ * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¾ï¿½È½Ï´ï¿½ï¿½Ê±ï¿½ï¿½Í¬ï¿½ï¿½Ä£Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì£ï¿½ï¿½ï¿½Ã´ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½Ü´ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú·ï¿½Öµï¿½ï¿½Ê±ï¿½ï¿½Ð´ï¿½ï¿½Ö¾ï¿½ï¿½ï¿½Ü³ï¿½ÎªÏµÍ³ï¿½ï¿½Æ¿ï¿½ï¿½ï¿½ï¿½
+ * ï¿½ì²½ï¿½ÄºÃ´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú·ï¿½Öµï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ü¹ï¿½Æ½ï¿½ï¿½ï¿½ï¿½ï¿½É£ï¿½ï¿½ï¿½ï¿½ï¿½Ð´ï¿½ï¿½Ö¾ï¿½ï¿½Ñ¹ï¿½ï¿½
  */
 
 
@@ -95,7 +95,7 @@ bool Log::init(const char* file_name, int log_buf_size, int split_lines, int max
 
 
 
-void Log::write_log(int level, const char* format, ...)
+void Log::write_log(int level,  int moduleId, const char* format, ...)
 {
 	struct timeval now = {0,0};
 	gettimeofday(&now, NULL);
@@ -114,6 +114,7 @@ void Log::write_log(int level, const char* format, ...)
 			   strcpy(s, "[Info ]:"); break;
 	}
 
+    
 	pthread_mutex_lock(m_mutex);
 
 
@@ -137,7 +138,7 @@ void Log::write_log(int level, const char* format, ...)
 #endif
 
 
-//	printf("gettpid=%u, gettid=%u, pthread_self=%lu\n", getpid(), gettid());//pstree -pa [procdssid] ,  ps -Lef
+	printf("gettpid=%u, gettid=%u, pthread_self=%lu\n", getpid(), gettid());//pstree -pa [procdssid] ,  ps -Lef
 	m_count++;
 	if(m_today != my_tm.tm_mday || m_count % m_split_lines == 0) //everyday log
 	{
@@ -167,15 +168,16 @@ void Log::write_log(int level, const char* format, ...)
 	string log_str;
 	pthread_mutex_lock(m_mutex);
 #if 1
-	int n = snprintf(m_buf, 100, "%d-%02d-%02d %02d:%02d:%02d.%06d [%u][%u](%d)%s ",
+	int n = snprintf(m_buf, 100, "%d-%02d-%02d %02d:%02d:%02d.%06d [%u][%u](%d)%s %d ",
 			my_tm.tm_year+1900, my_tm.tm_mon+1, my_tm.tm_mday,
-			my_tm.tm_hour, my_tm.tm_min, my_tm.tm_sec, now.tv_usec, pid, tid, mapThread[tid], s);
+			my_tm.tm_hour, my_tm.tm_min, my_tm.tm_sec, now.tv_usec, pid, tid, mapThread[tid], s, moduleId);
 #else
 	int n = snprintf(m_buf, 100, "%d-%02d-%02d %02d:%02d:%02d.%06d  %s",
 				my_tm.tm_year+1900, my_tm.tm_mon+1, my_tm.tm_mday,
 				my_tm.tm_hour, my_tm.tm_min, my_tm.tm_sec, now.tv_usec, s);
 #endif
 	int m = vsnprintf(m_buf + n, m_log_buf_size-1, format, valst);
+	printf("buf=%s\n", m_buf);
 	m_buf[n + m - 1] = '\n';
 	log_str = m_buf;
 //	printf("seq\n");

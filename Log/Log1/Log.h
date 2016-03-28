@@ -20,8 +20,8 @@ using namespace std;
 
 
 
-namespace Log{
-
+namespace LogN{
+#if 1
 enum Level {
     Emergency = 0,    /* system is unusable */
     Alert = 1,        /* action must be taken immediately */
@@ -37,7 +37,7 @@ enum Level {
 
 
 /* strings for printing message level */
-static __inline__ const char* getLogLevelString(const Log::Level logLevel)
+static __inline__ const char* getLogLevelString(const LogN::Level logLevel)
 {
     const char* const logLevelString[] =
     {
@@ -51,9 +51,10 @@ static __inline__ const char* getLogLevelString(const Log::Level logLevel)
         "DEBUG",
     };
 
-    return (logLevel < (Log::Level)sizeof(logLevelString)) ? logLevelString[logLevel] : "*ERROR IN MESSAGE LEVEL*";
+    return (logLevel < (LogN::Level)sizeof(logLevelString)) ? logLevelString[logLevel] : "*ERROR IN MESSAGE LEVEL*";
 }
-
+}
+#endif
 inline pid_t gettid()
 {
      return syscall(SYS_gettid);  /*������ں�*/
@@ -76,7 +77,7 @@ class Log
 
 		bool init(const char* file_name, int log_buf_size = 8192, int split_lines = 5000000, int max_queue_size = 0);
 
-		void write_log(int level, const char* format, ...);
+		void write_log(int level, int moduleId, const char* format, ...);
 
 		void flush(void);
 
@@ -111,40 +112,40 @@ class Log
 };
 
 
+#if 1
 
-void Logging_log(const Log::Level_t logLevel, const App_ModuleId_t moduleId,
-        const char* format, ...)
-{
-    if (Logging_isLogEnabled(moduleId, logLevel))
-    {
-        va_list argList;
-        va_start(argList, format);
-
-        logging.log(logLevel, moduleId, NULL, 0,
-                LOG_FACILITY_DEFAULT, format, argList);
-
-        va_end(argList);
-    }
-}
+// void Logging_log(const Log::Level_t logLevel, int moduleId/*const App_ModuleId_t moduleId*/,
+//         const char* format, ...)
+// {
+//     // if (Logging_isLogEnabled(moduleId, logLevel))
+//     {
+//         va_list argList;
+//         va_start(argList, format);
+//         Log::get_instance()->write_log(logLevel, moduleId, format, __VA_ARGS__);
+//         // logging.log(logLevel,moduleId, NULL, 0,
+//                 // LOG_FACILITY_DEFAULT, format, argList);
+//         va_end(argList);
+//     }
+// }
 
 #define App_Log LOG
 #define LOG(logLevel, moduleId, ...)                                          \
     do {                                                                      \
-        if ((unlikely(Logging_isLogEnabled(moduleId, logLevel))))             \
         {                                                                     \
-            Logging_log(logLevel, moduleId, __VA_ARGS__);                     \
-            App_LogLttng(logLevel, moduleId, __VA_ARGS__);                    \
+            Log::get_instance()->write_log(logLevel, moduleId, ##__VA_ARGS__);  \
         }                                                                     \
     } while (0)
 
 
-App_Log(Log::Notice, S6B_ID, "%s: unknown counter type: %d", __FUNCTION__, type);
+// App_Log(Log::Notice, S6B_ID, "%s: unknown counter type: %d", __FUNCTION__, type);
+#endif
+
 
 #define     LOG_DEBUG(format, ...)      Log::get_instance()->write_log(0, format, __VA_ARGS__)
 #define     LOG_INFO(format, ...)       Log::get_instance()->write_log(1, format, __VA_ARGS__)
 #define     LOG_WARN(format, ...)       Log::get_instance()->write_log(2, format, __VA_ARGS__)
 #define     LOG_ERROR(format, ...)      Log::get_instance()->write_log(3, format, __VA_ARGS__)
 
-}
+// }
 
 #endif
