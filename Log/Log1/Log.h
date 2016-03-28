@@ -1,7 +1,7 @@
 /*
  * log.h
  *
- *  Created on: 2016Äê3ÔÂ26ÈÕ
+ *  Created on: 2016ï¿½ï¿½3ï¿½ï¿½26ï¿½ï¿½
  *      Author: vicky
  */
 
@@ -18,9 +18,45 @@
 #include "BlockQueue.h"
 using namespace std;
 
+
+
+namespace Log{
+
+enum Level {
+    Emergency = 0,    /* system is unusable */
+    Alert = 1,        /* action must be taken immediately */
+    Critical = 2,     /* critical conditions */
+    Error = 3,        /* error conditions */
+    Warning = 4,      /* warning conditions */
+    Notice = 5,       /* normal but significant condition */
+    Info = 6,         /* informational */
+    Debug = 7,        /* debug-level messages */
+
+    LAST              /* This must be the last entry */
+};
+
+
+/* strings for printing message level */
+static __inline__ const char* getLogLevelString(const Log::Level logLevel)
+{
+    const char* const logLevelString[] =
+    {
+        "***EMERG",
+        "***ALERT",
+        "***CRIT",
+        "***ERROR",
+        "!!!WARN",
+        "+++NOTICE",
+        "INFO",
+        "DEBUG",
+    };
+
+    return (logLevel < (Log::Level)sizeof(logLevelString)) ? logLevelString[logLevel] : "*ERROR IN MESSAGE LEVEL*";
+}
+
 inline pid_t gettid()
 {
-     return syscall(SYS_gettid);  /*Õâ²ÅÊÇÄÚº­*/
+     return syscall(SYS_gettid);  /*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úºï¿½*/
 }
 
 class Log
@@ -74,9 +110,41 @@ class Log
 		bool m_is_async;
 };
 
-#define LOG_DEBUG(format, ...) Log::get_instance()->write_log(0, format, __VA_ARGS__)
-#define LOG_INFO(format, ...) Log::get_instance()->write_log(1, format, __VA_ARGS__)
-#define LOG_WARN(format, ...) Log::get_instance()->write_log(2, format, __VA_ARGS__)
-#define LOG_ERROR(format, ...) Log::get_instance()->write_log(3, format, __VA_ARGS__)
+
+
+void Logging_log(const Log::Level_t logLevel, const App_ModuleId_t moduleId,
+        const char* format, ...)
+{
+    if (Logging_isLogEnabled(moduleId, logLevel))
+    {
+        va_list argList;
+        va_start(argList, format);
+
+        logging.log(logLevel, moduleId, NULL, 0,
+                LOG_FACILITY_DEFAULT, format, argList);
+
+        va_end(argList);
+    }
+}
+
+#define App_Log LOG
+#define LOG(logLevel, moduleId, ...)                                          \
+    do {                                                                      \
+        if ((unlikely(Logging_isLogEnabled(moduleId, logLevel))))             \
+        {                                                                     \
+            Logging_log(logLevel, moduleId, __VA_ARGS__);                     \
+            App_LogLttng(logLevel, moduleId, __VA_ARGS__);                    \
+        }                                                                     \
+    } while (0)
+
+
+App_Log(Log::Notice, S6B_ID, "%s: unknown counter type: %d", __FUNCTION__, type);
+
+#define     LOG_DEBUG(format, ...)      Log::get_instance()->write_log(0, format, __VA_ARGS__)
+#define     LOG_INFO(format, ...)       Log::get_instance()->write_log(1, format, __VA_ARGS__)
+#define     LOG_WARN(format, ...)       Log::get_instance()->write_log(2, format, __VA_ARGS__)
+#define     LOG_ERROR(format, ...)      Log::get_instance()->write_log(3, format, __VA_ARGS__)
+
+}
 
 #endif

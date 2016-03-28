@@ -106,10 +106,10 @@ void Log::write_log(int level, const char* format, ...)
 
 	switch(level)
 	{
-		case 0 : strcpy(s, "[Debug]:"); break;
-		case 1 : strcpy(s, "[Info ]:"); break;
-		case 2 : strcpy(s, "[Warn ]:"); break;
-		case 3 : strcpy(s, "[Erro ]:"); break;
+		case 0 : strcpy(s, "[DEBUG]:"); break;
+		case 1 : strcpy(s, "[INFO]:"); break;
+		case 2 : strcpy(s, "[WARN]:"); break;
+		case 3 : strcpy(s, "[ERRO]:"); break;
 		default:
 			   strcpy(s, "[Info ]:"); break;
 	}
@@ -119,7 +119,7 @@ void Log::write_log(int level, const char* format, ...)
 
 	pid_t tid;
 
-#if 0
+#if 1
 	map<pid_t, int>::iterator where;
 	tid = gettid();
 
@@ -166,10 +166,10 @@ void Log::write_log(int level, const char* format, ...)
 
 	string log_str;
 	pthread_mutex_lock(m_mutex);
-#if 0
-	int n = snprintf(m_buf, 100, "%d-%02d-%02d %02d:%02d:%02d.%06d [%u][%u] %s (%d)",
+#if 1
+	int n = snprintf(m_buf, 100, "%d-%02d-%02d %02d:%02d:%02d.%06d [%u][%u](%d)%s ",
 			my_tm.tm_year+1900, my_tm.tm_mon+1, my_tm.tm_mday,
-			my_tm.tm_hour, my_tm.tm_min, my_tm.tm_sec, now.tv_usec, pid, tid, s, mapThread[tid]);
+			my_tm.tm_hour, my_tm.tm_min, my_tm.tm_sec, now.tv_usec, pid, tid, mapThread[tid], s);
 #else
 	int n = snprintf(m_buf, 100, "%d-%02d-%02d %02d:%02d:%02d.%06d  %s",
 				my_tm.tm_year+1900, my_tm.tm_mon+1, my_tm.tm_mday,

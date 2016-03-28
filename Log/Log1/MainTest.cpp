@@ -9,13 +9,13 @@
 #include "Log.h"
 
 
-#define THREAD_NUMBER 2
+#define THREAD_NUMBER 100
 
 void *f(void* args)
 {
 
 
-	for(int i = 0;i < 10; i++)
+	for(int i = 0;i < 5000; i++)
 	{
 //		sleep(1);
 			Log::get_instance()->write_log(1, "d=%d,c=%c,s=%s,f=%f", i,'a',"log", 1.000);
@@ -33,8 +33,8 @@ void *f(void* args)
 int main()
 {
 	printf("Process id: %d\n", getpid());
-//	Log::get_instance()->init("./mylog.log", 10000, 200000, 100);//asynchronization model
-	Log::get_instance()->init("./mylog.log", 100, 200000, 0);//synchronization model
+	Log::get_instance()->init("./mylog.log", 100, 1000000, 10);//asynchronization model
+//	Log::get_instance()->init("./mylog.log", 100, 1000000, 0);//synchronization model
 	sleep(1);
 	int i = 0;
 	Log::get_instance()->write_log(1, "d=%d,c=%c,s=%s,f=%f", i,'a',"log", 1.000);
