@@ -11,6 +11,7 @@
 #include <map>
 #include <stdarg.h>   //va_start
 #include <sys/syscall.h>
+#include <unistd.h>
 #include "BlockQueue.h"
 
 
