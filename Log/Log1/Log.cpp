@@ -8,8 +8,10 @@
 #include "Log.h"
 
 
+
+
 Log::Log() :
-        m_count(0), m_is_async(false) {
+        counter(0), isAsync(false) {
     m_mutex = new pthread_mutex_t;
     pid = getpid();
     printf("Process id: %d\n", pid);
@@ -19,7 +21,9 @@ Log::Log() :
 //	sleep(2);//piaoyimq ???
 }
 
+
 Log::~Log() {
+//    sleep(15);//piaoyimq ???
     flush();
     if (m_fp != NULL) {
         fclose(m_fp);
@@ -30,18 +34,19 @@ Log::~Log() {
     }
 }
 
+
 bool Log::init(const char* file_name, int log_buf_size, int split_lines, int max_queue_size) {
     if (max_queue_size >= 1) {
-        m_is_async = true;
-        m_log_queue = new block_queue<string>(max_queue_size);
+        isAsync = true;
+        m_log_queue = new BlockQueue<string>(max_queue_size);
         pthread_t tid;
-        pthread_create(&tid, NULL, flush_log_thread, NULL);
+        pthread_create(&tid, NULL, flushLogThread, NULL);
     }
 
-    m_log_buf_size = log_buf_size;
-    m_buf = new char[m_log_buf_size];
+    logBufSize = log_buf_size;
+    m_buf = new char[logBufSize];
     memset(m_buf, '\0', sizeof(m_buf));
-    m_split_lines = split_lines;
+    splitLines = split_lines;
 
     time_t t = time(NULL);
     struct tm* sys_tm = localtime(&t);
@@ -51,9 +56,9 @@ bool Log::init(const char* file_name, int log_buf_size, int split_lines, int max
     if (p == NULL) {
         snprintf(log_full_name, 255, "%d_%02d_%02d_%s", my_tm.tm_year + 1900, my_tm.tm_mon + 1, my_tm.tm_mday, file_name);
     } else {
-        strcpy(log_name, p + 1);
-        strncpy(dir_name, file_name, p - file_name + 1);
-        snprintf(log_full_name, 255, "%s%d_%02d_%02d_%s", dir_name, my_tm.tm_year + 1900, my_tm.tm_mon + 1, my_tm.tm_mday, log_name);
+        strcpy(logName, p + 1);
+        strncpy(dirName, file_name, p - file_name + 1);
+        snprintf(log_full_name, 255, "%s%d_%02d_%02d_%s", dirName, my_tm.tm_year + 1900, my_tm.tm_mon + 1, my_tm.tm_mday, logName);
     }
 
     m_today = my_tm.tm_mday;
@@ -66,7 +71,8 @@ bool Log::init(const char* file_name, int log_buf_size, int split_lines, int max
     return true;
 }
 
-void Log::write_log(const Log::Level logLevel, int moduleId, const char* format, ...) {
+
+void Log::writeLog(const Log::Level logLevel, int moduleId, const char* format, ...) {
     struct timeval now = { 0, 0 };
     gettimeofday(&now, NULL);
     time_t t = now.tv_sec;
@@ -75,7 +81,7 @@ void Log::write_log(const Log::Level logLevel, int moduleId, const char* format,
 
     pthread_mutex_lock(m_mutex);
 
-    pid_t tid = gettid();
+    pid_t tid = getTid();
     map<pid_t, int>::iterator where = mapThread.find(tid);  //pstree -pa [procdssid] ,  ps -Lef
 
     if (where == mapThread.end()) {
@@ -85,9 +91,9 @@ void Log::write_log(const Log::Level logLevel, int moduleId, const char* format,
         mapThread[tid]++;
     }
 
-//    printf("gettpid=%u, gettid=%u, pthread_self=%lu\n", getpid(), gettid());
-    m_count++;
-    if (m_today != my_tm.tm_mday || m_count % m_split_lines == 0) //everyday Log
+//    printf("gettpid=%u, getTid=%u, pthread_self=%lu\n", getpid(), getTid());
+    counter++;
+    if (m_today != my_tm.tm_mday || counter % splitLines == 0) //everyday Log
             {
         char new_log[256] = { 0 };
         fflush(m_fp);
@@ -96,11 +102,11 @@ void Log::write_log(const Log::Level logLevel, int moduleId, const char* format,
         snprintf(tail, 16, "%d_%02d_%02d_", my_tm.tm_year + 1900, my_tm.tm_mon + 1, my_tm.tm_mday);
 
         if (m_today != my_tm.tm_mday) {
-            snprintf(new_log, 255, "%s%s%s", dir_name, tail, log_name);
+            snprintf(new_log, 255, "%s%s%s", dirName, tail, logName);
             m_today = my_tm.tm_mday;
-            m_count = 0;
+            counter = 0;
         } else {
-            snprintf(new_log, 255, "%s%s%s.%d", dir_name, tail, log_name, m_count / m_split_lines);
+            snprintf(new_log, 255, "%s%s%s.%d", dirName, tail, logName, counter / splitLines);
         }
         m_fp = fopen(new_log, "a");
     }
@@ -116,12 +122,12 @@ void Log::write_log(const Log::Level logLevel, int moduleId, const char* format,
             my_tm.tm_year + 1900, my_tm.tm_mon + 1, my_tm.tm_mday, my_tm.tm_hour, my_tm.tm_min, my_tm.tm_sec, now.tv_usec,
             pid, tid, mapThread[tid], getLogLevelString(logLevel), moduleId);
 
-    int m = vsnprintf(m_buf + n, m_log_buf_size - 1, format, valst);
+    int m = vsnprintf(m_buf + n, logBufSize - 1, format, valst);
     m_buf[n + m - 1] = '\n';
     log_str = m_buf;
     pthread_mutex_unlock(m_mutex);
 
-    if (m_is_async && !m_log_queue->full()) {
+    if (isAsync && !m_log_queue->full()) {
         m_log_queue->push(log_str);
     } else {
         pthread_mutex_lock(m_mutex);
@@ -131,6 +137,7 @@ void Log::write_log(const Log::Level logLevel, int moduleId, const char* format,
 
     va_end(valst);
 }
+
 
 void Log::flush(void) {
     pthread_mutex_lock(m_mutex);

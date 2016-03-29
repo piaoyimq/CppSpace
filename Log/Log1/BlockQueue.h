@@ -1,7 +1,7 @@
 /*
- * block_queue.h
+ * BlockQueue.h
  *
- *  Created on: 2016Äê3ÔÂ26ÈÕ
+ *  Created on: 2016ï¿½ï¿½3ï¿½ï¿½26ï¿½ï¿½
  *      Author: vicky
  */
 
@@ -18,10 +18,10 @@
 using namespace std;
 
 template<class T>
-class block_queue
+class BlockQueue
 {
 	public:
-		block_queue(int max_size = 1000)
+		BlockQueue(int max_size = 1000)
 		{
 			if(max_size <= 0)
 			{
@@ -49,7 +49,7 @@ class block_queue
 			pthread_mutex_unlock(m_mutex);
 		}
 
-		~block_queue()
+		~BlockQueue()
 		{
 			pthread_mutex_lock(m_mutex);
 			if(m_array != NULL)
