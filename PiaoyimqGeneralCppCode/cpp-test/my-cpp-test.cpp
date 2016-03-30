@@ -953,6 +953,24 @@ void testFunctionParameter(){
 //    functionParameter(1, 2);
 }
 
+void executeShell(){
+    char shellContent[500] = {0};
+    snprintf(shellContent, sizeof(shellContent),
+            "echo '\
+#!/bin/bash\n\
+var=%s\n\
+mv $var $var.1\n\
+echo \"mv $var $var.1\"\n\
+for((i=%d;i>0;i--));\n\
+do\n\
+  mv \"$var.$i.gz\" \"$var.$((i+1)).gz\"\n\
+  echo \"mv $var.$i.gz\" \"$var.$((i+1)).gz\"\n\
+done\n\
+gzip $var.1\n\
+echo \"gzip $var.1\"\n\
+                    ' > test.sh; bash test.sh; rm -rf test.sh", "message" , 4);
+    system(shellContent);
+}
 
 int main() {
     PRINT_COLOR(RED, "===> Enter main\n\n");
@@ -1008,7 +1026,9 @@ int main() {
 
     // testFunctionParameter();
 
-    debugPrintf(1, 2, "good");
+//    debugPrintf(1, 2, "good");
+
+    executeShell();
 
     PRINT_COLOR(RED, "\n\nExit main ===>||\n");
 }
