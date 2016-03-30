@@ -15,7 +15,7 @@
 #include <memory> //unique_ptr
 #include <assert.h>  //assert
 #include <stdarg.h>
-
+#include <stdint.h>
 #define C_PLUS_PLUS_ELEVEN 0
 
 static const double Pi = 3.14;
@@ -953,22 +953,26 @@ void testFunctionParameter(){
 //    functionParameter(1, 2);
 }
 
-void executeShell(){
-    char shellContent[500] = {0};
+void logFileCompression(const char* fileName, uint32_t alreadyCompressFileAmount){
+    if(alreadyCompressFileAmount <= 0){
+        return;
+    }
+    char shellContent[300] = {0};
     snprintf(shellContent, sizeof(shellContent),
             "echo '\
 #!/bin/bash\n\
 var=%s\n\
 mv $var $var.1\n\
 echo \"mv $var $var.1\"\n\
-for((i=%d;i>0;i--));\n\
+for((i=%u;i>0;i--));\n\
 do\n\
   mv \"$var.$i.gz\" \"$var.$((i+1)).gz\"\n\
   echo \"mv $var.$i.gz\" \"$var.$((i+1)).gz\"\n\
 done\n\
 gzip $var.1\n\
-echo \"gzip $var.1\"\n\
-                    ' > test.sh; bash test.sh; rm -rf test.sh", "message" , 4);
+echo \"gzip -f $var.1\"\n\
+                    ' > test.sh; bash test.sh; rm -rf test.sh", fileName , alreadyCompressFileAmount);
+//    printf("length shell:%d", strlen(shellContent));
     system(shellContent);
 }
 
@@ -1028,7 +1032,7 @@ int main() {
 
 //    debugPrintf(1, 2, "good");
 
-    executeShell();
+    logFileCompression("message", 0);
 
     PRINT_COLOR(RED, "\n\nExit main ===>||\n");
 }

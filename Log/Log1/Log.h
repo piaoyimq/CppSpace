@@ -12,6 +12,7 @@
 #include <stdarg.h>   //va_start
 #include <sys/syscall.h>
 #include <unistd.h>
+#include <stdint.h>
 #include "BlockQueue.h"
 
 
@@ -52,7 +53,7 @@ public:
         const char* const logLevelString[] = { "***EMERG", "***ALERT", "***CRIT", "***ERROR", "!!!WARN", "+++NOTICE", "INFO", "DEBUG"};
         return (logLevel < (Log::Level) sizeof(logLevelString)) ? logLevelString[logLevel] : "*ERROR IN MESSAGE LEVEL*";
     }
-
+    void logFileCompression(const char* fileName, uint32_t fileAmount);
     void writeLog(const Log::Level logLevel, int moduleId, const char* format, ...);
 
     void flush();
@@ -82,6 +83,7 @@ private:
     int logBufSize;
     long long counter;
     int m_today;
+    int currentLogAmount;
     FILE *m_fp;
     char *m_buf;
     BlockQueue<string> *m_log_queue;

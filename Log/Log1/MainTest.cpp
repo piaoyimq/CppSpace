@@ -17,7 +17,7 @@
 #if COMPLEX_TEST
 void *f(void* args) {
 
-    for (int i = 0; i < 100000; i++) {
+    for (int i = 0; i < 100; i++) {
 //		sleep(1);
         App_Log(Log::Notice, 2, "First log:%d", 3);
         App_Log(Log::Notice, 2, "First log:%d", 3);
@@ -29,6 +29,7 @@ void *f(void* args) {
 
 
 int main() {
+    App_Log(Log::Notice, 2, "First log:%d", 3);
     App_Log(Log::Notice, 2, "First log:%d", 3);
     App_Log(Log::Notice, 2, "First log:%d", 3);
     App_Log(Log::Notice, 2, "First log:%d", 3);

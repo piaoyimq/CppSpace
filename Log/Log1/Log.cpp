@@ -5,18 +5,19 @@
  *      Author: piaoyimq
  */
 #include <string.h>
+#include <sstream> //stringstream
 #include "Log.h"
 
 
 
 
 Log::Log() :
-        counter(0), isAsync(false) {
+        counter(0), isAsync(false), currentLogAmount(0) {
     m_mutex = new pthread_mutex_t;
     pid = getpid();
     printf("Process id: %d\n", pid);
     pthread_mutex_init(m_mutex, NULL);
-    init("./mylog.log", 100, 1000000, 10); //asynchronization model
+    init("./mylog.log", 100, 100, 10); //asynchronization model
 //	init("./mylog.log", 100, 1000000, 0);//synchronization model
 //	sleep(2);//piaoyimq ???
 }
@@ -63,7 +64,7 @@ bool Log::init(const char* file_name, int log_buf_size, int split_lines, int max
 
     m_today = my_tm.tm_mday;
 
-    m_fp = fopen(log_full_name, "a");
+    m_fp = fopen(logName, "a");
     if (m_fp == NULL) {
         return false;
     }
@@ -71,6 +72,30 @@ bool Log::init(const char* file_name, int log_buf_size, int split_lines, int max
     return true;
 }
 
+void Log::logFileCompression(const char* fileName, uint32_t alreadyCompressFileAmount){
+    printf("alreadyCompressFileAmount=%u\n", alreadyCompressFileAmount);
+    if(alreadyCompressFileAmount < 0){
+        return;
+    }
+
+    char shellContent[300] = {0};
+    snprintf(shellContent, sizeof(shellContent),
+            "echo '\
+#!/bin/bash\n\
+var=%s\n\
+mv $var $var.1\n\
+echo \"mv $var $var.1\"\n\
+for((i=%u;i>0;i--));\n\
+do\n\
+  mv \"$var.$i.gz\" \"$var.$((i+1)).gz\"\n\
+  echo \"mv $var.$i.gz\" \"$var.$((i+1)).gz\"\n\
+done\n\
+gzip $var.1\n\
+echo \"gzip -f $var.1\"\n\
+                    ' > test.sh; bash test.sh; rm -rf test.sh", fileName , alreadyCompressFileAmount);
+//    printf("length shell:%d", strlen(shellContent));
+    system(shellContent);
+}
 
 void Log::writeLog(const Log::Level logLevel, int moduleId, const char* format, ...) {
     struct timeval now = { 0, 0 };
@@ -98,6 +123,9 @@ void Log::writeLog(const Log::Level logLevel, int moduleId, const char* format, 
         char new_log[256] = { 0 };
         fflush(m_fp);
         fclose(m_fp);
+        logFileCompression(logName, currentLogAmount++);
+//        sleep(1);//Maybe need to sleep, then reopen it.
+#if 0
         char tail[16] = { 0 };
         snprintf(tail, 16, "%d_%02d_%02d_", my_tm.tm_year + 1900, my_tm.tm_mon + 1, my_tm.tm_mday);
 
@@ -108,7 +136,17 @@ void Log::writeLog(const Log::Level logLevel, int moduleId, const char* format, 
         } else {
             snprintf(new_log, 255, "%s%s%s.%d", dirName, tail, logName, counter / splitLines);
         }
-        m_fp = fopen(new_log, "a");
+#endif
+        m_fp = fopen(logName, "a");
+#if 1//Only for test.
+
+        std::stringstream ss;
+        ss << "\n**************************  ";
+        ss << currentLogAmount;
+        ss << "  **************************\n\n";
+        fputs(ss.str().c_str(), m_fp);
+
+#endif
     }
     pthread_mutex_unlock(m_mutex);
 
