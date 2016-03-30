@@ -68,6 +68,9 @@ bool Log::init(const char* file_name, int log_buf_size, int split_lines, int max
     if (m_fp == NULL) {
         return false;
     }
+    char fileHeardLine[100];
+    snprintf(fileHeardLine, 100, "\n\t\t*********************  Sequence Number:  %d  ********************************\n\n", currentLogAmount);
+    fputs(fileHeardLine, m_fp);
 
     return true;
 }
@@ -140,11 +143,9 @@ void Log::writeLog(const Log::Level logLevel, int moduleId, const char* format, 
         m_fp = fopen(logName, "a");
 #if 1//Only for test.
 
-        std::stringstream ss;
-        ss << "\n**************************  ";
-        ss << currentLogAmount;
-        ss << "  **************************\n\n";
-        fputs(ss.str().c_str(), m_fp);
+        char fileHeardLine[100];
+        snprintf(fileHeardLine, 100, "\n\t\t*********************  Sequence Number:  %d  ********************************\n\n", currentLogAmount);
+        fputs(fileHeardLine, m_fp);
 
 #endif
     }
