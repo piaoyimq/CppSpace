@@ -19,21 +19,21 @@ void *f(void* args) {
 
     for (int i = 0; i < 100; i++) {
 //		sleep(1);
-        App_Log(Log::Notice, 2, "First log:%d", 3);
-        App_Log(Log::Notice, 2, "First log:%d", 3);
-        App_Log(Log::Notice, 2, "First log:%d", 3);
-        App_Log(Log::Notice, 2, "First log:%d", 3);
+        App_Log(Log::Notice, Log::LAST_ID, "First log:%d", 3);
+        App_Log(Log::Notice, Log::LAST_ID, "First log:%d", 3);
+        App_Log(Log::Notice, Log::LOG_ID, "First log:%d", 3);
+        App_Log(Log::Notice, Log::CONF_ID, "First log:%d", 3);
     }
 }
 #endif
 
 
 int main() {
-    App_Log(Log::Notice, 2, "First log:%d", 3);
-    App_Log(Log::Notice, 2, "First log:%d", 3);
-    App_Log(Log::Notice, 2, "First log:%d", 3);
-    App_Log(Log::Notice, 2, "First log:%d", 3);
-    App_Log(Log::Notice, 2, "First log:%d", 3);
+    App_Log(Log::Notice, Log::CONF_ID, "First log:%d", 3);
+    App_Log(Log::Notice, Log::CONF_ID, "First log:%d", 3);
+    App_Log(Log::Notice, Log::CONF_ID, "First log:%d", 3);
+    App_Log(Log::Notice, Log::CONF_ID, "First log:%d", 3);
+    App_Log(Log::Notice, Log::CONF_ID, "First log:%d", 3);
 
 #if COMPLEX_TEST
 

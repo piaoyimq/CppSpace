@@ -1,17 +1,18 @@
 /*
- * Log.cpp
+ * Logging.cpp
  *
  *  Created on: Mar 29, 2016
  *      Author: piaoyimq
  */
 #include <string.h>
 #include <sstream> //stringstream
+#include <errno.h>
 #include "Log.h"
 
 
 
 
-Log::Log() :
+Logging::Logging() :
         counter(0), isAsync(false), currentLogAmount(0) {
     m_mutex = new pthread_mutex_t;
     pid = getpid();
@@ -23,7 +24,7 @@ Log::Log() :
 }
 
 
-Log::~Log() {
+Logging::~Logging() {
 //    sleep(15);//piaoyimq ???
     flush();
     if (m_fp != NULL) {
@@ -36,7 +37,7 @@ Log::~Log() {
 }
 
 
-bool Log::init(const char* file_name, int log_buf_size, int split_lines, int max_queue_size) {
+bool Logging::init(const char* file_name, int log_buf_size, int split_lines, int max_queue_size) {
     if (max_queue_size >= 1) {
         isAsync = true;
         m_log_queue = new BlockQueue<string>(max_queue_size);
@@ -65,8 +66,9 @@ bool Log::init(const char* file_name, int log_buf_size, int split_lines, int max
     m_today = my_tm.tm_mday;
 
     m_fp = fopen(logName, "a");
-    if (m_fp == NULL) {
-        return false;
+    if (NULL == m_fp) {
+        fprintf(stderr, "%s, Process ID %d ", pid, strerror(errno));
+        exit(EXIT_FAILURE);
     }
     char fileHeardLine[100];
     snprintf(fileHeardLine, 100, "\n\t\t*********************  Sequence Number:  %d  ********************************\n\n", currentLogAmount);
@@ -75,7 +77,7 @@ bool Log::init(const char* file_name, int log_buf_size, int split_lines, int max
     return true;
 }
 
-void Log::logFileCompression(const char* fileName, uint32_t alreadyCompressFileAmount){
+void Logging::logFileCompression(const char* fileName, uint32_t alreadyCompressFileAmount){
     printf("alreadyCompressFileAmount=%u\n", alreadyCompressFileAmount);
     if(alreadyCompressFileAmount < 0){
         return;
@@ -93,14 +95,14 @@ do\n\
   mv \"$var.$i.gz\" \"$var.$((i+1)).gz\"\n\
   echo \"mv $var.$i.gz\" \"$var.$((i+1)).gz\"\n\
 done\n\
-gzip $var.1\n\
+gzip -f $var.1\n\
 echo \"gzip -f $var.1\"\n\
                     ' > test.sh; bash test.sh; rm -rf test.sh", fileName , alreadyCompressFileAmount);
 //    printf("length shell:%d", strlen(shellContent));
     system(shellContent);
 }
 
-void Log::writeLog(const Log::Level logLevel, int moduleId, const char* format, ...) {
+void Logging::writeLog(Log::Level logLevel, Log::AppModuleID moduleId, const char* format, ...) {
     struct timeval now = { 0, 0 };
     gettimeofday(&now, NULL);
     time_t t = now.tv_sec;
@@ -121,7 +123,7 @@ void Log::writeLog(const Log::Level logLevel, int moduleId, const char* format, 
 
 //    printf("gettpid=%u, getTid=%u, pthread_self=%lu\n", getpid(), getTid());
     counter++;
-    if (m_today != my_tm.tm_mday || counter % splitLines == 0) //everyday Log
+    if (m_today != my_tm.tm_mday || counter % splitLines == 0) //everyday Logging
             {
         char new_log[256] = { 0 };
         fflush(m_fp);
@@ -141,6 +143,10 @@ void Log::writeLog(const Log::Level logLevel, int moduleId, const char* format, 
         }
 #endif
         m_fp = fopen(logName, "a");
+        if(NULL == m_fp){
+            fprintf(stderr,"%s, Process ID %d ",strerror(errno), pid);
+            exit(EXIT_FAILURE);
+        }
 #if 1//Only for test.
 
         char fileHeardLine[100];
@@ -178,7 +184,7 @@ void Log::writeLog(const Log::Level logLevel, int moduleId, const char* format, 
 }
 
 
-void Log::flush(void) {
+void Logging::flush(void) {
     pthread_mutex_lock(m_mutex);
     fflush(m_fp);
     pthread_mutex_unlock(m_mutex);

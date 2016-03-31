@@ -976,6 +976,47 @@ echo \"gzip -f $var.1\"\n\
     system(shellContent);
 }
 
+enum AppModuleID
+{
+    LOG_ID = 0,
+    CONF_ID,
+    LAST_ID                   /* -- LAST_ID MUST BE LAST ONE -- */
+};
+
+
+#define MODULE_NAME_MAX_SIZE 10
+struct AppModule{
+    AppModuleID moduleId;
+    char moduleName[MODULE_NAME_MAX_SIZE];
+};
+
+static struct AppModule logModuleList[LAST_ID]={
+        {LOG_ID, "LOG"},
+        {CONF_ID, "CONF"},
+};
+
+namespace my{
+template <class T>
+size_t getArrayLen(T& array){
+    return (sizeof(array) / sizeof(array[0]));
+}
+}
+
+void testFunctionParameterConst(const AppModuleID id){// not add const, it will run correctly, but add const it compile error. so should add const.
+    printf("id1=%d", id);
+    id =LAST_ID;
+    printf("id2=%d", id);
+}
+
+void arrayTest(){
+    std::cout << "log = " << logModuleList[LOG_ID].moduleName << std::endl;
+    std::cout << "log = " << logModuleList[1].moduleName << std::endl; //so this method will lead to Segmentation fault.
+    const char* const logLevelString[] = { "***EMERG","9", "lllllllALERT", "***CRIT", "***ERROR", "!!!WARN", "+++NOTICE", "INFO", "DEBUG"};
+    printf("sizeof(logLevelString)=%d, sizeof([0])=%d, sizeof()=%d, len=%d\n", sizeof(logLevelString), sizeof(logLevelString[3]), sizeof(char*), sizeof(logLevelString)/sizeof(logLevelString[0]));
+    printf("getArrayLen=%lu\n", my::getArrayLen(logLevelString));
+    printf("sizeof(long)=%lu, sizeof(int)=%lu\n", sizeof(long), sizeof(int));
+}
+
 int main() {
     PRINT_COLOR(RED, "===> Enter main\n\n");
 //    int_pointer();
@@ -1032,7 +1073,10 @@ int main() {
 
 //    debugPrintf(1, 2, "good");
 
-    logFileCompression("message", 0);
+//    logFileCompression("message", 0);
+
+//    arrayTest();
+    testFunctionParameterConst(LOG_ID);
 
     PRINT_COLOR(RED, "\n\nExit main ===>||\n");
 }
