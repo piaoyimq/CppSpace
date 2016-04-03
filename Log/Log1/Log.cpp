@@ -25,16 +25,34 @@ void getNameByPid(pid_t pid, char *task_name) {
 
 
 Logging::Logging() :
-        counter(0), isAsync(false), currentLogAmount(0) {
+        counter(0), isAsync(false), currentLogAmount(0), 
+        logBufSize(LOG_BUF_SIZE), splitLines(SPLIT_LINES){
     m_mutex = new pthread_mutex_t;
-    pid = getpid();
-    printf("Process id: %d\n", pid);
     pthread_mutex_init(m_mutex, NULL);
     // init("./mylog.log", 2000, 100, 10); //asynchronization model
-    char pidName[BUF_SIZE];
+    pid = getpid();
+    printf("Process id: %d\n", pid);    
     getNameByPid(pid, pidName);
     snprintf(logName, sizeof(logName), "%s.log", pidName);
-	init(100, 100, 0);//synchronization model
+    strncpy(dirName, LOG_DIRECTORY, sizeof(dirName));
+    printf("dirName=%s\n", dirName);
+    snprintf(logFullName, sizeof(logFullName), "%s%s", dirName, logName);
+    printf("logFullName=%s\n", logFullName);
+    
+     m_buf = new char[logBufSize];
+    memset(m_buf, '\0', logBufSize);
+    
+    m_fp = fopen(logFullName, "a");
+    if (NULL == m_fp) {
+        fprintf(stderr, "%s, Process ID %d ", strerror(errno), pid);
+        exit(EXIT_FAILURE);
+    }
+    char fileHeard[100];
+    snprintf(fileHeard, 100, "Process ID: %d\nProcess Name: %s\nLog File Sequence ID: %d\n\n", pid, pidName, currentLogAmount);
+    fputs(fileHeard, m_fp);
+    
+    
+// 	init(100, 100, 0);//synchronization model
 //	sleep(2);//piaoyimq ???
 }
 
@@ -42,6 +60,8 @@ Logging::Logging() :
 Logging::~Logging() {
 //    sleep(15);//piaoyimq ???
     flush();
+    delete m_buf;
+    m_buf= NULL;
     if (m_fp != NULL) {
         fclose(m_fp);
     }
@@ -51,6 +71,8 @@ Logging::~Logging() {
     }
 }
 
+
+#if 0
 bool Logging::init(int log_buf_size, int split_lines, int max_queue_size) {
     if (max_queue_size >= 1) {
         isAsync = true;
@@ -62,7 +84,7 @@ bool Logging::init(int log_buf_size, int split_lines, int max_queue_size) {
     logBufSize = log_buf_size;
     m_buf = new char[logBufSize];
     memset(m_buf, '\0', logBufSize);
-    splitLines = split_lines;
+    splitLines = split_li/nes;
 
 
     m_fp = fopen(logName, "a");
@@ -70,20 +92,52 @@ bool Logging::init(int log_buf_size, int split_lines, int max_queue_size) {
         fprintf(stderr, "%s, Process ID %d ", strerror(errno), pid);
         exit(EXIT_FAILURE);
     }
-    char fileHeardLine[100];
-    snprintf(fileHeardLine, 100, "\n\t\t*********************  Sequence Number:  %d  ********************************\n\n", currentLogAmount);
-    fputs(fileHeardLine, m_fp);
+    char fileHeard[100];
+    snprintf(fileHeard, 100, "Process ID: %d\nProcess Name: %s\nLog File Sequence ID: %d\n\n", pid, pidName, currentLogAmount);
+    fputs(fileHeard, m_fp);
 
     return true;
 }
+#endif
+#if 0
+void Logging::init(const char* dirName, const char* fileName, int log_buf_size, int split_lines, int max_queue_size) {
+    char fullName[150]={0};
+    snprintf(fullName, 150, "%s/%s"，dirName, fileName);
+    
+    if(0 != strcmp(logFullName, fullName)){
+        strncpy(logFullName, fullName, sizeof(logFullName));
+        fclose(m_fp);
+        
+        // moveLogs();
+       printf("new logFullName=%s\n", logFullName);
+        m_fp = fopen(logFullName, "a");
+        if (NULL == m_fp) {
+            fprintf(stderr, "%s, Process ID %d ", strerror(errno), pid);
+            exit(EXIT_FAILURE);
+        }
+    }
+    
+    delete m_buf;
+    logBufSize = log_buf_size;
+    m_buf = new char[logBufSize];
+    memset(m_buf, '\0', logBufSize);
+    splitLines = split_lines;
+    if (max_queue_size >= 1) {
+        isAsync = true;
+        m_log_queue = new BlockQueue<string>(max_queue_size);
+        pthread_t tid;
+        pthread_create(&tid, NULL, flushLogThread, NULL);
+    }
+}
+#endif
 
-void Logging::logFileCompression(const char* fileName, uint32_t alreadyCompressFileAmount){
+void Logging::logFileCompression(uint32_t alreadyCompressFileAmount){
     printf("alreadyCompressFileAmount=%u\n", alreadyCompressFileAmount);
     if(alreadyCompressFileAmount < 0){
         return;
     }
 
-    char shellContent[300] = {0};
+    char shellContent[1024] = {0};
     snprintf(shellContent, sizeof(shellContent),
             "echo '\
 #!/bin/bash\n\
@@ -97,8 +151,10 @@ do\n\
 done\n\
 gzip -f $var.1\n\
 echo \"gzip -f $var.1\"\n\
-                    ' > test.sh; bash test.sh; rm -rf test.sh", fileName , alreadyCompressFileAmount);
+                    ' > %stest.sh; bash %stest.sh; rm -rf %stest.sh", 
+                    logFullName , alreadyCompressFileAmount, dirName, dirName, dirName);
 //    printf("length shell:%d", strlen(shellContent));
+    // printf("%s\n", shellContent);
     system(shellContent);
 }
 
@@ -128,19 +184,19 @@ void Logging::writeLog(Log::Level logLevel, Log::AppModuleID moduleId, const cha
         char new_log[256] = { 0 };
         fflush(m_fp);
         fclose(m_fp);
-        logFileCompression(logName, currentLogAmount++);
+        logFileCompression(currentLogAmount++);
 //        sleep(1);//Maybe need to sleep, then reopen it.
 
-        m_fp = fopen(logName, "a");
+        m_fp = fopen(logFullName, "a");
         if(NULL == m_fp){
             fprintf(stderr,"%s, Process ID %d ",strerror(errno), pid);
             exit(EXIT_FAILURE);
         }
 #if 1//Only for test.
 
-        char fileHeardLine[100];
-        snprintf(fileHeardLine, 100, "\n\t\t*********************  Sequence Number:  %d  ********************************\n\n", currentLogAmount);
-        fputs(fileHeardLine, m_fp);
+        char fileHeard[100];
+        snprintf(fileHeard, 100, "Process ID: %d\nProcess Name: %s\nLog File Sequence ID: %d\n\n", pid, pidName, currentLogAmount);
+        fputs(fileHeard, m_fp);
 
 #endif
     }
@@ -153,9 +209,9 @@ void Logging::writeLog(Log::Level logLevel, Log::AppModuleID moduleId, const cha
     string log_str;
     pthread_mutex_lock(m_mutex);
 
-    int n = snprintf(m_buf, 2000, "%d-%02d-%02d %02d:%02d:%02d [%d][%d](%d) [%s] <%s>: ",
+    int n = snprintf(m_buf, 2000, "%d-%02d-%02d %02d:%02d:%02d [%d](%d) [%s] <%s>: ",
             my_tm.tm_year + 1900, my_tm.tm_mon + 1, my_tm.tm_mday, my_tm.tm_hour, my_tm.tm_min, my_tm.tm_sec,
-            pid, tid, mapThread[tid], getLogLevelString(logLevel), getLogModuleString(moduleId));
+            tid, mapThread[tid], getLogLevelString(logLevel), getLogModuleString(moduleId));
     int m = vsnprintf(m_buf + n, 1000, format, valst);
     m_buf[n + m ] = '\n';
     log_str = m_buf;

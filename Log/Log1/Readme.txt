@@ -10,3 +10,4 @@ Add Function:
 7. Read config module;
 8. Add logs to shell scprit;
 9. Add logs to log module;
+10. Use std::queue instead of BlockQueue class.

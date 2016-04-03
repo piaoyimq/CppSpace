@@ -17,6 +17,17 @@
 
 #define BUF_SIZE 1024
 
+#define LOG_BUF_SIZE 1024
+
+#define SPLIT_LINES  30//2000000
+
+#define LOG_DIRECTORY   "/home/coding/workspace/CppSpace/Log/Log1/"  //"/var/log/"
+
+#define LOG_FILE_NAME   ""
+
+
+
+
 namespace Log{
 
 template <class T>
@@ -93,7 +104,7 @@ public:
         return logModule < (static_cast<Log::AppModuleID>(Log::getArrayLen(Log::logModuleString))) ? Log::logModuleString[logModule] : "Undefined";
     }
 
-    void logFileCompression(const char* fileName, uint32_t fileAmount);
+    void logFileCompression(uint32_t fileAmount);
 
     void writeLog(Log::Level logLevel, Log::AppModuleID moduleId, const char* format, ...);
 
@@ -103,7 +114,7 @@ private:
     Logging(); /*A private declaration for forbid inheriting*/
     ~Logging();
 
-    bool init(int log_buf_size = 8192, int split_lines = 5000000, int max_queue_size = 0);
+    bool init(const char* dirName, const char* fileName, int log_buf_size = 8192, int split_lines = 2000000, int max_queue_size = 0);
 
     void *async_write_log() {
         string single_log;
@@ -116,10 +127,12 @@ private:
 
 
     pid_t pid;
+    char pidName[128];
     map<pid_t, int> mapThread;
     pthread_mutex_t *m_mutex;
     char dirName[128];
     char logName[128];
+    char logFullName[150];
     int splitLines;
     int logBufSize;
     long long counter;
