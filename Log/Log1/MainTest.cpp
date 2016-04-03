@@ -7,9 +7,8 @@
 #include <unistd.h>
 #include "Log.h"
 
-#define THREAD_NUMBER   5
+#define THREAD_NUMBER   1
 #define COMPLEX_TEST     1
-
 
 
 
@@ -19,21 +18,20 @@ void *f(void* args) {
 
     for (int i = 0; i < 100; i++) {
 //		sleep(1);
-        App_Log(Log::Notice, Log::LAST_ID, "First log:%d", 3);
-        App_Log(Log::Notice, Log::LAST_ID, "First log:%d", 3);
-        App_Log(Log::Notice, Log::LOG_ID, "First log:%d", 3);
-        App_Log(Log::Notice, Log::CONF_ID, "First log:%d", 3);
+        App_Log(Log::Notice, Log::LAST_ID, "Function:%s, %d, line=%d", __FUNCTION__, 1, __LINE__);
+        App_Log(Log::Notice, Log::LAST_ID, "Function:%s, %d, line=%d", __FUNCTION__, 2, __LINE__);
+        App_Log(Log::Notice, Log::LAST_ID, "Function:%s,%d, line=%d", __FUNCTION__, 3, __LINE__);
     }
 }
 #endif
 
 
 int main() {
-    App_Log(Log::Notice, Log::CONF_ID, "First log:%d", 3);
-    App_Log(Log::Notice, Log::CONF_ID, "First log:%d", 3);
-    App_Log(Log::Notice, Log::CONF_ID, "First log:%d", 3);
-    App_Log(Log::Notice, Log::CONF_ID, "First log:%d", 3);
-    App_Log(Log::Notice, Log::CONF_ID, "First log:%d", 3);
+    
+    App_Log(Log::Notice, Log::LAST_ID, "Function:%s, %d, line=%d", __FUNCTION__, 1, __LINE__);
+    App_Log(Log::Notice, Log::LAST_ID, "Function:%s, %d, line=%d", __FUNCTION__, 2, __LINE__);
+    
+    App_Log(Log::Notice, Log::LAST_ID, "Function:%s, %d, line=%d", __FUNCTION__, 3, __LINE__);
 
 #if COMPLEX_TEST
 
@@ -43,16 +41,16 @@ int main() {
     for (int i = 0; i < THREAD_NUMBER; i++) {
         ret = pthread_create(&id, NULL, f, NULL);
         if (0 != ret) {
-            printf("pthread_create error\n");
-            exit(1);
+            App_Log(Log::Error, Log::LAST_ID, "Function:%s, pthread_create error", __FUNCTION__);
+            exit(EXIT_FAILURE);
         }
     }
 
     for (int i = 0; i < THREAD_NUMBER; i++) {
         ret = pthread_join(id, NULL);
         if (ret < 0) {
-            printf("pthread_join error\n");
-            exit(1);
+            App_Log(Log::Error, Log::LAST_ID, "Function:%s, pthread_join error", __FUNCTION__);
+            exit(EXIT_FAILURE);
         }
     }
 #endif

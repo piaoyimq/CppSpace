@@ -41,6 +41,16 @@ Color myColor = COLOR_RED;
 #define RESET   "\x1b[0m"
 
 #define PRINT_COLOR(color, format, ...)  printf(color format RESET, ##__VA_ARGS__)
+#define App_Log(logLevel, moduleId, ...)    writeLog(logLevel, moduleId, __VA_ARGS__)
+
+void writeLog(int logLevel, int moduleId, const char* format, ...){
+    char m_buf[100];
+    va_list valst;
+    va_start(valst, format);
+    int m = vsnprintf(m_buf, sizeof(m_buf), format, valst);
+    printf("logLevel=%d, moduleId=%d, m_buf:%s\n", logLevel, moduleId, m_buf);
+    va_end(valst);
+}
 
 class Test {
 public:
@@ -1002,9 +1012,9 @@ size_t getArrayLen(T& array){
 }
 }
 
-void testFunctionParameterConst(const AppModuleID id){// not add const, it will run correctly, but add const it compile error. so should add const.
+void testFunctionParameterConst(AppModuleID id){// not add const, it will run correctly, but add const it compile error. so should add const.
     printf("id1=%d", id);
-    id =LAST_ID;
+    id =CONF_ID;
     printf("id2=%d", id);
 }
 
@@ -1076,7 +1086,9 @@ int main() {
 //    logFileCompression("message", 0);
 
 //    arrayTest();
-    testFunctionParameterConst(LOG_ID);
+    // testFunctionParameterConst(LOG_ID);
+   
+    App_Log(3, 4, "Test=%d", 3);
 
     PRINT_COLOR(RED, "\n\nExit main ===>||\n");
 }

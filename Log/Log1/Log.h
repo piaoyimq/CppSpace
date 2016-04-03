@@ -15,7 +15,7 @@
 #include <stdint.h>
 #include "BlockQueue.h"
 
-
+#define BUF_SIZE 1024
 
 namespace Log{
 
@@ -33,8 +33,8 @@ enum AppModuleID{
 
 
 const char logModuleString[][16] = {
-    "<Logging>",
-    "<Conf>"
+    "Log",
+    "Conf"
 };
 
 
@@ -52,12 +52,12 @@ enum Level {
 
 
 const char logLevelString[][16] = {
-    "***EMERG",
-    "***ALERT",
-    "***CRIT",
-    "***ERROR",
-    "!!!WARN",
-    "+++NOTICE",
+    "EMERG",
+    "ALERT",
+    "CRIT",
+    "ERROR",
+    "WARN",
+    "NOTICE",
     "INFO",
     "DEBUG"
 };
@@ -85,12 +85,12 @@ public:
 
     /* strings for printing message level */
     const char* getLogLevelString(Log::Level logLevel) {
-        return logLevel < (static_cast<Log::Level>(Log::getArrayLen(Log::logLevelString))) ? Log::logLevelString[logLevel] : "Undefined level";
+        return logLevel < (static_cast<Log::Level>(Log::getArrayLen(Log::logLevelString))) ? Log::logLevelString[logLevel] : "Undefined";
     }
 
     /* strings for printing message level */
     const char* getLogModuleString(Log::AppModuleID logModule) {
-        return logModule < (static_cast<Log::AppModuleID>(Log::getArrayLen(Log::logModuleString))) ? Log::logModuleString[logModule] : "Undefined module";
+        return logModule < (static_cast<Log::AppModuleID>(Log::getArrayLen(Log::logModuleString))) ? Log::logModuleString[logModule] : "Undefined";
     }
 
     void logFileCompression(const char* fileName, uint32_t fileAmount);
@@ -103,7 +103,7 @@ private:
     Logging(); /*A private declaration for forbid inheriting*/
     ~Logging();
 
-    bool init(const char* file_name, int log_buf_size = 8192, int split_lines = 5000000, int max_queue_size = 0);
+    bool init(int log_buf_size = 8192, int split_lines = 5000000, int max_queue_size = 0);
 
     void *async_write_log() {
         string single_log;
@@ -123,7 +123,6 @@ private:
     int splitLines;
     int logBufSize;
     long long counter;
-    int m_today;
     int currentLogAmount;
     FILE *m_fp;
     char *m_buf;
@@ -132,6 +131,6 @@ private:
 };
 
 
-#define App_Log(logLevel, moduleId, ...)    Logging::instance().writeLog(logLevel, moduleId, ##__VA_ARGS__);
+#define App_Log(logLevel, moduleId, ...)    Logging::instance().writeLog(logLevel, moduleId, __VA_ARGS__)
 
 #endif
