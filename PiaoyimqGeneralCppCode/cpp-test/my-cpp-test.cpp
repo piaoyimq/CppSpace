@@ -16,6 +16,10 @@
 #include <assert.h>  //assert
 #include <stdarg.h>
 #include <stdint.h>
+#include <errno.h>
+#include <dirent.h>
+
+
 #define C_PLUS_PLUS_ELEVEN 0
 
 static const double Pi = 3.14;
@@ -1027,6 +1031,44 @@ void arrayTest(){
     printf("sizeof(long)=%lu, sizeof(int)=%lu\n", sizeof(long), sizeof(int));
 }
 
+void renameTest(const char* oldName, const char* newName, int alreadyCompressFileAmount){
+    char oldNameTemp[150]={0};
+    char newNameTemp[150]={0};
+    
+    for(int i=0; i<= alreadyCompressFileAmount; i++){
+        if(0 == i){
+            if(rename(oldName, newName) < 0 ){
+                printf("error: %s\n", strerror(errno));        
+            }
+            else{
+                printf("ok!\n");        
+            }
+        }
+        else{
+            snprintf(oldNameTemp, sizeof(oldNameTemp), "%s.%d.gz", oldName, i);
+            snprintf(newNameTemp, sizeof(newNameTemp), "%s.%d.gz", newName, i);
+            if(rename(oldNameTemp, newNameTemp) < 0 ){
+                printf("error: %s\n", strerror(errno));        
+            }
+            else{
+                printf("ok!\n");        
+            }
+        }
+    }
+}
+
+bool isDirExist(const char* dir){
+	if(NULL == dir){
+		return false;
+	}
+	
+	if(NULL == opendir(dir)){
+		return false;	
+	}
+	
+	return true;
+}
+
 int main() {
     PRINT_COLOR(RED, "===> Enter main\n\n");
 //    int_pointer();
@@ -1088,8 +1130,18 @@ int main() {
 //    arrayTest();
     // testFunctionParameterConst(LOG_ID);
    
-    App_Log(3, 4, "Test=%d", 3);
+    // App_Log(3, 4, "Test=%d", 3);
+    
+    renameTest("/home/coding/workspace/CppSpace/PiaoyimqGeneralCppCode/cpp-test/my-test.log", "/home/coding/workspace/CppSpace/Log/Log1/my-test-new.log", 3);
 
+    bool a =isDirExist("/home/coding/workspace/CppSpace/Log/Log1");
+    if(true ==a ){
+        printf("true\n");
+    }
+    else{
+        printf("false\n");
+    }
+    
     PRINT_COLOR(RED, "\n\nExit main ===>||\n");
 }
 

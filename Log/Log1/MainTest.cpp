@@ -27,7 +27,8 @@ void *f(void* args) {
 
 
 int main() {
-    
+    Logging::instance().init("/home/coding/workspace/CppSpace/PiaoyimqGeneralCppCode/cpp-test", "my-test.log", 1024, 100, 0);
+    char c=getchar();
     App_Log(Log::Notice, Log::LAST_ID, "Function:%s, %d, line=%d", __FUNCTION__, 1, __LINE__);
     App_Log(Log::Notice, Log::LAST_ID, "Function:%s, %d, line=%d", __FUNCTION__, 2, __LINE__);
     

@@ -110,11 +110,11 @@ public:
 
     void flush();
 
+    void init(const char* dirName, const char* fileName, int log_buf_size = 8192, int split_lines = 2000000, int max_queue_size = 0);
 private:
     Logging(); /*A private declaration for forbid inheriting*/
     ~Logging();
-
-    bool init(const char* dirName, const char* fileName, int log_buf_size = 8192, int split_lines = 2000000, int max_queue_size = 0);
+    void moveLogs(const char* oldName, const char* newName, int alreadyCompressFileAmount);
 
     void *async_write_log() {
         string single_log;

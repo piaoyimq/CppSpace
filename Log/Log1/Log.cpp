@@ -7,6 +7,7 @@
 #include <string.h>
 #include <sstream> //stringstream
 #include <errno.h>
+#include <dirent.h>
 #include "Log.h"
 
 void getNameByPid(pid_t pid, char *task_name) {
@@ -22,7 +23,6 @@ void getNameByPid(pid_t pid, char *task_name) {
         sscanf(buf, "%*s %s", task_name);
     }
 }
-
 
 Logging::Logging() :
         counter(0), isAsync(false), currentLogAmount(0), 
@@ -99,17 +99,76 @@ bool Logging::init(int log_buf_size, int split_lines, int max_queue_size) {
     return true;
 }
 #endif
-#if 0
+
+
+
+void Logging::moveLogs(const char* oldName, const char* newName, int alreadyCompressFileAmount){
+    char oldNameTemp[150]={0};
+    char newNameTemp[150]={0};
+    printf("%s: oldName=%s, newName=%s\n", __FUNCTION__, oldName, newName);
+    for(int i=0; i<= alreadyCompressFileAmount; i++){
+        printf("i=%d\n", i);
+        if(0 == i){
+            if(rename(oldName, newName) < 0 ){
+                printf("error: %s\n", strerror(errno));        
+            }
+            else{
+                printf("ok!\n");        
+            }
+        }
+        else{
+            snprintf(oldNameTemp, sizeof(oldNameTemp), "%s.%d.gz", oldName, i);
+            snprintf(newNameTemp, sizeof(newNameTemp), "%s.%d.gz", newName, i);
+            if(rename(oldNameTemp, newNameTemp) < 0 ){
+                printf("error: %s\n", strerror(errno));        
+            }
+            else{
+                printf("ok!\n");        
+            }
+        }
+    }
+}
+
+bool dirPathCheck(char* dirpPath){
+    if(NULL == dirpPath || NULL == opendir(dirpPath)){
+		return false;
+	}
+	
+	int length = strlen(dirpPath);
+	if(dirpPath[length-1] != '/'){
+	    dirpPath[length] = '/';
+	    dirpPath[length+1] = '\0';
+	}
+	return true;
+}
+
+
+#if 1
 void Logging::init(const char* dirName, const char* fileName, int log_buf_size, int split_lines, int max_queue_size) {
-    char fullName[150]={0};
-    snprintf(fullName, 150, "%s/%s"，dirName, fileName);
+    char dirNameTemp[150];
+    char fileNameTemp[150];
+    strncpy(dirNameTemp, dirName, sizeof(dirNameTemp));
+    strncpy(fileNameTemp, fileName, sizeof(fileNameTemp));
     
-    if(0 != strcmp(logFullName, fullName)){
-        strncpy(logFullName, fullName, sizeof(logFullName));
+    bool ret = dirPathCheck(dirNameTemp);
+    if(false == ret){
+        printf("dirNameTemp=%s is not valid, use default log dir\n", dirNameTemp);
+        strncpy(dirNameTemp, LOG_DIRECTORY, sizeof(dirName));
+        strncpy(fileNameTemp, logName, sizeof(fileNameTemp));
+    }
+    else{
+        printf("dirNameTemp=%s is valid\n", dirNameTemp);
+    }
+    
+    char newfullName[150]={0};
+    
+    snprintf(newfullName, 150, "%s%s", dirNameTemp, fileNameTemp);
+    if(0 != strcmp(logFullName, newfullName)){
         fclose(m_fp);
         
-        // moveLogs();
-       printf("new logFullName=%s\n", logFullName);
+        moveLogs(logFullName, newfullName, currentLogAmount);
+        printf("new logFullName=%s\n", logFullName);
+        strncpy(logFullName, newfullName, sizeof(logFullName));
         m_fp = fopen(logFullName, "a");
         if (NULL == m_fp) {
             fprintf(stderr, "%s, Process ID %d ", strerror(errno), pid);
