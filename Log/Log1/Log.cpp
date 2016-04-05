@@ -44,7 +44,7 @@ Logging::Logging() :
     
     m_fp = fopen(logFullName, "a");
     if (NULL == m_fp) {
-        fprintf(stderr, "%s, Process ID %d ", strerror(errno), pid);
+        fprintf(stderr, "fopen \'%s\' failed: %s\n", logFullName, strerror(errno));
         exit(EXIT_FAILURE);
     }
     char fileHeard[100];
@@ -152,8 +152,8 @@ void Logging::init(const char* dirName, const char* fileName, int log_buf_size, 
     
     bool ret = dirPathCheck(dirNameTemp);
     if(false == ret){
-        printf("dirNameTemp=%s is not valid, use default log dir\n", dirNameTemp);
-        strncpy(dirNameTemp, LOG_DIRECTORY, sizeof(dirName));
+        printf("dirNameTemp=%s is not valid, use default log dir: %s\n", dirNameTemp, LOG_DIRECTORY);
+        strncpy(dirNameTemp, LOG_DIRECTORY, sizeof(dirNameTemp));
         strncpy(fileNameTemp, logName, sizeof(fileNameTemp));
     }
     else{
@@ -163,6 +163,8 @@ void Logging::init(const char* dirName, const char* fileName, int log_buf_size, 
     char newfullName[150]={0};
     
     snprintf(newfullName, 150, "%s%s", dirNameTemp, fileNameTemp);
+    printf("old logFullName =%s\n", logFullName);
+    printf("new newfullName =%s\n", newfullName);
     if(0 != strcmp(logFullName, newfullName)){
         fclose(m_fp);
         
@@ -281,6 +283,7 @@ void Logging::writeLog(Log::Level logLevel, Log::AppModuleID moduleId, const cha
     } else {
         pthread_mutex_lock(m_mutex);
         fputs(log_str.c_str(), m_fp);
+//        fflush(m_fp);//piaoyimq, use it or not???
         pthread_mutex_unlock(m_mutex);
     }
 

@@ -21,7 +21,7 @@
 
 #define SPLIT_LINES  30//2000000
 
-#define LOG_DIRECTORY   "/home/coding/workspace/CppSpace/Log/Log1/"  //"/var/log/"
+#define LOG_DIRECTORY   "/home/ezhweib/CodeWorkSpace/CppSpace/Log/Log1/" //"/var/log/"
 
 #define LOG_FILE_NAME   ""
 

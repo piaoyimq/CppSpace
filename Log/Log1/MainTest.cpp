@@ -27,11 +27,19 @@ void *f(void* args) {
 
 
 int main() {
-    Logging::instance().init("/home/coding/workspace/CppSpace/PiaoyimqGeneralCppCode/cpp-test", "my-test.log", 1024, 100, 0);
-    char c=getchar();
-    App_Log(Log::Notice, Log::LAST_ID, "Function:%s, %d, line=%d", __FUNCTION__, 1, __LINE__);
-    App_Log(Log::Notice, Log::LAST_ID, "Function:%s, %d, line=%d", __FUNCTION__, 2, __LINE__);
-    
+
+
+    App_Log(Log::Notice, Log::LAST_ID, "_______Function:%s, %d, line=%d", __FUNCTION__, 1, __LINE__);
+    App_Log(Log::Notice, Log::LAST_ID, "========Function:%s, %d, line=%d", __FUNCTION__, 2, __LINE__);
+    printf("1-1\n");
+    char a=getchar();
+    printf("%c\n", a);
+    Logging::instance().init("/home/ezhweib/CodeWorkSpace/CppSpace/Log/", "my-test.log", 1024, 100, 0);
+    printf("1-2\n");
+    sleep(2);
+    char b=getchar();
+
+    printf("%c\n", b);
     App_Log(Log::Notice, Log::LAST_ID, "Function:%s, %d, line=%d", __FUNCTION__, 3, __LINE__);
 
 #if COMPLEX_TEST
