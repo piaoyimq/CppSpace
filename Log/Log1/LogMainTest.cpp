@@ -1,5 +1,5 @@
 /*
- * Log.h
+ * LogMainTest.cpp
  *
  *  Created on: Mar 26, 2016
  *      Author: piaoyimq
@@ -7,7 +7,7 @@
 #include <unistd.h>
 #include "Log.h"
 
-#define THREAD_NUMBER   1
+#define THREAD_NUMBER   10
 #define COMPLEX_TEST     1
 
 
@@ -16,7 +16,7 @@
 #if COMPLEX_TEST
 void *f(void* args) {
 
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < 10000; i++) {
 //		sleep(1);
         App_Log(Log::Notice, Log::LAST_ID, "Function:%s, %d, line=%d", __FUNCTION__, 1, __LINE__);
         App_Log(Log::Notice, Log::LAST_ID, "Function:%s, %d, line=%d", __FUNCTION__, 2, __LINE__);
@@ -26,20 +26,13 @@ void *f(void* args) {
 #endif
 
 
-int main() {
-
-
+int main(int argc, char* argv[]) {
     App_Log(Log::Notice, Log::LAST_ID, "_______Function:%s, %d, line=%d", __FUNCTION__, 1, __LINE__);
     App_Log(Log::Notice, Log::LAST_ID, "========Function:%s, %d, line=%d", __FUNCTION__, 2, __LINE__);
-    printf("1-1\n");
-    char a=getchar();
-    printf("%c\n", a);
-    Logging::instance().init("/home/ezhweib/CodeWorkSpace/CppSpace/Log/", "my-test.log", 1024, 100, 0);
-    printf("1-2\n");
-    sleep(2);
-    char b=getchar();
 
-    printf("%c\n", b);
+    char a=getchar();
+    Logging::instance().init("/home/ezhweib/CodeWorkSpace/CppSpace/Log/", "my-test.log", 1024, 100000, 10);
+
     App_Log(Log::Notice, Log::LAST_ID, "Function:%s, %d, line=%d", __FUNCTION__, 3, __LINE__);
 
 #if COMPLEX_TEST

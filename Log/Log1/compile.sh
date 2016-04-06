@@ -2,4 +2,6 @@
 
 rm -rf *.log*
 rm -rf log
-g++ MainTest.cpp Log.cpp -lpthread -o log-module-test
+rm -rf log-maint-test
+
+g++ LogMainTest.cpp Log.cpp -lpthread -o log-main-test

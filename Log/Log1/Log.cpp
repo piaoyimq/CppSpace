@@ -72,36 +72,6 @@ Logging::~Logging() {
 }
 
 
-#if 0
-bool Logging::init(int log_buf_size, int split_lines, int max_queue_size) {
-    if (max_queue_size >= 1) {
-        isAsync = true;
-        m_log_queue = new BlockQueue<string>(max_queue_size);
-        pthread_t tid;
-        pthread_create(&tid, NULL, flushLogThread, NULL);
-    }
-
-    logBufSize = log_buf_size;
-    m_buf = new char[logBufSize];
-    memset(m_buf, '\0', logBufSize);
-    splitLines = split_li/nes;
-
-
-    m_fp = fopen(logName, "a");
-    if (NULL == m_fp) {
-        fprintf(stderr, "%s, Process ID %d ", strerror(errno), pid);
-        exit(EXIT_FAILURE);
-    }
-    char fileHeard[100];
-    snprintf(fileHeard, 100, "Process ID: %d\nProcess Name: %s\nLog File Sequence ID: %d\n\n", pid, pidName, currentLogAmount);
-    fputs(fileHeard, m_fp);
-
-    return true;
-}
-#endif
-
-
-
 void Logging::moveLogs(const char* oldName, const char* newName, int alreadyCompressFileAmount){
     char oldNameTemp[150]={0};
     char newNameTemp[150]={0};
