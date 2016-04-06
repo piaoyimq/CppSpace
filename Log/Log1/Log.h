@@ -13,17 +13,23 @@
 #include <sys/syscall.h>
 #include <unistd.h>
 #include <stdint.h>
+#include <dirent.h>
 #include "BlockQueue.h"
+
+#define STRING_LENGTH 20
 
 #define BUF_SIZE 1024
 
-#define LOG_BUF_SIZE 1024
+#define ONE_LINE_LOG_LENGTH 1024
 
-#define SPLIT_LINES  30//2000000
+#define FILE_HEAD_LENGTH    1024
 
-#define LOG_DIRECTORY   "/home/ezhweib/CodeWorkSpace/CppSpace/Log/Log1/" //"/var/log/"
+#define SHELL_CONTENT_LENGTH    8192
 
-#define LOG_FILE_NAME   ""
+#define SPLIT_LINES  2000000
+
+#define LOG_DIRECTORY   "/home/coding/workspace/CppSpace/Log/Log1" //"/var/log/"
+
 
 
 
@@ -43,7 +49,7 @@ enum AppModuleID{
 };
 
 
-const char logModuleString[][16] = {
+const char logModuleString[][STRING_LENGTH] = {
     "Log",
     "Conf"
 };
@@ -62,7 +68,7 @@ enum Level {
 };
 
 
-const char logLevelString[][16] = {
+const char logLevelString[][STRING_LENGTH] = {
     "EMERG",
     "ALERT",
     "CRIT",
@@ -110,7 +116,7 @@ public:
 
     void flush();
 
-    void init(const char* dirName, const char* fileName, int log_buf_size = 8192, int split_lines = 2000000, int max_queue_size = 0);
+    void init(const char* dirPath, const char* fileName, int log_buf_size = ONE_LINE_LOG_LENGTH, int split_lines = SPLIT_LINES, int max_queue_size = 0);
 private:
     Logging(); /*A private declaration for forbid inheriting*/
     ~Logging();
@@ -127,14 +133,14 @@ private:
 
 
     pid_t pid;
-    char pidName[128];
+    char pidName[NAME_MAX+1];
     map<pid_t, int> mapThread;
     pthread_mutex_t *m_mutex;
-    char dirName[128];
-    char logName[128];
-    char logFullName[150];
+    char dirPath[PATH_MAX+1];
+    char logName[NAME_MAX+1];   //default logName is "process name+'.log'"
+    char logFullName[PATH_MAX+NAME_MAX+1];
     int splitLines;
-    int logBufSize;
+    int oneLineLogLength;
     long long counter;
     int currentLogAmount;
     FILE *m_fp;

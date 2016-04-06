@@ -27,11 +27,13 @@ void *f(void* args) {
 
 
 int main(int argc, char* argv[]) {
+    
+    printf("NAME_MAX=%d, PATH_MAX=%d\n", NAME_MAX, PATH_MAX);
     App_Log(Log::Notice, Log::LAST_ID, "_______Function:%s, %d, line=%d", __FUNCTION__, 1, __LINE__);
     App_Log(Log::Notice, Log::LAST_ID, "========Function:%s, %d, line=%d", __FUNCTION__, 2, __LINE__);
 
     char a=getchar();
-    Logging::instance().init("/home/ezhweib/CodeWorkSpace/CppSpace/Log/", "my-test.log", 1024, 100000, 10);
+    Logging::instance().init("/home/coding/workspace/CppSpace/Log/", "my-test.log", 1024, 100000, 10);
 
     App_Log(Log::Notice, Log::LAST_ID, "Function:%s, %d, line=%d", __FUNCTION__, 3, __LINE__);
 
