@@ -23,11 +23,10 @@ void Logging::init(const char* dirPath, const char* fileName, uint32_t oneLineLo
         printf("dirPathTemp=%s is not valid, use default log dir: %s\n", dirPathTemp, LOG_DIRECTORY);
         strncpy(dirPathTemp, LOG_DIRECTORY, sizeof(dirPathTemp));
         strncpy(fileNameTemp, logName, sizeof(fileNameTemp));
-    }
-    else{
-        printf("dirPathTemp=%s is valid\n", dirPathTemp);
+        logItself(C_METHOD, Log::Notice, "%s: directory \'%s\' is not exist, use default log directory \'%s\'", __FUNCTION__, dirPathTemp, LOG_DIRECTORY);
     }
 
+    logItself(C_METHOD, Log::Notice, "%s:_________ directory \'%s\' is not exist, use default log directory \'%s\'", __FUNCTION__, dirPathTemp, LOG_DIRECTORY);
     char newfullName[DIR_LENGTH+NAME_LENGTH+2]={'\0'};
 
     snprintf(newfullName, sizeof(newfullName), "%s/%s", dirPathTemp, fileNameTemp);
@@ -111,16 +110,19 @@ void Logging::writeLog(Log::Level logLevel, Log::AppModuleID moduleId, const cha
     va_list valst;
     va_start(valst, format);
 
-    memset(m_buf, '\0', oneLineLogLength);
     string log_str;
     pthread_mutex_lock(m_mutex);
-
-    uint32_t n = snprintf(m_buf, oneLineLogLength-1, "%d-%02d-%02d %02d:%02d:%02d [%d](%d) [%s] <%s>: ",
+    uint32_t k=snprintf(m_buf, oneLineLogLength-1, "%s", logItselfBuff);
+    memset(logItselfBuff, '\0', sizeof(logItselfBuff));
+    
+    uint32_t n = snprintf(m_buf, oneLineLogLength-k-1, "%d-%02d-%02d %02d:%02d:%02d [%d](%d) [%s] <%s>: ",
             my_tm.tm_year + 1900, my_tm.tm_mon + 1, my_tm.tm_mday, my_tm.tm_hour, my_tm.tm_min, my_tm.tm_sec,
             tid, mapThread[tid], getLogLevelString(logLevel), getLogModuleString(moduleId));
     uint32_t m = vsnprintf(m_buf + n, oneLineLogLength-n-1, format, valst);
     m_buf[n + m ] = '\n';
     log_str = m_buf;
+    memset(m_buf, '\0', oneLineLogLength);
+    
     pthread_mutex_unlock(m_mutex);
 
     if (isAsync && !m_log_queue->full()) {
@@ -138,6 +140,7 @@ void Logging::writeLog(Log::Level logLevel, Log::AppModuleID moduleId, const cha
 Logging::Logging() :
         counter(0), isAsync(false), currentLogAmount(0), 
         oneLineLogLength(ONE_LINE_LOG_LENGTH), splitLines(SPLIT_LINES){
+    memset(logItselfBuff, '\0', sizeof(logItselfBuff));
     m_mutex = new pthread_mutex_t;
     pthread_mutex_init(m_mutex, NULL);
     pid = getpid();
@@ -153,6 +156,7 @@ Logging::Logging() :
     memset(m_buf, '\0', oneLineLogLength);
     m_fp = fopen(logFullName, "a");
     if (NULL == m_fp) {
+        logItself(COMMAND_METHOD, Log::Emergency, "%s: fopen \'%s\' failed: %s", __FUNCTION__, logFullName, strerror(errno));
         fprintf(stderr, "fopen \'%s\' failed: %s\n", logFullName, strerror(errno));
         exit(EXIT_FAILURE);
     }
@@ -252,14 +256,12 @@ void Logging::flush() const{
 }
 
 
-void Logging::logItself(Log::Level logLevel, const char* format, ...) {
+void Logging::logItself(LogMethod logMethod, Log::Level logLevel, const char* format, ...) {
     struct timeval now = { 0, 0 };
     gettimeofday(&now, NULL);
     time_t t = now.tv_sec;
     struct tm* sys_tm = localtime(&t);
     struct tm my_tm = *sys_tm;
-
-    pthread_mutex_lock (m_mutex);
 
     pid_t tid = getTid();
     map<pid_t, int>::iterator where = mapThread.find(tid);  //pstree -pa [procdssid] ,  ps -Lef
@@ -271,28 +273,41 @@ void Logging::logItself(Log::Level logLevel, const char* format, ...) {
         mapThread[tid]++;
     }
 
-
     va_list valst;
     va_start(valst, format);
-
-    char logContent[ONE_LINE_LOG_LENGTH] = {'\0'};
-    uint32_t n = snprintf(logContent, sizeof(logContent) - 1, "%d-%02d-%02d %02d:%02d:%02d [%d](%d) [%s] <Log>: ",
-            my_tm.tm_year + 1900, my_tm.tm_mon + 1, my_tm.tm_mday, my_tm.tm_hour, my_tm.tm_min,
-            my_tm.tm_sec, tid, mapThread[tid], getLogLevelString(logLevel));
-    uint32_t m = vsnprintf(logContent + n, sizeof(logContent) - n - 1, format, valst);
-    logContent[n + m] = '\n';
-    logContent[n + m+1] = '\0';
-
-    fflush(m_fp);
-    if (NULL != m_fp) {
-        fclose(m_fp);
-        m_fp = NULL;
+    static uint32_t length = 0;
+    switch(logMethod){
+        case C_METHOD:
+        {
+            uint32_t n = snprintf(logItselfBuff+length, sizeof(logItselfBuff)-length- 1, "%d-%02d-%02d %02d:%02d:%02d [%d](%d) [%s] <Log>: ",
+                    my_tm.tm_year + 1900, my_tm.tm_mon + 1, my_tm.tm_mday, my_tm.tm_hour, my_tm.tm_min,
+                    my_tm.tm_sec, tid, mapThread[tid], getLogLevelString(logLevel));
+            uint32_t m = vsnprintf(logItselfBuff + length+ n, sizeof(logItselfBuff)-length - n - 1, format, valst);
+            logItselfBuff[length+n + m] = '\n';
+            logItselfBuff[length+n + m+1] = '\0';
+        
+            length+=strlen(logItselfBuff);
+        }
+        case COMMAND_METHOD:
+        { 
+            char content[BUF_SIZE] = {'\0'};
+            char command[BUF_SIZE+STRING_LENGTH+DIR_LENGTH+NAME_LENGTH+2] = {'\0'};
+            uint32_t n = snprintf(content, sizeof(content)- 1, "%d-%02d-%02d %02d:%02d:%02d [%d](%d) [%s] <Log>: ",
+                    my_tm.tm_year + 1900, my_tm.tm_mon + 1, my_tm.tm_mday, my_tm.tm_hour, my_tm.tm_min,
+                    my_tm.tm_sec, tid, mapThread[tid], getLogLevelString(logLevel));
+            uint32_t m = vsnprintf(content+ n, sizeof(content)- n - 1, format, valst);
+            content[n + m] = '\n';
+            content[n +m+1] = '\0';
+            char temp[200]={'\0'};
+            snprintf(temp, sizeof(temp), "sudo mkdir -p %s", LOG_DIRECTORY);
+            system(temp);
+            sleep(1);
+            snprintf(command, sizeof(command), "echo \"%s\" >> %s", content, logFullName);
+            printf("command=%s\n", command);
+            system(command);
+        }    
+        default:
+            printf("Wrong log method\n");
     }
-    char command[ONE_LINE_LOG_LENGTH] = {'\0'};
-    snprintf(command, sizeof(command), "echo \'%s\' >> %s", logContent, logFullName);
-    printf("command=%s\n", command);
-    system(command);
-    pthread_mutex_unlock(m_mutex);
-
     va_end(valst);
 }

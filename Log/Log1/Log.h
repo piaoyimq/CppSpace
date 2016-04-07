@@ -118,6 +118,11 @@ const char logLevelString[][STRING_LENGTH] = {
 
 class Logging {
 public:
+    
+    enum LogMethod{
+        C_METHOD= 0,
+        COMMAND_METHOD,
+    };
 
     static Logging& instance() { static Logging _instance;  return _instance;}  //Use static implement a instance.
 
@@ -148,7 +153,7 @@ private:
 
     void flush()const;
 
-    void logItself(Log::Level logLevel, const char* format, ...);
+    void logItself(LogMethod logMethod, Log::Level logLevel, const char* format, ...);
 
 
     /* Attribute area */
@@ -177,6 +182,8 @@ private:
     FILE* m_fp;
 
     char* m_buf;
+    
+    char logItselfBuff[BUF_SIZE];
 
     BlockQueue<string> *m_log_queue;
 
