@@ -9,109 +9,15 @@
 #include <errno.h>
 #include "Log.h"
 
-void getNameByPid(pid_t pid, char *processName) {
-    char procPidPath[PATH_MAX+1]={'\0'};
-    char buf[BUF_SIZE]={'\0'};
-    sprintf(procPidPath, "/proc/%d/status", pid);
-    FILE* fp = fopen(procPidPath, "r");
-    if(NULL != fp){
-        if( fgets(buf, BUF_SIZE-1, fp)== NULL ){
-            fclose(fp);
-        }
-        fclose(fp);
-        sscanf(buf, "%*s %s", processName);
-    }
-}
-
-Logging::Logging() :
-        counter(0), isAsync(false), currentLogAmount(0), 
-        oneLineLogLength(ONE_LINE_LOG_LENGTH), splitLines(SPLIT_LINES){
-    m_mutex = new pthread_mutex_t;
-    pthread_mutex_init(m_mutex, NULL);
-    pid = getpid();
-    printf("Process id: %d\n", pid);    
-    getNameByPid(pid, pidName);
-    snprintf(logName, sizeof(logName), "%s.log", pidName);
-    strncpy(dirPath, LOG_DIRECTORY, sizeof(dirPath));
-    printf("dirPath=%s\n", dirPath);
-    snprintf(logFullName, sizeof(logFullName), "%s/%s", dirPath, logName);
-    printf("logFullName=%s\n", logFullName);
-    
-    m_buf = new char[oneLineLogLength];
-    memset(m_buf, '\0', oneLineLogLength);
-    
-    m_fp = fopen(logFullName, "a");
-    if (NULL == m_fp) {
-        fprintf(stderr, "fopen \'%s\' failed: %s\n", logFullName, strerror(errno));
-        exit(EXIT_FAILURE);
-    }
-    char fileHead[FILE_HEAD_LENGTH]={'\0'};
-    snprintf(fileHead, sizeof(fileHead), "Process ID: %d\nProcess Name: %s\nLog File Sequence ID: %d\n\n", pid, pidName, currentLogAmount);
-    fputs(fileHead, m_fp);
-    
-    
-// 	init(100, 100, 0);//synchronization model
-//	sleep(2);//piaoyimq ???
-}
 
 
-Logging::~Logging() {
-//    sleep(15);//piaoyimq ???
-    flush();
-    delete m_buf;
-    m_buf= NULL;
-    if (m_fp != NULL) {
-        fclose(m_fp);
-    }
-    pthread_mutex_destroy(m_mutex);
-    if (m_mutex != NULL) {
-        delete m_mutex;
-    }
-}
 
-
-void Logging::moveLogs(const char* oldFullName, const char* newFullName, int alreadyCompressFileAmount){
-    char oldFullNameTemp[PATH_MAX+NAME_MAX+1]={'\0'};
-    char newFullNameTemp[PATH_MAX+NAME_MAX+1]={'\0'};
-    printf("%s: oldFullName=%s, newFullName=%s\n", __FUNCTION__, oldFullName, newFullName);
-    for(int i=0; i<= alreadyCompressFileAmount; i++){
-        printf("i=%d\n", i);
-        if(0 == i){
-            if(rename(oldFullName, newFullName) < 0 ){
-                printf("error: %s\n", strerror(errno));        
-            }
-            else{
-                printf("ok!\n");        
-            }
-        }
-        else{
-            snprintf(oldFullNameTemp, sizeof(oldFullNameTemp), "%s.%d.gz", oldFullName, i);
-            snprintf(newFullNameTemp, sizeof(newFullNameTemp), "%s.%d.gz", newFullName, i);
-            if(rename(oldFullNameTemp, newFullNameTemp) < 0 ){
-                printf("error: %s\n", strerror(errno));        
-            }
-            else{
-                printf("ok!\n");        
-            }
-        }
-    }
-}
-
-bool isDirPathExist(const char* dirpPath){
-    if(NULL == dirpPath || NULL == opendir(dirpPath)){
-		return false;
-	}
-	
-	return true;
-}
-
-
-void Logging::init(const char* dirPath, const char* fileName, int oneLineLogSize, int split_lines, int max_queue_size) {
-    char dirPathTemp[PATH_MAX+1]={'\0'};
-    char fileNameTemp[NAME_MAX+1]={'\0'};
+void Logging::init(const char* dirPath, const char* fileName, uint32_t oneLineLogSize, uint32_t split_lines, uint32_t max_queue_size) {
+    char dirPathTemp[DIR_LENGTH+1]={'\0'};
+    char fileNameTemp[NAME_LENGTH+1]={'\0'};
     strncpy(dirPathTemp, dirPath, sizeof(dirPathTemp));
     strncpy(fileNameTemp, fileName, sizeof(fileNameTemp));
-    
+
     bool ret = isDirPathExist(dirPathTemp);
     if(false == ret){
         printf("dirPathTemp=%s is not valid, use default log dir: %s\n", dirPathTemp, LOG_DIRECTORY);
@@ -121,15 +27,15 @@ void Logging::init(const char* dirPath, const char* fileName, int oneLineLogSize
     else{
         printf("dirPathTemp=%s is valid\n", dirPathTemp);
     }
-    
-    char newfullName[PATH_MAX+NAME_MAX+1]={'\0'};
-    
+
+    char newfullName[DIR_LENGTH+NAME_LENGTH+2]={'\0'};
+
     snprintf(newfullName, sizeof(newfullName), "%s/%s", dirPathTemp, fileNameTemp);
     printf("old logFullName =%s\n", logFullName);
     printf("new newfullName =%s\n", newfullName);
     if(0 != strcmp(logFullName, newfullName)){
         fclose(m_fp);
-        
+
         moveLogs(logFullName, newfullName, currentLogAmount);
         printf("new logFullName=%s\n", logFullName);
         strncpy(logFullName, newfullName, sizeof(logFullName));
@@ -139,7 +45,7 @@ void Logging::init(const char* dirPath, const char* fileName, int oneLineLogSize
             exit(EXIT_FAILURE);
         }
     }
-    
+
     delete m_buf;
     oneLineLogLength = oneLineLogSize;
     m_buf = new char[oneLineLogLength];
@@ -153,33 +59,6 @@ void Logging::init(const char* dirPath, const char* fileName, int oneLineLogSize
     }
 }
 
-
-void Logging::logFileCompression(uint32_t alreadyCompressFileAmount){
-    printf("alreadyCompressFileAmount=%u\n", alreadyCompressFileAmount);
-    if(alreadyCompressFileAmount < 0){
-        return;
-    }
- 
-    char shellContent[SHELL_CONTENT_LENGTH] = {'\0'};
-    snprintf(shellContent, sizeof(shellContent),
-            "echo '\
-#!/bin/bash\n\
-var=%s\n\
-mv $var $var.1\n\
-echo \"mv $var $var.1\"\n\
-for((i=%u;i>0;i--));\n\
-do\n\
-  mv \"$var.$i.gz\" \"$var.$((i+1)).gz\"\n\
-  echo \"mv $var.$i.gz\" \"$var.$((i+1)).gz\"\n\
-done\n\
-gzip -f $var.1\n\
-echo \"gzip -f $var.1\"\n\
-                    ' > %stest.sh; bash %stest.sh; rm -rf %stest.sh", 
-                    logFullName , alreadyCompressFileAmount, dirPath, dirPath, dirPath);
-//    printf("length shell:%d", strlen(shellContent));
-    // printf("%s\n", shellContent);
-    system(shellContent);
-}
 
 void Logging::writeLog(Log::Level logLevel, Log::AppModuleID moduleId, const char* format, ...) {
     struct timeval now = { 0, 0 };
@@ -229,10 +108,10 @@ void Logging::writeLog(Log::Level logLevel, Log::AppModuleID moduleId, const cha
     string log_str;
     pthread_mutex_lock(m_mutex);
 
-    int n = snprintf(m_buf, oneLineLogLength-1, "%d-%02d-%02d %02d:%02d:%02d [%d](%d) [%s] <%s>: ",
+    uint32_t n = snprintf(m_buf, oneLineLogLength-1, "%d-%02d-%02d %02d:%02d:%02d [%d](%d) [%s] <%s>: ",
             my_tm.tm_year + 1900, my_tm.tm_mon + 1, my_tm.tm_mday, my_tm.tm_hour, my_tm.tm_min, my_tm.tm_sec,
             tid, mapThread[tid], getLogLevelString(logLevel), getLogModuleString(moduleId));
-    int m = vsnprintf(m_buf + n, oneLineLogLength-n-1, format, valst);
+    uint32_t m = vsnprintf(m_buf + n, oneLineLogLength-n-1, format, valst);
     m_buf[n + m ] = '\n';
     log_str = m_buf;
     pthread_mutex_unlock(m_mutex);
@@ -245,12 +124,121 @@ void Logging::writeLog(Log::Level logLevel, Log::AppModuleID moduleId, const cha
 //        fflush(m_fp);//piaoyimq, use it or not???
         pthread_mutex_unlock(m_mutex);
     }
-
     va_end(valst);
 }
 
 
-void Logging::flush(void) {
+Logging::Logging() :
+        counter(0), isAsync(false), currentLogAmount(0), 
+        oneLineLogLength(ONE_LINE_LOG_LENGTH), splitLines(SPLIT_LINES){
+    m_mutex = new pthread_mutex_t;
+    pthread_mutex_init(m_mutex, NULL);
+    pid = getpid();
+    printf("Process id: %d\n", pid);    
+    getNameByPid(pid, pidName);
+    snprintf(logName, sizeof(logName), "%s.log", pidName);
+    strncpy(dirPath, LOG_DIRECTORY, sizeof(dirPath));
+    printf("dirPath=%s\n", dirPath);
+    snprintf(logFullName, sizeof(logFullName), "%s/%s", dirPath, logName);
+    printf("logFullName=%s\n", logFullName);
+    
+    m_buf = new char[oneLineLogLength];
+    memset(m_buf, '\0', oneLineLogLength);
+    
+    m_fp = fopen(logFullName, "a");
+    if (NULL == m_fp) {
+        fprintf(stderr, "fopen \'%s\' failed: %s\n", logFullName, strerror(errno));
+        exit(EXIT_FAILURE);
+    }
+    char fileHead[FILE_HEAD_LENGTH]={'\0'};
+    snprintf(fileHead, sizeof(fileHead), "Process ID: %d\nProcess Name: %s\nLog File Sequence ID: %d\n\n", pid, pidName, currentLogAmount);
+    fputs(fileHead, m_fp);
+//	sleep(2);//piaoyimq ???
+}
+
+
+Logging::~Logging() {
+//    sleep(15);//piaoyimq ???
+    flush();
+    delete m_buf;
+    m_buf= NULL;
+    if (m_fp != NULL) {
+        fclose(m_fp);
+    }
+    pthread_mutex_destroy(m_mutex);
+    if (m_mutex != NULL) {
+        delete m_mutex;
+    }
+}
+
+
+void Logging::moveLogs(const char* oldFullName, const char* newFullName, uint32_t alreadyCompressFileAmount) const{
+    char oldFullNameTemp[DIR_LENGTH+NAME_LENGTH+2]={'\0'};
+    char newFullNameTemp[DIR_LENGTH+NAME_LENGTH+2]={'\0'};
+    printf("%s: oldFullName=%s, newFullName=%s\n", __FUNCTION__, oldFullName, newFullName);
+    for(int i=0; i<= alreadyCompressFileAmount; i++){
+        printf("i=%d\n", i);
+        if(0 == i){
+            if(rename(oldFullName, newFullName) < 0 ){
+                printf("error: %s\n", strerror(errno));        
+            }
+            else{
+                printf("ok!\n");        
+            }
+        }
+        else{
+            snprintf(oldFullNameTemp, sizeof(oldFullNameTemp), "%s.%d.gz", oldFullName, i);
+            snprintf(newFullNameTemp, sizeof(newFullNameTemp), "%s.%d.gz", newFullName, i);
+            if(rename(oldFullNameTemp, newFullNameTemp) < 0 ){
+                printf("error: %s\n", strerror(errno));        
+            }
+            else{
+                printf("ok!\n");        
+            }
+        }
+    }
+}
+
+
+void *Logging::async_write_log() const {
+    string single_log;
+    while (m_log_queue->pop(single_log)) {
+        pthread_mutex_lock(m_mutex);
+        fputs(single_log.c_str(), m_fp);
+        pthread_mutex_unlock(m_mutex);
+    }
+}
+
+
+void Logging::logFileCompression(uint32_t alreadyCompressFileAmount) const{
+    printf("alreadyCompressFileAmount=%u\n", alreadyCompressFileAmount);
+    if(alreadyCompressFileAmount < 0){
+        return;
+    }
+ 
+    char shellContent[SHELL_CONTENT_LENGTH] = {'\0'};
+    snprintf(shellContent, sizeof(shellContent),
+            "echo '\
+#!/bin/bash\n\
+var=%s\n\
+mv $var $var.1\n\
+echo \"mv $var $var.1\"\n\
+for((i=%u;i>0;i--));\n\
+do\n\
+  mv \"$var.$i.gz\" \"$var.$((i+1)).gz\"\n\
+  echo \"mv $var.$i.gz\" \"$var.$((i+1)).gz\"\n\
+done\n\
+gzip -f $var.1\n\
+echo \"gzip -f $var.1\"\n\
+                    ' > %stest.sh; bash %stest.sh; rm -rf %stest.sh", 
+                    logFullName , alreadyCompressFileAmount, dirPath, dirPath, dirPath);
+//    printf("length shell:%d", strlen(shellContent));
+    // printf("%s\n", shellContent);
+    system(shellContent);
+}
+
+
+void Logging::flush() const{
     pthread_mutex_lock(m_mutex);
     fflush(m_fp);
     pthread_mutex_unlock(m_mutex);

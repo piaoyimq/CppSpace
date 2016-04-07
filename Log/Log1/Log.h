@@ -16,7 +16,12 @@
 #include <dirent.h>
 #include "BlockQueue.h"
 
+
 #define STRING_LENGTH 20
+
+#define DIR_LENGTH 200
+
+#define NAME_LENGTH 60
 
 #define BUF_SIZE 1024
 
@@ -24,7 +29,7 @@
 
 #define FILE_HEAD_LENGTH    1024
 
-#define SHELL_CONTENT_LENGTH    8192
+#define SHELL_CONTENT_LENGTH    2048
 
 #define SPLIT_LINES  2000000
 
@@ -33,6 +38,36 @@
 
 
 
+
+#if 1//TODO: would be move to common directory. (piaoyimq)
+inline static pid_t getTid() {   // Must a static function, it called by a static funcion flushLogThread().
+    return syscall(SYS_gettid);
+}
+
+
+inline void getNameByPid(pid_t pid, char *processName) {    //should become a un inline function after move to common.
+    char procPidPath[DIR_LENGTH+1]={'\0'};
+    char buf[BUF_SIZE]={'\0'};
+    sprintf(procPidPath, "/proc/%d/status", pid);
+    FILE* fp = fopen(procPidPath, "r");
+    if(NULL != fp){
+        if( fgets(buf, BUF_SIZE-1, fp)== NULL ){
+            fclose(fp);
+        }
+        fclose(fp);
+        sscanf(buf, "%*s %s", processName);
+    }
+}
+
+
+inline bool isDirPathExist(const char* dirpPath){
+    if(NULL == dirpPath || NULL == opendir(dirpPath)){
+        return false;
+    }
+
+    return true;
+}
+#endif
 
 namespace Log{
 
@@ -84,68 +119,65 @@ const char logLevelString[][STRING_LENGTH] = {
 class Logging {
 public:
 
+    static Logging& instance() { static Logging _instance;  return _instance;}  //Use static implement a instance.
 
-
-    static Logging& instance() {
-        static Logging _instance;    //Use static implement a instance.
-        return _instance;
-    }
-
-    static pid_t getTid() {   // Must a static function, it called by a static funcion flushLogThread().
-        return syscall(SYS_gettid);
-    }
-
-    static void *flushLogThread(void* args) {    //Must a static function, it would be called by pthread_create(), a function pointer point at it.
-        printf("Logging thread id: %d\n", getTid());
-        Logging::instance().async_write_log();
-    }
-
-    /* strings for printing message level */
-    const char* getLogLevelString(Log::Level logLevel) {
-        return logLevel < (static_cast<Log::Level>(Log::getArrayLen(Log::logLevelString))) ? Log::logLevelString[logLevel] : "Undefined";
-    }
-
-    /* strings for printing message level */
-    const char* getLogModuleString(Log::AppModuleID logModule) {
-        return logModule < (static_cast<Log::AppModuleID>(Log::getArrayLen(Log::logModuleString))) ? Log::logModuleString[logModule] : "Undefined";
-    }
-
-    void logFileCompression(uint32_t fileAmount);
+    void init(const char* dirPath, const char* fileName, uint32_t log_buf_size = ONE_LINE_LOG_LENGTH, uint32_t split_lines = SPLIT_LINES, uint32_t max_queue_size = 0);
 
     void writeLog(Log::Level logLevel, Log::AppModuleID moduleId, const char* format, ...);
 
-    void flush();
-
-    void init(const char* dirPath, const char* fileName, int log_buf_size = ONE_LINE_LOG_LENGTH, int split_lines = SPLIT_LINES, int max_queue_size = 0);
 private:
-    Logging(); /*A private declaration for forbid inheriting*/
-    ~Logging();
-    void moveLogs(const char* oldName, const char* newName, int alreadyCompressFileAmount);
 
-    void *async_write_log() {
-        string single_log;
-        while (m_log_queue->pop(single_log)) {
-            pthread_mutex_lock(m_mutex);
-            fputs(single_log.c_str(), m_fp);
-            pthread_mutex_unlock(m_mutex);
-        }
-    }
+    Logging(); /*A private declaration for forbid inheriting*/
+
+    ~Logging();
+
+    void moveLogs(const char* oldName, const char* newName, uint32_t alreadyCompressFileAmount) const;
+
+    void *async_write_log() const;
+
+    //Must a static function, it would be called by pthread_create(), a function pointer point at it.
+    static void *flushLogThread(void* args) { printf("Logging thread id: %d\n", getTid()); instance().async_write_log();}
+
+    /* strings for printing message level */
+    const char* getLogLevelString(Log::Level logLevel) const {return logLevel < (static_cast<Log::Level>(Log::getArrayLen(Log::logLevelString))) ? Log::logLevelString[logLevel] : "Undefined";}
+
+    /* strings for printing message level */
+    const char* getLogModuleString(Log::AppModuleID logModule) const { return logModule < (static_cast<Log::AppModuleID>(Log::getArrayLen(Log::logModuleString))) ? Log::logModuleString[logModule] : "Undefined";}
+
+    void logFileCompression(uint32_t fileAmount) const;
+
+    void flush()const;
+
 
 
     pid_t pid;
-    char pidName[NAME_MAX+1];
+
+    char pidName[NAME_LENGTH+1];
+
     map<pid_t, int> mapThread;
+
     pthread_mutex_t *m_mutex;
-    char dirPath[PATH_MAX+1];
-    char logName[NAME_MAX+1];   //default logName is "process name+'.log'"
-    char logFullName[PATH_MAX+NAME_MAX+1];
-    int splitLines;
-    int oneLineLogLength;
-    long long counter;
-    int currentLogAmount;
-    FILE *m_fp;
-    char *m_buf;
+
+    char dirPath[DIR_LENGTH+1];
+
+    char logName[NAME_LENGTH+1];   //default logName is "process name+'.log'"
+
+    char logFullName[DIR_LENGTH+NAME_LENGTH+2];
+
+    uint32_t splitLines;
+
+    uint32_t oneLineLogLength;
+
+    uint64_t counter;
+
+    uint32_t currentLogAmount;
+
+    FILE* m_fp;
+
+    char* m_buf;
+
     BlockQueue<string> *m_log_queue;
+
     bool isAsync;
 };
 
