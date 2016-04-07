@@ -34,7 +34,10 @@ void Logging::init(const char* dirPath, const char* fileName, uint32_t oneLineLo
     printf("old logFullName =%s\n", logFullName);
     printf("new newfullName =%s\n", newfullName);
     if(0 != strcmp(logFullName, newfullName)){
-        fclose(m_fp);
+        if (NULL != m_fp) {
+            fclose(m_fp);
+            m_fp = NULL;
+        }
 
         moveLogs(logFullName, newfullName, currentLogAmount);
         printf("new logFullName=%s\n", logFullName);
@@ -84,7 +87,11 @@ void Logging::writeLog(Log::Level logLevel, Log::AppModuleID moduleId, const cha
     if (counter % splitLines == 0) //everyday Logging
     {
         fflush(m_fp);
-        fclose(m_fp);
+        if(NULL!=m_fp){
+            fclose(m_fp);
+            m_fp=NULL;
+        }
+
         logFileCompression(currentLogAmount++);
 //        sleep(1);//Maybe need to sleep, then reopen it.
 
@@ -144,7 +151,6 @@ Logging::Logging() :
     
     m_buf = new char[oneLineLogLength];
     memset(m_buf, '\0', oneLineLogLength);
-    
     m_fp = fopen(logFullName, "a");
     if (NULL == m_fp) {
         fprintf(stderr, "fopen \'%s\' failed: %s\n", logFullName, strerror(errno));
@@ -162,8 +168,10 @@ Logging::~Logging() {
     flush();
     delete m_buf;
     m_buf= NULL;
-    if (m_fp != NULL) {
+
+    if (NULL != m_fp) {
         fclose(m_fp);
+        m_fp = NULL;
     }
     pthread_mutex_destroy(m_mutex);
     if (m_mutex != NULL) {
@@ -172,7 +180,7 @@ Logging::~Logging() {
 }
 
 
-void Logging::moveLogs(const char* oldFullName, const char* newFullName, uint32_t alreadyCompressFileAmount) const{
+void Logging::moveLogs(const char* oldFullName, const char* newFullName, uint32_t alreadyCompressFileAmount){
     char oldFullNameTemp[DIR_LENGTH+NAME_LENGTH+2]={'\0'};
     char newFullNameTemp[DIR_LENGTH+NAME_LENGTH+2]={'\0'};
     printf("%s: oldFullName=%s, newFullName=%s\n", __FUNCTION__, oldFullName, newFullName);
@@ -180,17 +188,17 @@ void Logging::moveLogs(const char* oldFullName, const char* newFullName, uint32_
         printf("i=%d\n", i);
         if(0 == i){
             if(rename(oldFullName, newFullName) < 0 ){
-                printf("error: %s\n", strerror(errno));        
+                printf("error: %s\n", strerror(errno));
             }
             else{
-                printf("ok!\n");        
+                printf("ok!\n");
             }
         }
         else{
             snprintf(oldFullNameTemp, sizeof(oldFullNameTemp), "%s.%d.gz", oldFullName, i);
             snprintf(newFullNameTemp, sizeof(newFullNameTemp), "%s.%d.gz", newFullName, i);
             if(rename(oldFullNameTemp, newFullNameTemp) < 0 ){
-                printf("error: %s\n", strerror(errno));        
+                printf("error: %s\n", strerror(errno));
             }
             else{
                 printf("ok!\n");        
@@ -210,12 +218,11 @@ void *Logging::async_write_log() const {
 }
 
 
-void Logging::logFileCompression(uint32_t alreadyCompressFileAmount) const{
+void Logging::logFileCompression(uint32_t alreadyCompressFileAmount) {
     printf("alreadyCompressFileAmount=%u\n", alreadyCompressFileAmount);
     if(alreadyCompressFileAmount < 0){
         return;
     }
- 
     char shellContent[SHELL_CONTENT_LENGTH] = {'\0'};
     snprintf(shellContent, sizeof(shellContent),
             "echo '\
@@ -244,3 +251,48 @@ void Logging::flush() const{
     pthread_mutex_unlock(m_mutex);
 }
 
+
+void Logging::logItself(Log::Level logLevel, const char* format, ...) {
+    struct timeval now = { 0, 0 };
+    gettimeofday(&now, NULL);
+    time_t t = now.tv_sec;
+    struct tm* sys_tm = localtime(&t);
+    struct tm my_tm = *sys_tm;
+
+    pthread_mutex_lock (m_mutex);
+
+    pid_t tid = getTid();
+    map<pid_t, int>::iterator where = mapThread.find(tid);  //pstree -pa [procdssid] ,  ps -Lef
+
+    if (where == mapThread.end()) {
+        mapThread[tid] = 1;     //TODO: ??? this place maybe add a same tid into the map, because writeLog() has the same operation.(piaoyimq)
+        printf("Found, tid=%d, value=%d\n", tid, mapThread[tid]);
+    } else {
+        mapThread[tid]++;
+    }
+
+
+    va_list valst;
+    va_start(valst, format);
+
+    char logContent[ONE_LINE_LOG_LENGTH] = {'\0'};
+    uint32_t n = snprintf(logContent, sizeof(logContent) - 1, "%d-%02d-%02d %02d:%02d:%02d [%d](%d) [%s] <Log>: ",
+            my_tm.tm_year + 1900, my_tm.tm_mon + 1, my_tm.tm_mday, my_tm.tm_hour, my_tm.tm_min,
+            my_tm.tm_sec, tid, mapThread[tid], getLogLevelString(logLevel));
+    uint32_t m = vsnprintf(logContent + n, sizeof(logContent) - n - 1, format, valst);
+    logContent[n + m] = '\n';
+    logContent[n + m+1] = '\0';
+
+    fflush(m_fp);
+    if (NULL != m_fp) {
+        fclose(m_fp);
+        m_fp = NULL;
+    }
+    char command[ONE_LINE_LOG_LENGTH] = {'\0'};
+    snprintf(command, sizeof(command), "echo \'%s\' >> %s", logContent, logFullName);
+    printf("command=%s\n", command);
+    system(command);
+    pthread_mutex_unlock(m_mutex);
+
+    va_end(valst);
+}

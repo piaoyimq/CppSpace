@@ -33,7 +33,7 @@
 
 #define SPLIT_LINES  2000000
 
-#define LOG_DIRECTORY   "/home/coding/workspace/CppSpace/Log/Log1" //"/var/log/"
+#define LOG_DIRECTORY   "/home/ezhweib/CodeWorkSpace/CppSpace/Log/Log1" //"/var/log/"
 
 
 
@@ -131,7 +131,7 @@ private:
 
     ~Logging();
 
-    void moveLogs(const char* oldName, const char* newName, uint32_t alreadyCompressFileAmount) const;
+    void moveLogs(const char* oldName, const char* newName, uint32_t alreadyCompressFileAmount);
 
     void *async_write_log() const;
 
@@ -144,12 +144,14 @@ private:
     /* strings for printing message level */
     const char* getLogModuleString(Log::AppModuleID logModule) const { return logModule < (static_cast<Log::AppModuleID>(Log::getArrayLen(Log::logModuleString))) ? Log::logModuleString[logModule] : "Undefined";}
 
-    void logFileCompression(uint32_t fileAmount) const;
+    void logFileCompression(uint32_t fileAmount) ;
 
     void flush()const;
 
+    void logItself(Log::Level logLevel, const char* format, ...);
 
 
+    /* Attribute area */
     pid_t pid;
 
     char pidName[NAME_LENGTH+1];
