@@ -1,5 +1,5 @@
 /*
- * Logging.cpp
+ * Log.cpp
  *
  *  Created on: Mar 29, 2016
  *      Author: piaoyimq
@@ -12,7 +12,7 @@
 
 
 
-void Logging::init(const char* dirPath, const char* fileName, uint32_t oneLineLogSize, uint32_t split_lines, uint32_t max_queue_size) {
+void Log::init(const char* dirPath, const char* fileName, uint32_t oneLineLogSize, uint32_t split_lines, uint32_t max_queue_size) {
     char dirPathTemp[DIR_LENGTH+1]={'\0'};
     char fileNameTemp[NAME_LENGTH+1]={'\0'};
     strncpy(dirPathTemp, dirPath, sizeof(dirPathTemp));
@@ -23,10 +23,10 @@ void Logging::init(const char* dirPath, const char* fileName, uint32_t oneLineLo
         printf("dirPathTemp=%s is not valid, use default log dir: %s\n", dirPathTemp, LOG_DIRECTORY);
         strncpy(dirPathTemp, LOG_DIRECTORY, sizeof(dirPathTemp));
         strncpy(fileNameTemp, logName, sizeof(fileNameTemp));
-        logItself(C_METHOD, Log::Notice, "%s: directory \'%s\' is not exist, use default log directory \'%s\'", __FUNCTION__, dirPathTemp, LOG_DIRECTORY);
+        logItself(C_METHOD, Notice, "%s: directory \'%s\' is not exist, use default log directory \'%s\'", __FUNCTION__, dirPathTemp, LOG_DIRECTORY);
     }
 
-    logItself(C_METHOD, Log::Notice, "%s:_________ directory \'%s\' is not exist, use default log directory \'%s\'", __FUNCTION__, dirPathTemp, LOG_DIRECTORY);
+    logItself(C_METHOD, Notice, "%s:_________ directory \'%s\' is not exist, use default log directory \'%s\'", __FUNCTION__, dirPathTemp, LOG_DIRECTORY);
     char newfullName[DIR_LENGTH+NAME_LENGTH+2]={'\0'};
 
     snprintf(newfullName, sizeof(newfullName), "%s/%s", dirPathTemp, fileNameTemp);
@@ -62,7 +62,7 @@ void Logging::init(const char* dirPath, const char* fileName, uint32_t oneLineLo
 }
 
 
-void Logging::writeLog(Log::Level logLevel, Log::AppModuleID moduleId, const char* format, ...) {
+void Log::writeLog(Level logLevel, AppModuleID moduleId, const char* format, ...) {
     struct timeval now = { 0, 0 };
     gettimeofday(&now, NULL);
     time_t t = now.tv_sec;
@@ -83,7 +83,7 @@ void Logging::writeLog(Log::Level logLevel, Log::AppModuleID moduleId, const cha
 
 //    printf("gettpid=%u, getTid=%u, pthread_self=%lu\n", getpid(), getTid());
     counter++;
-    if (counter % splitLines == 0) //everyday Logging
+    if (counter % splitLines == 0) //everyday Log
     {
         fflush(m_fp);
         if(NULL!=m_fp){
@@ -137,7 +137,7 @@ void Logging::writeLog(Log::Level logLevel, Log::AppModuleID moduleId, const cha
 }
 
 
-Logging::Logging() :
+Log::Log() :
         counter(0), isAsync(false), currentLogAmount(0), 
         oneLineLogLength(ONE_LINE_LOG_LENGTH), splitLines(SPLIT_LINES){
     memset(logItselfBuff, '\0', sizeof(logItselfBuff));
@@ -156,7 +156,7 @@ Logging::Logging() :
     memset(m_buf, '\0', oneLineLogLength);
     m_fp = fopen(logFullName, "a");
     if (NULL == m_fp) {
-        logItself(COMMAND_METHOD, Log::Emergency, "%s: fopen \'%s\' failed: %s", __FUNCTION__, logFullName, strerror(errno));
+        logItself(COMMAND_METHOD, Emergency, "%s: fopen \'%s\' failed: %s", __FUNCTION__, logFullName, strerror(errno));
         fprintf(stderr, "fopen \'%s\' failed: %s\n", logFullName, strerror(errno));
         exit(EXIT_FAILURE);
     }
@@ -167,7 +167,7 @@ Logging::Logging() :
 }
 
 
-Logging::~Logging() {
+Log::~Log() {
 //    sleep(15);//piaoyimq ???
     flush();
     delete m_buf;
@@ -184,7 +184,7 @@ Logging::~Logging() {
 }
 
 
-void Logging::moveLogs(const char* oldFullName, const char* newFullName, uint32_t alreadyCompressFileAmount){
+void Log::moveLogs(const char* oldFullName, const char* newFullName, uint32_t alreadyCompressFileAmount){
     char oldFullNameTemp[DIR_LENGTH+NAME_LENGTH+2]={'\0'};
     char newFullNameTemp[DIR_LENGTH+NAME_LENGTH+2]={'\0'};
     printf("%s: oldFullName=%s, newFullName=%s\n", __FUNCTION__, oldFullName, newFullName);
@@ -212,7 +212,7 @@ void Logging::moveLogs(const char* oldFullName, const char* newFullName, uint32_
 }
 
 
-void *Logging::async_write_log() const {
+void *Log::async_write_log() const {
     string single_log;
     while (m_log_queue->pop(single_log)) {
         pthread_mutex_lock(m_mutex);
@@ -222,7 +222,7 @@ void *Logging::async_write_log() const {
 }
 
 
-void Logging::logFileCompression(uint32_t alreadyCompressFileAmount) {
+void Log::logFileCompression(uint32_t alreadyCompressFileAmount) {
     printf("alreadyCompressFileAmount=%u\n", alreadyCompressFileAmount);
     if(alreadyCompressFileAmount < 0){
         return;
@@ -249,14 +249,14 @@ echo \"gzip -f $var.1\"\n\
 }
 
 
-void Logging::flush() const{
+void Log::flush() const{
     pthread_mutex_lock(m_mutex);
     fflush(m_fp);
     pthread_mutex_unlock(m_mutex);
 }
 
 
-void Logging::logItself(LogMethod logMethod, Log::Level logLevel, const char* format, ...) {
+void Log::logItself(LogMethod logMethod, Level logLevel, const char* format, ...) {
     struct timeval now = { 0, 0 };
     gettimeofday(&now, NULL);
     time_t t = now.tv_sec;
@@ -298,10 +298,11 @@ void Logging::logItself(LogMethod logMethod, Log::Level logLevel, const char* fo
             uint32_t m = vsnprintf(content+ n, sizeof(content)- n - 1, format, valst);
             content[n + m] = '\n';
             content[n +m+1] = '\0';
+#if 0
             char temp[200]={'\0'};
             snprintf(temp, sizeof(temp), "sudo mkdir -p %s", LOG_DIRECTORY);
             system(temp);
-            sleep(1);
+#endif
             snprintf(command, sizeof(command), "echo \"%s\" >> %s", content, logFullName);
             printf("command=%s\n", command);
             system(command);

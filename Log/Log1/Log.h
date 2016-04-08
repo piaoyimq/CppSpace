@@ -1,5 +1,5 @@
 /*
- * Logging.h
+ * Log.h
  *
  *  Created on: Mar 29, 2016
  *      Author: piaoyimq
@@ -69,7 +69,7 @@ inline bool isDirPathExist(const char* dirpPath){
 }
 #endif
 
-namespace Log{
+
 
 template <class T>
 inline size_t getArrayLen(T& array){
@@ -78,9 +78,9 @@ inline size_t getArrayLen(T& array){
 
 
 enum AppModuleID{
-    LOG_ID = 0,
-    CONF_ID,
-    LAST_ID
+    Log = 0,
+    Conf,
+    LastID
 };
 
 
@@ -99,7 +99,7 @@ enum Level {
     Notice,     /* normal but significant condition */
     Info,       /* informational */
     Debug,      /* debug-level messages */
-    LAST
+    LastLevel
 };
 
 
@@ -113,47 +113,46 @@ const char logLevelString[][STRING_LENGTH] = {
     "INFO",
     "DEBUG"
 };
-}
 
 
-class Logging {
+class Log {
 public:
     
     enum LogMethod{
         C_METHOD= 0,
-        COMMAND_METHOD,
+        COMMAND_METHOD
     };
 
-    static Logging& instance() { static Logging _instance;  return _instance;}  //Use static implement a instance.
+    static Log& instance() { static Log _instance;  return _instance;}  //Use static implement a instance.
 
     void init(const char* dirPath, const char* fileName, uint32_t log_buf_size = ONE_LINE_LOG_LENGTH, uint32_t split_lines = SPLIT_LINES, uint32_t max_queue_size = 0);
 
-    void writeLog(Log::Level logLevel, Log::AppModuleID moduleId, const char* format, ...);
+    void writeLog(Level logLevel, AppModuleID moduleId, const char* format, ...);
 
 private:
 
-    Logging(); /*A private declaration for forbid inheriting*/
+    Log(); /*A private declaration for forbid inheriting*/
 
-    ~Logging();
+    ~Log();
 
     void moveLogs(const char* oldName, const char* newName, uint32_t alreadyCompressFileAmount);
 
     void *async_write_log() const;
 
     //Must a static function, it would be called by pthread_create(), a function pointer point at it.
-    static void *flushLogThread(void* args) { printf("Logging thread id: %d\n", getTid()); instance().async_write_log();}
+    static void *flushLogThread(void* args) { printf("Log thread id: %d\n", getTid()); instance().async_write_log();}
 
     /* strings for printing message level */
-    const char* getLogLevelString(Log::Level logLevel) const {return logLevel < (static_cast<Log::Level>(Log::getArrayLen(Log::logLevelString))) ? Log::logLevelString[logLevel] : "Undefined";}
+    const char* getLogLevelString(Level logLevel) const {return logLevel < (static_cast<Level>(getArrayLen(logLevelString))) ? logLevelString[logLevel] : "Undefined";}
 
     /* strings for printing message level */
-    const char* getLogModuleString(Log::AppModuleID logModule) const { return logModule < (static_cast<Log::AppModuleID>(Log::getArrayLen(Log::logModuleString))) ? Log::logModuleString[logModule] : "Undefined";}
+    const char* getLogModuleString(AppModuleID logModule) const { return logModule < (static_cast<AppModuleID>(getArrayLen(logModuleString))) ? logModuleString[logModule] : "Undefined";}
 
     void logFileCompression(uint32_t fileAmount) ;
 
     void flush()const;
 
-    void logItself(LogMethod logMethod, Log::Level logLevel, const char* format, ...);
+    void logItself(LogMethod logMethod, Level logLevel, const char* format, ...);
 
 
     /* Attribute area */
@@ -191,6 +190,6 @@ private:
 };
 
 
-#define App_Log(logLevel, moduleId, ...)    Logging::instance().writeLog(logLevel, moduleId, __VA_ARGS__)
+#define App_Log(logLevel, moduleId, ...)    Log::instance().writeLog(logLevel, moduleId, __VA_ARGS__)
 
 #endif
