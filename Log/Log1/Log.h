@@ -80,7 +80,7 @@ inline size_t getArrayLen(T& array){
 enum AppModuleID{
     Log = 0,
     Conf,
-    LastID
+    LastId
 };
 
 
@@ -119,8 +119,9 @@ class Log {
 public:
     
     enum LogMethod{
-        C_METHOD= 0,
-        COMMAND_METHOD
+        CMethod= 0,
+        CmdMethod,
+        CmdWithHeadMethod
     };
 
     static Log& instance() { static Log _instance;  return _instance;}  //Use static implement a instance.
@@ -135,7 +136,9 @@ private:
 
     ~Log();
 
-    void moveLogs(const char* oldName, const char* newName, uint32_t alreadyCompressFileAmount);
+    void writeLogHead(char *logHead=NULL);
+
+    bool moveLogs(const char* oldName, const char* newName, uint32_t alreadyCompressFileAmount);
 
     void *async_write_log() const;
 
@@ -182,7 +185,9 @@ private:
 
     char* m_buf;
     
-    char logItselfBuff[BUF_SIZE];
+    char logItselfBuf[BUF_SIZE];
+
+    uint32_t logItselfLength;
 
     BlockQueue<string> *m_log_queue;
 

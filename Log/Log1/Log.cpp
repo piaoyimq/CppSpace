@@ -12,39 +12,51 @@
 
 
 
-void Log::init(const char* dirPath, const char* fileName, uint32_t oneLineLogSize, uint32_t split_lines, uint32_t max_queue_size) {
+void Log::init(const char* dir, const char* fileName, uint32_t oneLineLogSize, uint32_t split_lines, uint32_t max_queue_size) {
     char dirPathTemp[DIR_LENGTH+1]={'\0'};
     char fileNameTemp[NAME_LENGTH+1]={'\0'};
-    strncpy(dirPathTemp, dirPath, sizeof(dirPathTemp));
+    strncpy(dirPathTemp, dir, sizeof(dirPathTemp));
     strncpy(fileNameTemp, fileName, sizeof(fileNameTemp));
 
     bool ret = isDirPathExist(dirPathTemp);
     if(false == ret){
-        printf("dirPathTemp=%s is not valid, use default log dir: %s\n", dirPathTemp, LOG_DIRECTORY);
         strncpy(dirPathTemp, LOG_DIRECTORY, sizeof(dirPathTemp));
         strncpy(fileNameTemp, logName, sizeof(fileNameTemp));
-        logItself(C_METHOD, Notice, "%s: directory \'%s\' is not exist, use default log directory \'%s\'", __FUNCTION__, dirPathTemp, LOG_DIRECTORY);
+        fprintf(stderr, "Process \"%s\": \'%s\' is not exist, use default log directory \'%s\'\n", pidName,  dirPathTemp, LOG_DIRECTORY);
+        logItself(CMethod, Error, "%s: \'%s\' is not exist, use default log directory \'%s\'", __FUNCTION__, dirPathTemp, LOG_DIRECTORY);
     }
 
-    logItself(C_METHOD, Notice, "%s:_________ directory \'%s\' is not exist, use default log directory \'%s\'", __FUNCTION__, dirPathTemp, LOG_DIRECTORY);
     char newfullName[DIR_LENGTH+NAME_LENGTH+2]={'\0'};
-
     snprintf(newfullName, sizeof(newfullName), "%s/%s", dirPathTemp, fileNameTemp);
-    printf("old logFullName =%s\n", logFullName);
-    printf("new newfullName =%s\n", newfullName);
     if(0 != strcmp(logFullName, newfullName)){
         if (NULL != m_fp) {
             fclose(m_fp);
             m_fp = NULL;
         }
 
-        moveLogs(logFullName, newfullName, currentLogAmount);
-        printf("new logFullName=%s\n", logFullName);
-        strncpy(logFullName, newfullName, sizeof(logFullName));
-        m_fp = fopen(logFullName, "a");
-        if (NULL == m_fp) {
-            fprintf(stderr, "%s, Process ID %d ", strerror(errno), pid);
-            exit(EXIT_FAILURE);
+        bool ret=moveLogs(logFullName, newfullName, currentLogAmount);
+        if(true == ret){
+            logItself(CMethod, Notice, "%s: move logs from \'%s\' to directory \'%s\'", __FUNCTION__, LOG_DIRECTORY, dirPathTemp);
+            strncpy(dirPath, dirPathTemp, sizeof(dirPath));
+            strncpy(logName, fileNameTemp, sizeof(logName));
+            strncpy(logFullName, newfullName, sizeof(logFullName));
+
+            m_fp = fopen(logFullName, "a");
+            if (NULL == m_fp) {
+                fprintf(stderr, "Process \"%s\": fopen \"%s\" failed: %s\n", pidName,  logFullName, strerror(errno));
+                logItself(CmdMethod, Emergency, "%s: fopen \'%s\' failed: %s", __FUNCTION__, logFullName, strerror(errno));
+                exit(EXIT_FAILURE);
+            }
+        }
+        else {
+            logItself(CMethod, Error, "%s: move logs failed, use default log file \'%s\'", __FUNCTION__, logFullName);
+            char c=getchar();
+            m_fp = fopen(logFullName, "a");
+            if (NULL == m_fp) {
+                fprintf(stderr, "Process \"%s\": fopen \"%s\" failed: %s\n", pidName,  logFullName, strerror(errno));
+                logItself(CmdMethod, Emergency, "%s: fopen \'%s\' failed: %s", __FUNCTION__, logFullName, strerror(errno));
+                exit(EXIT_FAILURE);
+            }
         }
     }
 
@@ -58,6 +70,7 @@ void Log::init(const char* dirPath, const char* fileName, uint32_t oneLineLogSiz
         m_log_queue = new BlockQueue<string>(max_queue_size);
         pthread_t tid;
         pthread_create(&tid, NULL, flushLogThread, NULL);
+        logItself(CMethod, Info, "%s: create a thread \'%d\', use asynchronous type to logging", __FUNCTION__, getTid());
     }
 }
 
@@ -75,15 +88,16 @@ void Log::writeLog(Level logLevel, AppModuleID moduleId, const char* format, ...
     map<pid_t, int>::iterator where = mapThread.find(tid);  //pstree -pa [procdssid] ,  ps -Lef
 
     if (where == mapThread.end()) {
-        mapThread[tid] = 1;
-        printf("Found, tid=%d, value=%d\n", tid, mapThread[tid]);
+        mapThread[tid] = 0; //  if use logItself() here, assign mapThread[tid]=0, otherwise assign mapThread[tid]=1
+        printf("%s: Found thread %d, value=%d\n", __FUNCTION__, tid, mapThread[tid]);
+        logItself(CMethod, Info, "%s: Found a new thread %d(LWP) ", __FUNCTION__, tid);
     } else {
         mapThread[tid]++;
     }
 
 //    printf("gettpid=%u, getTid=%u, pthread_self=%lu\n", getpid(), getTid());
     counter++;
-    if (counter % splitLines == 0) //everyday Log
+    if (counter % splitLines == 0)
     {
         fflush(m_fp);
         if(NULL!=m_fp){
@@ -96,14 +110,12 @@ void Log::writeLog(Level logLevel, AppModuleID moduleId, const char* format, ...
 
         m_fp = fopen(logFullName, "a");
         if(NULL == m_fp){
-            fprintf(stderr,"%s, Process ID %d ",strerror(errno), pid);
+            fprintf(stderr, "Process \"%s\": fopen \"%s\" failed: %s\n", pidName,  logFullName, strerror(errno));
+            logItself(CmdMethod, Emergency, "%s: fopen \'%s\' failed: %s", __FUNCTION__, logFullName, strerror(errno));
             exit(EXIT_FAILURE);
         }
 
-        char fileHeard[FILE_HEAD_LENGTH]={'\0'};
-        snprintf(fileHeard, sizeof(fileHeard), "Process ID: %d\nProcess Name: %s\nLog File Sequence ID: %d\n\n", pid, pidName, currentLogAmount);
-        fputs(fileHeard, m_fp);
-
+        writeLogHead();
     }
     pthread_mutex_unlock(m_mutex);
 
@@ -112,14 +124,17 @@ void Log::writeLog(Level logLevel, AppModuleID moduleId, const char* format, ...
 
     string log_str;
     pthread_mutex_lock(m_mutex);
-    uint32_t k=snprintf(m_buf, oneLineLogLength-1, "%s", logItselfBuff);
-    memset(logItselfBuff, '\0', sizeof(logItselfBuff));
+    uint32_t k=snprintf(m_buf, oneLineLogLength-1, "%s", logItselfBuf);
+
+    memset(logItselfBuf, '\0', sizeof(logItselfBuf));
+    logItselfLength = 0;
     
-    uint32_t n = snprintf(m_buf, oneLineLogLength-k-1, "%d-%02d-%02d %02d:%02d:%02d [%d](%d) [%s] <%s>: ",
+    uint32_t n = snprintf(m_buf+k, oneLineLogLength-k-1, "%d-%02d-%02d %02d:%02d:%02d [%d](%d) [%s] <%s>: ",
             my_tm.tm_year + 1900, my_tm.tm_mon + 1, my_tm.tm_mday, my_tm.tm_hour, my_tm.tm_min, my_tm.tm_sec,
             tid, mapThread[tid], getLogLevelString(logLevel), getLogModuleString(moduleId));
-    uint32_t m = vsnprintf(m_buf + n, oneLineLogLength-n-1, format, valst);
-    m_buf[n + m ] = '\n';
+    uint32_t m = vsnprintf(m_buf +k+ n, oneLineLogLength-k-n-1, format, valst);
+    m_buf[k+n + m ] = '\n';
+    m_buf[k+n + m+1] = '\0';
     log_str = m_buf;
     memset(m_buf, '\0', oneLineLogLength);
     
@@ -130,9 +145,10 @@ void Log::writeLog(Level logLevel, AppModuleID moduleId, const char* format, ...
     } else {
         pthread_mutex_lock(m_mutex);
         fputs(log_str.c_str(), m_fp);
-//        fflush(m_fp);//piaoyimq, use it or not???
+//        fflush(m_fp); //TODO: use it or not??? (piaoyimq).
         pthread_mutex_unlock(m_mutex);
     }
+
     va_end(valst);
 }
 
@@ -140,29 +156,29 @@ void Log::writeLog(Level logLevel, AppModuleID moduleId, const char* format, ...
 Log::Log() :
         counter(0), isAsync(false), currentLogAmount(0), 
         oneLineLogLength(ONE_LINE_LOG_LENGTH), splitLines(SPLIT_LINES){
-    memset(logItselfBuff, '\0', sizeof(logItselfBuff));
+    memset(logItselfBuf, '\0', sizeof(logItselfBuf));
     m_mutex = new pthread_mutex_t;
     pthread_mutex_init(m_mutex, NULL);
+
     pid = getpid();
-    printf("Process id: %d\n", pid);    
     getNameByPid(pid, pidName);
     snprintf(logName, sizeof(logName), "%s.log", pidName);
     strncpy(dirPath, LOG_DIRECTORY, sizeof(dirPath));
-    printf("dirPath=%s\n", dirPath);
     snprintf(logFullName, sizeof(logFullName), "%s/%s", dirPath, logName);
-    printf("logFullName=%s\n", logFullName);
+
+    printf("Process id: %d\nlogFullName=%s\n", pid, logFullName);
     
     m_buf = new char[oneLineLogLength];
     memset(m_buf, '\0', oneLineLogLength);
     m_fp = fopen(logFullName, "a");
     if (NULL == m_fp) {
-        logItself(COMMAND_METHOD, Emergency, "%s: fopen \'%s\' failed: %s", __FUNCTION__, logFullName, strerror(errno));
-        fprintf(stderr, "fopen \'%s\' failed: %s\n", logFullName, strerror(errno));
+        fprintf(stderr, "Process \"%s\": fopen \"%s\" failed: %s\n", pidName,  logFullName, strerror(errno));
+        logItself(CmdWithHeadMethod, Emergency, "%s: fopen \'%s\' failed: %s", __FUNCTION__, logFullName, strerror(errno));
         exit(EXIT_FAILURE);
     }
-    char fileHead[FILE_HEAD_LENGTH]={'\0'};
-    snprintf(fileHead, sizeof(fileHead), "Process ID: %d\nProcess Name: %s\nLog File Sequence ID: %d\n\n", pid, pidName, currentLogAmount);
-    fputs(fileHead, m_fp);
+
+    writeLogHead();
+    logItself(CMethod, Info, "%s: use synchronous type to logging", __FUNCTION__);
 //	sleep(2);//piaoyimq ???
 }
 
@@ -184,31 +200,39 @@ Log::~Log() {
 }
 
 
-void Log::moveLogs(const char* oldFullName, const char* newFullName, uint32_t alreadyCompressFileAmount){
+void Log::writeLogHead(char *logHead) {
+    char fileHead[FILE_HEAD_LENGTH] = { '\0' };
+    snprintf(fileHead, sizeof(fileHead), "Process ID: %d\nProcess Name: %s\nLog File Sequence ID: %d\n\n", pid, pidName, currentLogAmount);
+
+    if(logHead!=NULL){
+        strncpy(logHead, fileHead, BUF_SIZE);
+        return;
+    }
+
+    fputs(fileHead, m_fp);
+}
+
+
+bool Log::moveLogs(const char* oldFullName, const char* newFullName, uint32_t alreadyCompressFileAmount){
     char oldFullNameTemp[DIR_LENGTH+NAME_LENGTH+2]={'\0'};
     char newFullNameTemp[DIR_LENGTH+NAME_LENGTH+2]={'\0'};
-    printf("%s: oldFullName=%s, newFullName=%s\n", __FUNCTION__, oldFullName, newFullName);
+
     for(int i=0; i<= alreadyCompressFileAmount; i++){
-        printf("i=%d\n", i);
         if(0 == i){
             if(rename(oldFullName, newFullName) < 0 ){
-                printf("error: %s\n", strerror(errno));
-            }
-            else{
-                printf("ok!\n");
+                return false;
             }
         }
         else{
             snprintf(oldFullNameTemp, sizeof(oldFullNameTemp), "%s.%d.gz", oldFullName, i);
             snprintf(newFullNameTemp, sizeof(newFullNameTemp), "%s.%d.gz", newFullName, i);
             if(rename(oldFullNameTemp, newFullNameTemp) < 0 ){
-                printf("error: %s\n", strerror(errno));
-            }
-            else{
-                printf("ok!\n");        
+                return false;
             }
         }
     }
+
+    return true;
 }
 
 
@@ -223,8 +247,8 @@ void *Log::async_write_log() const {
 
 
 void Log::logFileCompression(uint32_t alreadyCompressFileAmount) {
-    printf("alreadyCompressFileAmount=%u\n", alreadyCompressFileAmount);
     if(alreadyCompressFileAmount < 0){
+        logItself(CMethod, Notice, "%s: variable \"alreadyCompressFileAmount\" is less than 0, will do not compress.", __FUNCTION__);
         return;
     }
     char shellContent[SHELL_CONTENT_LENGTH] = {'\0'};
@@ -262,53 +286,60 @@ void Log::logItself(LogMethod logMethod, Level logLevel, const char* format, ...
     time_t t = now.tv_sec;
     struct tm* sys_tm = localtime(&t);
     struct tm my_tm = *sys_tm;
-
     pid_t tid = getTid();
     map<pid_t, int>::iterator where = mapThread.find(tid);  //pstree -pa [procdssid] ,  ps -Lef
 
     if (where == mapThread.end()) {
-        mapThread[tid] = 1;     //TODO: ??? this place maybe add a same tid into the map, because writeLog() has the same operation.(piaoyimq)
-        printf("Found, tid=%d, value=%d\n", tid, mapThread[tid]);
+        mapThread[tid] = 1;
+        printf("%s: Found thread %d, value=%d\n", __FUNCTION__, tid, mapThread[tid]);
     } else {
         mapThread[tid]++;
     }
 
     va_list valst;
     va_start(valst, format);
-    static uint32_t length = 0;
     switch(logMethod){
-        case C_METHOD:
-        {
-            uint32_t n = snprintf(logItselfBuff+length, sizeof(logItselfBuff)-length- 1, "%d-%02d-%02d %02d:%02d:%02d [%d](%d) [%s] <Log>: ",
+        case CMethod:{
+
+            uint32_t n = snprintf(logItselfBuf+logItselfLength, sizeof(logItselfBuf)-logItselfLength- 1, "%d-%02d-%02d %02d:%02d:%02d [%d](%d) [%s] <Log>: ",
                     my_tm.tm_year + 1900, my_tm.tm_mon + 1, my_tm.tm_mday, my_tm.tm_hour, my_tm.tm_min,
                     my_tm.tm_sec, tid, mapThread[tid], getLogLevelString(logLevel));
-            uint32_t m = vsnprintf(logItselfBuff + length+ n, sizeof(logItselfBuff)-length - n - 1, format, valst);
-            logItselfBuff[length+n + m] = '\n';
-            logItselfBuff[length+n + m+1] = '\0';
-        
-            length+=strlen(logItselfBuff);
+            uint32_t m = vsnprintf(logItselfBuf + logItselfLength+n, sizeof(logItselfBuf) -logItselfLength- n - 1, format, valst);
+            logItselfBuf[logItselfLength+n + m] = '\n';
+            logItselfBuf[logItselfLength+n + m+1] = '\0';
+            logItselfLength+=n+m+1;
+
+            break;
         }
-        case COMMAND_METHOD:
-        { 
+        case CmdMethod:
+        case CmdWithHeadMethod:{
+
             char content[BUF_SIZE] = {'\0'};
             char command[BUF_SIZE+STRING_LENGTH+DIR_LENGTH+NAME_LENGTH+2] = {'\0'};
+
+            if(CmdWithHeadMethod== logMethod){
+                writeLogHead(content);
+                snprintf(command, sizeof(command), "echo \"%s\" >> %s", content, logFullName);
+                system(command);
+            }
+
+            memset(content, '\0', sizeof(content));
+            memset(command, '\0', sizeof(command));
+
             uint32_t n = snprintf(content, sizeof(content)- 1, "%d-%02d-%02d %02d:%02d:%02d [%d](%d) [%s] <Log>: ",
                     my_tm.tm_year + 1900, my_tm.tm_mon + 1, my_tm.tm_mday, my_tm.tm_hour, my_tm.tm_min,
                     my_tm.tm_sec, tid, mapThread[tid], getLogLevelString(logLevel));
-            uint32_t m = vsnprintf(content+ n, sizeof(content)- n - 1, format, valst);
+
+            uint32_t m = vsnprintf(content+n, sizeof(content) -n - 1, format, valst);
             content[n + m] = '\n';
             content[n +m+1] = '\0';
-#if 0
-            char temp[200]={'\0'};
-            snprintf(temp, sizeof(temp), "sudo mkdir -p %s", LOG_DIRECTORY);
-            system(temp);
-#endif
             snprintf(command, sizeof(command), "echo \"%s\" >> %s", content, logFullName);
-            printf("command=%s\n", command);
             system(command);
+            break;
         }    
         default:
-            printf("Wrong log method\n");
+            fprintf(stderr, "Process \"%s\": wrong log method\n", pidName);
     }
+
     va_end(valst);
 }

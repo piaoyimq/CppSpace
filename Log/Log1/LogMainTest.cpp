@@ -5,9 +5,13 @@
  *      Author: piaoyimq
  */
 #include <unistd.h>
+#include <errno.h>
+#include <string.h>
+#include <stdlib.h>
+#include <signal.h>
 #include "Log.h"
 
-#define THREAD_NUMBER   10
+#define THREAD_NUMBER   1
 #define COMPLEX_TEST     1
 
 
@@ -16,11 +20,11 @@
 #if COMPLEX_TEST
 void *f(void* args) {
 
-    for (int i = 0; i < 10000; i++) {
+    for (int i = 0; i < 10; i++) {
 //		sleep(1);
-        App_Log(Notice, LastID, "Function:%s, %d, line=%d", __FUNCTION__, 1, __LINE__);
-        App_Log(Notice, LastID, "Function:%s, %d, line=%d", __FUNCTION__, 2, __LINE__);
-        App_Log(Notice, LastID, "Function:%s,%d, line=%d", __FUNCTION__, 3, __LINE__);
+        App_Log(Notice, LastId, "Function:%s, %d, line=%d", __FUNCTION__, 1, __LINE__);
+        App_Log(Notice, LastId, "Function:%s, %d, line=%d", __FUNCTION__, 2, __LINE__);
+        App_Log(Notice, LastId, "Function:%s,%d, line=%d", __FUNCTION__, 3, __LINE__);
     }
 }
 #endif
@@ -28,15 +32,13 @@ void *f(void* args) {
 
 int main(int argc, char* argv[]) {
 
-
-    printf("NAME_MAX=%d, PATH_MAX=%d\n", NAME_MAX, PATH_MAX);
-    App_Log(Notice, LastID, "_______Function:%s, %d, line=%d", __FUNCTION__, 1, __LINE__);
-    App_Log(Notice, LastID, "========Function:%s, %d, line=%d", __FUNCTION__, 2, __LINE__);
+    App_Log(Notice, LastId, "_______Function:%s, %d, line=%d", __FUNCTION__, 1, __LINE__);
+    App_Log(Notice, LastId, "========Function:%s, %d, line=%d", __FUNCTION__, 2, __LINE__);
 
 //    char a=getchar();
-    Log::instance().init("/home/ezhweibb/CodeWorkSpace/CppSpace/Log", "my-test.log", 1024, 100000, 10);
+    Log::instance().init("/home/ezhweib/CodeWorkSpace/CppSpace/Log/aa", "my-test.log", 1024, 100000, 10);
 
-    App_Log(Notice, LastID, "Function:%s, %d, line=%d", __FUNCTION__, 3, __LINE__);
+    App_Log(Notice, LastId, "Function:%s, %d, line=%d", __FUNCTION__, 3, __LINE__);
 
 #if COMPLEX_TEST
 
@@ -46,7 +48,7 @@ int main(int argc, char* argv[]) {
     for (int i = 0; i < THREAD_NUMBER; i++) {
         ret = pthread_create(&id, NULL, f, NULL);
         if (0 != ret) {
-            App_Log(Error, LastID, "Function:%s, pthread_create error", __FUNCTION__);
+            App_Log(Error, LastId, "Function:%s, pthread_create error", __FUNCTION__);
             exit(EXIT_FAILURE);
         }
     }
@@ -54,7 +56,7 @@ int main(int argc, char* argv[]) {
     for (int i = 0; i < THREAD_NUMBER; i++) {
         ret = pthread_join(id, NULL);
         if (ret < 0) {
-            App_Log(Error, LastID, "Function:%s, pthread_join error", __FUNCTION__);
+            App_Log(Error, LastId, "Function:%s, pthread_join error", __FUNCTION__);
             exit(EXIT_FAILURE);
         }
     }
