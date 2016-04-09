@@ -66,8 +66,9 @@ inline bool isDirPathExist(const char* dirpPath){
     }
 
     return true;
-}
+}f
 #endif
+
 
 
 
