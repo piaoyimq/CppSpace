@@ -158,7 +158,7 @@ void Log::writeLog(Level logLevel, AppModuleID moduleId, const char* format, ...
 
 Log::Log() :
         counter(0), isAsync(false), currentLogAmount(0), 
-        oneLineLogLength(ONE_LINE_LOG_LENGTH), splitLines(SPLIT_LINES), logFilesTotalSize(0){
+        oneLineLogLength(ONE_LINE_LOG_LENGTH), splitLines(SPLIT_LINES), logFilesTotalSize(DEFAULT_TOTAL_LOG_SIZE){
     memset(logItselfBuf, '\0', sizeof(logItselfBuf));
     m_mutex = new pthread_mutex_t;
     pthread_mutex_init(m_mutex, NULL);
@@ -275,15 +275,15 @@ echo \"gzip -f $var.1\"\n\
     system(shellContent);
 }
 
-void Log::logfilesControl(int32_t alreadyCompressFileAmount){
-	if(alreadyCompressFileAmount < 0){
-			printf("already <0\n");
-	        logItself(CmdMethod, Notice, "%s: variable \"alreadyCompressFileAmount\" is less than 0, will do not compress", __FUNCTION__);
-	        return;
-	 }
+void Log::logfilesControl(int32_t alreadyCompressFileAmount) {
+	if (alreadyCompressFileAmount < 0) {
+		printf("already <0\n");
+		logItself(CmdMethod, Notice, "%s: variable \"alreadyCompressFileAmount\" is less than 0, will do not compress", __FUNCTION__);
+		return;
+	}
 
-	char logFullNameOldTemp[DIR_LENGTH + NAME_LENGTH +2] ={'\0'};
-	char logFullNameNewTemp[DIR_LENGTH + NAME_LENGTH +2] ={'\0'};
+	char logFullNameOldTemp[DIR_LENGTH + NAME_LENGTH + 2] = { '\0' };
+	char logFullNameNewTemp[DIR_LENGTH + NAME_LENGTH + 2] = { '\0' };
 	snprintf(logFullNameNewTemp, sizeof(logFullNameNewTemp), "%s.1", logFullName);
 
 	logItself(CmdMethod, Notice, "%s: the current file log reach the maximum file lines, will open a new file to log", __FUNCTION__);
@@ -294,41 +294,39 @@ void Log::logfilesControl(int32_t alreadyCompressFileAmount){
 
 	logItself(CmdOnlyWriteHeadMethod, LastLevel, "");
 
-	snprintf(logFullNameNewTemp, sizeof(logFullNameNewTemp), "%s.1.gz", logFullName);
-//	printf("file=%s\n", logFullNameNewTemp);
 	struct stat statBuff;
-	if(0==stat(logFullNameNewTemp, &statBuff)){
-		uint64_t fileSize=statBuff.st_size;
-//		printf("one log size=%llu, _=_already: %u\ntotal:%llu\n", fileSize, alreadyCompressFileAmount+1, fileSize*(alreadyCompressFileAmount+1));
-		if(logFilesTotalSize < (alreadyCompressFileAmount+1) *fileSize){
-			static uint32_t sequenceId = 0;
-			logItself(CmdMethod, Notice, "%s: total log size reach the maximum, will delete the file which sequence id is %d", __FUNCTION__, sequenceId);
-			++sequenceId;
-//			printf("al=%d, se=%d\n", alreadyCompressFileAmount, sequenceId);
-			alreadyCompressFileAmount-= sequenceId;
+	static uint64_t fileSize = 0;
+	if (1 == alreadyCompressFileAmount) {
+		snprintf(logFullNameNewTemp, sizeof(logFullNameNewTemp), "%s.1.gz", logFullName);
+		if (0 == stat(logFullNameNewTemp, &statBuff)) {
+			fileSize = 0==statBuff.st_size/1024/1024 ? 1 : statBuff.st_size/1024/1024;
+		} else {
+			logItself(CmdMethod, Debug, "%s: no this file \"%s\"", __FUNCTION__, logFullNameNewTemp);
 		}
 	}
-	else{
-		printf("no this file\n");
+
+	static uint32_t sequenceId = 0;
+	if ((alreadyCompressFileAmount + 1) * fileSize > logFilesTotalSize) {
+		logItself(CmdMethod, Notice, "%s: total log size reach the maximum, will delete the file which sequence id is %d", __FUNCTION__, sequenceId);
+		++sequenceId;
+		alreadyCompressFileAmount -= sequenceId;
 	}
 
-	printf("num=%d\n", alreadyCompressFileAmount);
-	for(int32_t i=alreadyCompressFileAmount;i>0;i--){
+	for (int32_t i = alreadyCompressFileAmount; i > 0; i--) {
 		snprintf(logFullNameOldTemp, sizeof(logFullNameOldTemp), "%s.%d.gz", logFullName, i);
-		snprintf(logFullNameNewTemp, sizeof(logFullNameNewTemp), "%s.%d.gz", logFullName, i+1);
-		printf("---num=%d\n", alreadyCompressFileAmount);
+		snprintf(logFullNameNewTemp, sizeof(logFullNameNewTemp), "%s.%d.gz", logFullName, i + 1);
 		if (rename(logFullNameOldTemp, logFullNameNewTemp) < 0) {
 			fprintf(stderr, "Process \"%s\": rename \"%s\" failed, %s\n", pidName, logFullNameOldTemp, strerror(errno));
 			logItself(CmdMethod, Error, "%s: rename \"%s\" failed, %s", __FUNCTION__, logFullNameOldTemp, strerror(errno));
 		}
 	}
 
-	char command[DIR_LENGTH + NAME_LENGTH +2+20] ={'\0'};
-//	if(1==alreadyCompressFileAmount){
-//		snprintf(command, sizeof(command), "rm -f %s.1", logFullName);
-//	}else{
+	char command[DIR_LENGTH + NAME_LENGTH + 2 + 20] = { '\0' };
+	if (0 == alreadyCompressFileAmount && 0 != sequenceId) {
+		snprintf(command, sizeof(command), "rm -f %s.1*", logFullName);
+	} else {
 		snprintf(command, sizeof(command), "gzip -f %s.1", logFullName);
-//	}
+	}
 	system(command);
 }
 

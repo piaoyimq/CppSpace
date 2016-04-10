@@ -33,6 +33,8 @@
 
 #define SPLIT_LINES  2000000
 
+#define DEFAULT_TOTAL_LOG_SIZE	3		//1024 //unit is Mbytes
+
 #define LOG_DIRECTORY   ".." //"/var/log/"
 
 
