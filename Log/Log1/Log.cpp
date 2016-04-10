@@ -4,10 +4,12 @@
  *  Created on: Mar 29, 2016
  *      Author: piaoyimq
  */
+#include "Log.h"
 #include <string.h>
 #include <sstream> //stringstream
 #include <errno.h>
-#include "Log.h"
+#include <sys/stat.h>
+
 
 
 
@@ -20,10 +22,10 @@ void Log::init(const char* dir, const char* fileName, uint32_t oneLineLogSize, u
 
     bool ret = isDirPathExist(dirPathTemp);
     if(false == ret){
-        strncpy(dirPathTemp, LOG_DIRECTORY, sizeof(dirPathTemp));
-        strncpy(fileNameTemp, logName, sizeof(fileNameTemp));
         fprintf(stderr, "Process \"%s\": \'%s\' is not exist, use default log directory \'%s\'\n", pidName,  dirPathTemp, LOG_DIRECTORY);
         logItself(CMethod, Error, "%s: \'%s\' is not exist, use default log directory \'%s\'", __FUNCTION__, dirPathTemp, LOG_DIRECTORY);
+        strncpy(dirPathTemp, LOG_DIRECTORY, sizeof(dirPathTemp));
+        strncpy(fileNameTemp, logName, sizeof(fileNameTemp));
     }
 
     char newfullName[DIR_LENGTH+NAME_LENGTH+2]={'\0'};
@@ -93,6 +95,7 @@ void Log::writeLog(Level logLevel, AppModuleID moduleId, const char* format, ...
         logItself(CMethod, Info, "%s: Found a new thread %d(LWP) ", __FUNCTION__, tid);
     } else {
         mapThread[tid]++;
+//        printf("mpaThread[%d]=%d\n", tid, mapThread[tid]);
     }
 
 //    printf("gettpid=%u, getTid=%u, pthread_self=%lu\n", getpid(), getTid());
@@ -105,7 +108,9 @@ void Log::writeLog(Level logLevel, AppModuleID moduleId, const char* format, ...
             m_fp=NULL;
         }
 
-        logFileCompression(currentLogAmount++);
+//        logFileCompression(currentLogAmount++);
+        logfilesControl(currentLogAmount);
+        ++currentLogAmount;
 //        sleep(1);//Maybe need to sleep, then reopen it.
 
         m_fp = fopen(logFullName, "a");
@@ -114,8 +119,6 @@ void Log::writeLog(Level logLevel, AppModuleID moduleId, const char* format, ...
             logItself(CmdMethod, Emergency, "%s: fopen \'%s\' failed: %s", __FUNCTION__, logFullName, strerror(errno));
             exit(EXIT_FAILURE);
         }
-
-        writeLogHead();
     }
     pthread_mutex_unlock(m_mutex);
 
@@ -155,7 +158,7 @@ void Log::writeLog(Level logLevel, AppModuleID moduleId, const char* format, ...
 
 Log::Log() :
         counter(0), isAsync(false), currentLogAmount(0), 
-        oneLineLogLength(ONE_LINE_LOG_LENGTH), splitLines(SPLIT_LINES){
+        oneLineLogLength(ONE_LINE_LOG_LENGTH), splitLines(SPLIT_LINES), logFilesTotalSize(0){
     memset(logItselfBuf, '\0', sizeof(logItselfBuf));
     m_mutex = new pthread_mutex_t;
     pthread_mutex_init(m_mutex, NULL);
@@ -272,6 +275,63 @@ echo \"gzip -f $var.1\"\n\
     system(shellContent);
 }
 
+void Log::logfilesControl(int32_t alreadyCompressFileAmount){
+	if(alreadyCompressFileAmount < 0){
+			printf("already <0\n");
+	        logItself(CmdMethod, Notice, "%s: variable \"alreadyCompressFileAmount\" is less than 0, will do not compress", __FUNCTION__);
+	        return;
+	 }
+
+	char logFullNameOldTemp[DIR_LENGTH + NAME_LENGTH +2] ={'\0'};
+	char logFullNameNewTemp[DIR_LENGTH + NAME_LENGTH +2] ={'\0'};
+	snprintf(logFullNameNewTemp, sizeof(logFullNameNewTemp), "%s.1", logFullName);
+
+	logItself(CmdMethod, Notice, "%s: the current file log reach the maximum file lines, will open a new file to log", __FUNCTION__);
+	if (rename(logFullName, logFullNameNewTemp) < 0) {
+		fprintf(stderr, "Process \"%s\": rename \"%s\" failed, %s\n", pidName, logFullName, strerror(errno));
+		return;
+	}
+
+	logItself(CmdOnlyWriteHeadMethod, LastLevel, "");
+
+	snprintf(logFullNameNewTemp, sizeof(logFullNameNewTemp), "%s.1.gz", logFullName);
+//	printf("file=%s\n", logFullNameNewTemp);
+	struct stat statBuff;
+	if(0==stat(logFullNameNewTemp, &statBuff)){
+		uint64_t fileSize=statBuff.st_size;
+//		printf("one log size=%llu, _=_already: %u\ntotal:%llu\n", fileSize, alreadyCompressFileAmount+1, fileSize*(alreadyCompressFileAmount+1));
+		if(logFilesTotalSize < (alreadyCompressFileAmount+1) *fileSize){
+			static uint32_t sequenceId = 0;
+			logItself(CmdMethod, Notice, "%s: total log size reach the maximum, will delete the file which sequence id is %d", __FUNCTION__, sequenceId);
+			++sequenceId;
+//			printf("al=%d, se=%d\n", alreadyCompressFileAmount, sequenceId);
+			alreadyCompressFileAmount-= sequenceId;
+		}
+	}
+	else{
+		printf("no this file\n");
+	}
+
+	printf("num=%d\n", alreadyCompressFileAmount);
+	for(int32_t i=alreadyCompressFileAmount;i>0;i--){
+		snprintf(logFullNameOldTemp, sizeof(logFullNameOldTemp), "%s.%d.gz", logFullName, i);
+		snprintf(logFullNameNewTemp, sizeof(logFullNameNewTemp), "%s.%d.gz", logFullName, i+1);
+		printf("---num=%d\n", alreadyCompressFileAmount);
+		if (rename(logFullNameOldTemp, logFullNameNewTemp) < 0) {
+			fprintf(stderr, "Process \"%s\": rename \"%s\" failed, %s\n", pidName, logFullNameOldTemp, strerror(errno));
+			logItself(CmdMethod, Error, "%s: rename \"%s\" failed, %s", __FUNCTION__, logFullNameOldTemp, strerror(errno));
+		}
+	}
+
+	char command[DIR_LENGTH + NAME_LENGTH +2+20] ={'\0'};
+//	if(1==alreadyCompressFileAmount){
+//		snprintf(command, sizeof(command), "rm -f %s.1", logFullName);
+//	}else{
+		snprintf(command, sizeof(command), "gzip -f %s.1", logFullName);
+//	}
+	system(command);
+}
+
 
 void Log::flush() const{
     pthread_mutex_lock(m_mutex);
@@ -289,18 +349,19 @@ void Log::logItself(LogMethod logMethod, Level logLevel, const char* format, ...
     pid_t tid = getTid();
     map<pid_t, int>::iterator where = mapThread.find(tid);  //pstree -pa [procdssid] ,  ps -Lef
 
-    if (where == mapThread.end()) {
-        mapThread[tid] = 1;
-        printf("%s: Found thread %d, value=%d\n", __FUNCTION__, tid, mapThread[tid]);
-    } else {
-        mapThread[tid]++;
-    }
+
 
     va_list valst;
     va_start(valst, format);
     switch(logMethod){
         case CMethod:{
-
+        		if (where == mapThread.end()) {
+        	        mapThread[tid] = 1;
+        	        printf("%s: Found thread %d, value=%d\n", __FUNCTION__, tid, mapThread[tid]);
+        	    } else {
+        	        mapThread[tid]++;
+        	//        printf("mpaThread[%d]=%d\n", tid, mapThread[tid]);
+        	    }
             uint32_t n = snprintf(logItselfBuf+logItselfLength, sizeof(logItselfBuf)-logItselfLength- 1, "%d-%02d-%02d %02d:%02d:%02d [%d](%d) [%s] <Log>: ",
                     my_tm.tm_year + 1900, my_tm.tm_mon + 1, my_tm.tm_mday, my_tm.tm_hour, my_tm.tm_min,
                     my_tm.tm_sec, tid, mapThread[tid], getLogLevelString(logLevel));
@@ -312,26 +373,37 @@ void Log::logItself(LogMethod logMethod, Level logLevel, const char* format, ...
             break;
         }
         case CmdMethod:
-        case CmdWithHeadMethod:{
+        case CmdWithHeadMethod:
+        case CmdOnlyWriteHeadMethod:{
 
             char content[BUF_SIZE] = {'\0'};
             char command[BUF_SIZE+STRING_LENGTH+DIR_LENGTH+NAME_LENGTH+2] = {'\0'};
 
-            if(CmdWithHeadMethod== logMethod){
+            if(CmdWithHeadMethod== logMethod || CmdOnlyWriteHeadMethod == logMethod){
                 writeLogHead(content);
                 snprintf(command, sizeof(command), "echo \"%s\" >> %s", content, logFullName);
                 system(command);
+                if(CmdOnlyWriteHeadMethod == logMethod){
+                	return;
+                  }
             }
 
             memset(content, '\0', sizeof(content));
             memset(command, '\0', sizeof(command));
+            if (where == mapThread.end()) {
+                    mapThread[tid] = 1;
+                    printf("%s: Found thread %d, value=%d\n", __FUNCTION__, tid, mapThread[tid]);
+                } else {
+                    mapThread[tid]++;
+            //        printf("mpaThread[%d]=%d\n", tid, mapThread[tid]);
+                }
 
             uint32_t n = snprintf(content, sizeof(content)- 1, "%d-%02d-%02d %02d:%02d:%02d [%d](%d) [%s] <Log>: ",
                     my_tm.tm_year + 1900, my_tm.tm_mon + 1, my_tm.tm_mday, my_tm.tm_hour, my_tm.tm_min,
                     my_tm.tm_sec, tid, mapThread[tid], getLogLevelString(logLevel));
 
             uint32_t m = vsnprintf(content+n, sizeof(content) -n - 1, format, valst);
-            content[n + m] = '\n';
+            content[n + m] = '\0';
             content[n +m+1] = '\0';
             snprintf(command, sizeof(command), "echo \"%s\" >> %s", content, logFullName);
             system(command);

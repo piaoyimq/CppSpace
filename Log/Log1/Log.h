@@ -33,7 +33,7 @@
 
 #define SPLIT_LINES  2000000
 
-#define LOG_DIRECTORY   "/home/ezhweib/CodeWorkSpace/CppSpace/Log/Log1" //"/var/log/"
+#define LOG_DIRECTORY   ".." //"/var/log/"
 
 
 
@@ -66,10 +66,8 @@ inline bool isDirPathExist(const char* dirpPath){
     }
 
     return true;
-}f
+}
 #endif
-
-
 
 
 template <class T>
@@ -122,7 +120,8 @@ public:
     enum LogMethod{
         CMethod= 0,
         CmdMethod,
-        CmdWithHeadMethod
+        CmdWithHeadMethod,
+		CmdOnlyWriteHeadMethod
     };
 
     static Log& instance() { static Log _instance;  return _instance;}  //Use static implement a instance.
@@ -152,7 +151,9 @@ private:
     /* strings for printing message level */
     const char* getLogModuleString(AppModuleID logModule) const { return logModule < (static_cast<AppModuleID>(getArrayLen(logModuleString))) ? logModuleString[logModule] : "Undefined";}
 
-    void logFileCompression(uint32_t fileAmount) ;
+    void logFileCompression(uint32_t alreadyCompressFileAmount) ;
+
+    void logfilesControl(int32_t alreadyCompressFileAmount);
 
     void flush()const;
 
@@ -180,7 +181,9 @@ private:
 
     uint64_t counter;
 
-    uint32_t currentLogAmount;
+    int32_t currentLogAmount;
+
+    uint64_t logFilesTotalSize;
 
     FILE* m_fp;
 

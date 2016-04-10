@@ -10,8 +10,9 @@
 #include <stdlib.h>
 #include <signal.h>
 #include "Log.h"
+#include <sys/stat.h>
 
-#define THREAD_NUMBER   1
+#define THREAD_NUMBER   10
 #define COMPLEX_TEST     1
 
 
@@ -20,7 +21,7 @@
 #if COMPLEX_TEST
 void *f(void* args) {
 
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 100; i++) {
 //		sleep(1);
         App_Log(Notice, LastId, "Function:%s, %d, line=%d", __FUNCTION__, 1, __LINE__);
         App_Log(Notice, LastId, "Function:%s, %d, line=%d", __FUNCTION__, 2, __LINE__);
@@ -31,12 +32,28 @@ void *f(void* args) {
 
 
 int main(int argc, char* argv[]) {
+//	char logFullNameNewTemp[50] = "my-test.log.1.gz";
+//	printf("file=%s\n", logFullNameNewTemp);
+//		struct stat statBuff;
+//		stat(logFullNameNewTemp, &statBuff);
+//		uint64_t fileSize=statBuff.st_size;
+//		printf("one log size: %d\n", fileSize);
+//
+////		if(stat(logFullNameNewTemp, &statBuff)>0){
+////			uint64_t fileSize=statBuff.st_size;
+////			printf("one log size: %d\n", fileSize);
+////		}
+////		else
+////		{
+////			printf("no size\n");
+////		}
+//		exit(0);
 
     App_Log(Notice, LastId, "_______Function:%s, %d, line=%d", __FUNCTION__, 1, __LINE__);
     App_Log(Notice, LastId, "========Function:%s, %d, line=%d", __FUNCTION__, 2, __LINE__);
 
 //    char a=getchar();
-    Log::instance().init("/home/ezhweib/CodeWorkSpace/CppSpace/Log/aa", "my-test.log", 1024, 100000, 10);
+    Log::instance().init(".", "my-test.log", 1024, 100, 10);
 
     App_Log(Notice, LastId, "Function:%s, %d, line=%d", __FUNCTION__, 3, __LINE__);
 
