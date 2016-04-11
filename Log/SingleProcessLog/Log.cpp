@@ -14,7 +14,7 @@
 
 
 
-void Log::init(const char* dir, const char* fileName, uint32_t oneLineLogSize, uint32_t split_lines, uint32_t max_queue_size) {
+void Log::init(const char* dir, const char* fileName, uint32_t oneLineLogSize, uint32_t split_lines, double logTotalSize, Level logLevel, uint32_t max_queue_size) {
     char dirPathTemp[DIR_LENGTH+1]={'\0'};
     char fileNameTemp[NAME_LENGTH+1]={'\0'};
     strncpy(dirPathTemp, dir, sizeof(dirPathTemp));
@@ -67,6 +67,9 @@ void Log::init(const char* dir, const char* fileName, uint32_t oneLineLogSize, u
     m_buf = new char[oneLineLogLength];
     memset(m_buf, '\0', oneLineLogLength);
     splitLines = split_lines;
+    enableLogLevel = logLevel;
+    logFilesTotalSize = logTotalSize;
+
     if (max_queue_size >= 1) {
         isAsync = true;
         m_log_queue = new BlockQueue<string>(max_queue_size);
@@ -78,6 +81,10 @@ void Log::init(const char* dir, const char* fileName, uint32_t oneLineLogSize, u
 
 
 void Log::writeLog(Level logLevel, AppModuleID moduleId, const char* format, ...) {
+    if(logLevel > enableLogLevel){
+            return;
+    }
+
     struct timeval now = { 0, 0 };
     gettimeofday(&now, NULL);
     time_t t = now.tv_sec;
@@ -108,11 +115,8 @@ void Log::writeLog(Level logLevel, AppModuleID moduleId, const char* format, ...
             m_fp=NULL;
         }
 
-//        logFileCompression(currentLogAmount++);
         ++currentLogAmount;
         logfilesControl(currentLogAmount);
-
-//        sleep(1);//Maybe need to sleep, then reopen it.
 
         m_fp = fopen(logFullName, "a");
         if(NULL == m_fp){
@@ -159,7 +163,7 @@ void Log::writeLog(Level logLevel, AppModuleID moduleId, const char* format, ...
 
 Log::Log() :
         counter(0), isAsync(false), currentLogAmount(0), 
-        oneLineLogLength(ONE_LINE_LOG_LENGTH), splitLines(SPLIT_LINES), logFilesTotalSize(DEFAULT_TOTAL_LOG_SIZE){
+        oneLineLogLength(ONE_LINE_LOG_LENGTH), splitLines(SPLIT_LINES), logFilesTotalSize(DEFAULT_TOTAL_LOG_SIZE), enableLogLevel(Notice){
     memset(logItselfBuf, '\0', sizeof(logItselfBuf));
     m_mutex = new pthread_mutex_t;
     pthread_mutex_init(m_mutex, NULL);
@@ -276,6 +280,7 @@ echo \"gzip -f $var.1\"\n\
     system(shellContent);
 }
 
+
 void Log::logfilesControl(int32_t alreadyCompressFileAmount) {
     alreadyCompressFileAmount-=1;
 
@@ -357,6 +362,10 @@ void Log::flush() const{
 
 
 void Log::logItself(LogMethod logMethod, Level logLevel, const char* format, ...) {
+    if(logLevel > enableLogLevel){
+        return;
+    }
+
     struct timeval now = { 0, 0 };
     gettimeofday(&now, NULL);
     time_t t = now.tv_sec;
@@ -364,8 +373,6 @@ void Log::logItself(LogMethod logMethod, Level logLevel, const char* format, ...
     struct tm my_tm = *sys_tm;
     pid_t tid = getTid();
     map<pid_t, int>::iterator where = mapThread.find(tid);  //pstree -pa [procdssid] ,  ps -Lef
-
-
 
     va_list valst;
     va_start(valst, format);

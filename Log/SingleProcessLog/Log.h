@@ -128,7 +128,8 @@ public:
 
     static Log& instance() { static Log _instance;  return _instance;}  //Use static implement a instance.
 
-    void init(const char* dirPath, const char* fileName, uint32_t log_buf_size = ONE_LINE_LOG_LENGTH, uint32_t split_lines = SPLIT_LINES, uint32_t max_queue_size = 0);
+//    void init(const char* dir, const char* fileName, uint32_t log_buf_size = ONE_LINE_LOG_LENGTH, uint32_t split_lines = SPLIT_LINES, uint32_t max_queue_size = 0);
+    void init(const char* dir, const char* fileName, uint32_t oneLineLogSize, uint32_t split_lines ,  double logTotalSize, Level logLevel, uint32_t max_queue_size = 0);
 
     void writeLog(Level logLevel, AppModuleID moduleId, const char* format, ...);
 
@@ -198,6 +199,8 @@ private:
     BlockQueue<string> *m_log_queue;
 
     bool isAsync;
+
+    Level enableLogLevel;   // enable the log level and the upper level
 };
 
 

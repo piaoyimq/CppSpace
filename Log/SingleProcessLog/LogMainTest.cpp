@@ -21,10 +21,10 @@
 #if COMPLEX_TEST
 void *f(void* args) {
 
-    for (int i = 0; i < 1000000; i++) {
+    for (int i = 0; i < 10000; i++) {
 //		sleep(1);
         App_Log(Notice, LastId, "Function:%s, %d, line=%d", __FUNCTION__, 1, __LINE__);
-        App_Log(Notice, LastId, "Function:%s, %d, line=%d", __FUNCTION__, 2, __LINE__);
+        App_Log(Debug, LastId, "Function:%s, %d, line=%d", __FUNCTION__, 2, __LINE__);
         App_Log(Notice, LastId, "Function:%s,%d, line=%d", __FUNCTION__, 3, __LINE__);
     }
 }
@@ -32,30 +32,11 @@ void *f(void* args) {
 
 
 int main(int argc, char* argv[]) {
-//	char logFullNameNewTemp[50] = "my-test.log.1.gz";
-//	printf("file=%s\n", logFullNameNewTemp);
-//		struct stat statBuff;
-//		stat(logFullNameNewTemp, &statBuff);
-//		uint64_t fileSize=statBuff.st_size;
-//		printf("one log size: %d\n", fileSize);
-//
-////		if(stat(logFullNameNewTemp, &statBuff)>0){
-////			uint64_t fileSize=statBuff.st_size;
-////			printf("one log size: %d\n", fileSize);
-////		}
-////		else
-////		{
-////			printf("no size\n");
-////		}
-//		exit(0);
-
     App_Log(Notice, LastId, "_______Function:%s, %d, line=%d", __FUNCTION__, 1, __LINE__);
-    App_Log(Notice, LastId, "========Function:%s, %d, line=%d", __FUNCTION__, 2, __LINE__);
+    App_Log(Debug, LastId, "========Function:%s, %d, line=%d", __FUNCTION__, 2, __LINE__);
 
-//    char a=getchar();
-    Log::instance().init(".", "my-test.log", 1024, 500000, 10);
-    //small
-//    Log::instance().init(".", "my-test.log", 1024, 1000, 10);
+    Log::instance().init(".", "my-test.log", 1024, 500000, 2, Debug, 10);
+
 
     App_Log(Notice, LastId, "Function:%s, %d, line=%d", __FUNCTION__, 3, __LINE__);
 
