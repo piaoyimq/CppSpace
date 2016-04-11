@@ -33,7 +33,7 @@
 
 #define SPLIT_LINES  2000000
 
-#define DEFAULT_TOTAL_LOG_SIZE	3		//1024 //unit is Mbytes
+#define DEFAULT_TOTAL_LOG_SIZE	41 //0.09		//1024 //unit is Mbytes, this size is the total compressed logs size, not include the latest uncompressed log file size.
 
 #define LOG_DIRECTORY   ".." //"/var/log/"
 
@@ -185,7 +185,7 @@ private:
 
     int32_t currentLogAmount;
 
-    uint64_t logFilesTotalSize;
+    double logFilesTotalSize;
 
     FILE* m_fp;
 
