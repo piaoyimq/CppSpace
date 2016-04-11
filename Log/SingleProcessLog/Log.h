@@ -78,9 +78,9 @@ inline size_t getArrayLen(T& array){
 }
 
 
-enum AppModuleID{
-    Log = 0,
-    Conf,
+enum AppModuleId{
+    LogId = 0,
+    ConfId,
     LastId
 };
 
@@ -131,7 +131,9 @@ public:
 //    void init(const char* dir, const char* fileName, uint32_t log_buf_size = ONE_LINE_LOG_LENGTH, uint32_t split_lines = SPLIT_LINES, uint32_t max_queue_size = 0);
     void init(const char* dir, const char* fileName, uint32_t oneLineLogSize, uint32_t split_lines ,  double logTotalSize, Level logLevel, uint32_t max_queue_size = 0);
 
-    void writeLog(Level logLevel, AppModuleID moduleId, const char* format, ...);
+    void writeLog(Level logLevel, AppModuleId moduleId, const char* format, ...);
+
+    void WriteLog2(Level logLevel, AppModuleId moduleId, const char* format, ...);
 
 private:
 
@@ -140,6 +142,8 @@ private:
     ~Log();
 
     void writeLogHead(char *logHead=NULL);
+
+    size_t snprinfLog(Level logLevel, AppModuleId moduleId, const char* des, size_t desLength, size_t offset, const char* src, ... );
 
     bool moveLogs(const char* oldName, const char* newName, uint32_t alreadyCompressFileAmount);
 
@@ -152,7 +156,7 @@ private:
     const char* getLogLevelString(Level logLevel) const {return logLevel < (static_cast<Level>(getArrayLen(logLevelString))) ? logLevelString[logLevel] : "Undefined";}
 
     /* strings for printing message level */
-    const char* getLogModuleString(AppModuleID logModule) const { return logModule < (static_cast<AppModuleID>(getArrayLen(logModuleString))) ? logModuleString[logModule] : "Undefined";}
+    const char* getLogModuleString(AppModuleId logModule) const { return logModule < (static_cast<AppModuleId>(getArrayLen(logModuleString))) ? logModuleString[logModule] : "Undefined";}
 
     void logFileCompression(uint32_t alreadyCompressFileAmount) ;
 
@@ -161,6 +165,8 @@ private:
     void flush()const;
 
     void logItself(LogMethod logMethod, Level logLevel, const char* format, ...);
+
+    void LogItself2(LogMethod logMethod, Level logLevel, const char* format, ...);
 
 
     /* Attribute area */

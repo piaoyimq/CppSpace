@@ -80,7 +80,99 @@ void Log::init(const char* dir, const char* fileName, uint32_t oneLineLogSize, u
 }
 
 
-void Log::writeLog(Level logLevel, AppModuleID moduleId, const char* format, ...) {
+size_t Log::snprinfLog(Level logLevel, AppModuleId moduleId, const char* des, size_t desLength, size_t offset, const char* src, ... ){
+	va_list valst;
+	va_start(valst, src);
+
+	struct timeval now = { 0, 0 };
+	gettimeofday(&now, NULL);
+	time_t t = now.tv_sec;
+	struct tm* sys_tm = localtime(&t);
+	struct tm my_tm = *sys_tm;
+
+	pid_t tid = getTid();
+	map<pid_t, int>::iterator where = mapThread.find(tid); //pstree -pa [procdssid] ,  ps -Lef
+
+	if (where == mapThread.end()) {
+		mapThread[tid] = 0; //  if use logItself() here, assign mapThread[tid]=0, otherwise assign mapThread[tid]=1
+		printf("%s: Found thread %d, value=%d\n", __FUNCTION__, tid,
+				mapThread[tid]);
+		logItself(CMethod, Info, "%s: Found a new thread %d(LWP) ",
+				__FUNCTION__, tid);
+	} else {
+		mapThread[tid]++;
+		//        printf("mpaThread[%d]=%d\n", tid, mapThread[tid]);
+	}
+
+    uint32_t n = snprintf(des, desLength-offset-1, "%d-%02d-%02d %02d:%02d:%02d [%d](%d) [%s] <%s>: ",
+            my_tm.tm_year + 1900, my_tm.tm_mon + 1, my_tm.tm_mday, my_tm.tm_hour, my_tm.tm_min, my_tm.tm_sec,
+            tid, mapThread[tid], getLogLevelString(logLevel), getLogModuleString(moduleId));
+    uint32_t m = vsnprintf(des + offset + n, desLength-offset-n-1, format, valst);
+    des[offset+n + m ] = '\n';
+    des[offset+n + m+1] = '\0';
+
+
+	va_end(valst);
+	return (offset+n+m+1);
+
+}
+
+
+void Log::WriteLog2(Level logLevel, AppModuleId moduleId, const char* format, ...) {
+	pthread_mutex_lock(m_mutex);
+
+	if(logLevel > enableLogLevel){
+            return;
+    }
+
+//    printf("gettpid=%u, getTid=%u, pthread_self=%lu\n", getpid(), getTid());
+    counter++;
+    if (counter % splitLines == 0){
+        fflush(m_fp);
+        if(NULL!=m_fp){
+            fclose(m_fp);
+            m_fp=NULL;
+        }
+
+        ++currentLogAmount;
+        logfilesControl(currentLogAmount);
+
+        m_fp = fopen(logFullName, "a");
+        if(NULL == m_fp){
+            fprintf(stderr, "Process \"%s\": fopen \"%s\" failed: %s\n", pidName,  logFullName, strerror(errno));
+            logItself(CmdMethod, Emergency, "%s: fopen \'%s\' failed: %s", __FUNCTION__, logFullName, strerror(errno));
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    va_list valst;
+    va_start(valst, format);
+
+    string log_str;
+    uint32_t k=snprintf(m_buf, oneLineLogLength-1, "%s", logItselfBuf);
+
+    memset(logItselfBuf, '\0', sizeof(logItselfBuf));
+    logItselfLength = 0;
+
+    snprinfLog(logLevel, moduleId, m_buf+k, oneLineLogLength, k, format, valst);
+
+    log_str = m_buf;
+    memset(m_buf, '\0', oneLineLogLength);
+
+
+    if (isAsync && !m_log_queue->full()) {
+        m_log_queue->push(log_str);
+    } else {
+        fputs(log_str.c_str(), m_fp);
+//        fflush(m_fp); //TODO: use it or not??? (piaoyimq).
+    }
+
+    va_end(valst);
+    pthread_mutex_unlock(m_mutex);
+}
+
+
+void Log::writeLog(Level logLevel, AppModuleId moduleId, const char* format, ...) {
     if(logLevel > enableLogLevel){
             return;
     }
@@ -358,6 +450,52 @@ void Log::flush() const{
     pthread_mutex_lock(m_mutex);
     fflush(m_fp);
     pthread_mutex_unlock(m_mutex);
+}
+
+
+void Log::LogItself_2(LogMethod logMethod, Level logLevel, const char* format, ...) {
+  if(logLevel > enableLogLevel){
+        return;
+    }
+
+    va_list valst;
+    va_start(valst, format);
+    switch(logMethod){
+        case CMethod:{
+
+            logItselfLength +=snprinfLog(logLevel, LogId, logItselfBuf+logItselfLength, sizeof(logItselfBuf), logItselfLength, format, valst);
+            break;
+        }
+        case CmdMethod:
+        case CmdWithHeadMethod:
+        case CmdOnlyWriteHeadMethod:{
+
+            char content[BUF_SIZE] = {'\0'};
+            char command[BUF_SIZE+STRING_LENGTH+DIR_LENGTH+NAME_LENGTH+2] = {'\0'};
+
+            if(CmdWithHeadMethod== logMethod || CmdOnlyWriteHeadMethod == logMethod){
+                writeLogHead(content);
+                snprintf(command, sizeof(command), "echo \"%s\" >> %s", content, logFullName);
+                system(command);
+                if(CmdOnlyWriteHeadMethod == logMethod){
+                	return;
+                  }
+            }
+
+            memset(content, '\0', sizeof(content));
+            memset(command, '\0', sizeof(command));
+
+            snprinfLog(logLevel, LogId, content, sizeof(content), 0, format, valst);
+
+            snprintf(command, sizeof(command), "echo \"%s\" >> %s", content, logFullName);
+            system(command);
+            break;
+        }
+        default:
+            fprintf(stderr, "Process \"%s\": wrong log method\n", pidName);
+    }
+
+    va_end(valst);
 }
 
 
