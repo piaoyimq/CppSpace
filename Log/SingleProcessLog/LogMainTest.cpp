@@ -21,7 +21,7 @@
 #if COMPLEX_TEST
 void *f(void* args) {
 
-    for (int i = 0; i < 10000; i++) {
+    for (int i = 0; i < 10; i++) {
 //		sleep(1);
         App_Log(Notice, LastId, "Function:%s, %d, line=%d", __FUNCTION__, 1, __LINE__);
         App_Log(Debug, LastId, "Function:%s, %d, line=%d", __FUNCTION__, 2, __LINE__);
@@ -33,8 +33,9 @@ void *f(void* args) {
 
 int main(int argc, char* argv[]) {
     App_Log(Notice, LastId, "_______Function:%s, %d, line=%d", __FUNCTION__, 1, __LINE__);
-    App_Log(Debug, LastId, "========Function:%s, %d, line=%d", __FUNCTION__, 2, __LINE__);
 
+    App_Log(Debug, LastId, "========Function:%s, %d, line=%d", __FUNCTION__, 2, __LINE__);
+//    exit(0);
     Log::instance().init(".", "my-test.log", 1024, 500000, 2, Debug, 10);
 
 

@@ -80,7 +80,7 @@ void Log::init(const char* dir, const char* fileName, uint32_t oneLineLogSize, u
 }
 
 
-size_t Log::snprinfLog(Level logLevel, AppModuleId moduleId, const char* des, size_t desLength, size_t offset, const char* src, ... ){
+size_t Log::snprinfLog(Level logLevel, AppModuleId moduleId, char* des, size_t desLength, size_t offset, const char* src, ... ){
 	va_list valst;
 	va_start(valst, src);
 
@@ -107,7 +107,7 @@ size_t Log::snprinfLog(Level logLevel, AppModuleId moduleId, const char* des, si
     uint32_t n = snprintf(des, desLength-offset-1, "%d-%02d-%02d %02d:%02d:%02d [%d](%d) [%s] <%s>: ",
             my_tm.tm_year + 1900, my_tm.tm_mon + 1, my_tm.tm_mday, my_tm.tm_hour, my_tm.tm_min, my_tm.tm_sec,
             tid, mapThread[tid], getLogLevelString(logLevel), getLogModuleString(moduleId));
-    uint32_t m = vsnprintf(des + offset + n, desLength-offset-n-1, format, valst);
+    uint32_t m = vsnprintf(des + offset + n, desLength-offset-n-1, src, valst);
     des[offset+n + m ] = '\n';
     des[offset+n + m+1] = '\0';
 
@@ -118,12 +118,14 @@ size_t Log::snprinfLog(Level logLevel, AppModuleId moduleId, const char* des, si
 }
 
 
-void Log::WriteLog2(Level logLevel, AppModuleId moduleId, const char* format, ...) {
-	pthread_mutex_lock(m_mutex);
+void Log::writeLog(Level logLevel, AppModuleId moduleId, const char* format, ...) {
+
+
 
 	if(logLevel > enableLogLevel){
             return;
     }
+	pthread_mutex_lock(m_mutex);
 
 //    printf("gettpid=%u, getTid=%u, pthread_self=%lu\n", getpid(), getTid());
     counter++;
@@ -144,11 +146,13 @@ void Log::WriteLog2(Level logLevel, AppModuleId moduleId, const char* format, ..
             exit(EXIT_FAILURE);
         }
     }
+    pthread_mutex_unlock(m_mutex);
 
     va_list valst;
     va_start(valst, format);
 
     string log_str;
+    pthread_mutex_lock(m_mutex);
     uint32_t k=snprintf(m_buf, oneLineLogLength-1, "%s", logItselfBuf);
 
     memset(logItselfBuf, '\0', sizeof(logItselfBuf));
@@ -158,21 +162,23 @@ void Log::WriteLog2(Level logLevel, AppModuleId moduleId, const char* format, ..
 
     log_str = m_buf;
     memset(m_buf, '\0', oneLineLogLength);
-
+    pthread_mutex_unlock(m_mutex);
 
     if (isAsync && !m_log_queue->full()) {
         m_log_queue->push(log_str);
     } else {
+        pthread_mutex_lock(m_mutex);
         fputs(log_str.c_str(), m_fp);
+        pthread_mutex_unlock(m_mutex);
 //        fflush(m_fp); //TODO: use it or not??? (piaoyimq).
     }
 
     va_end(valst);
-    pthread_mutex_unlock(m_mutex);
+
 }
 
 
-void Log::writeLog(Level logLevel, AppModuleId moduleId, const char* format, ...) {
+void Log::writeLog_backup(Level logLevel, AppModuleId moduleId, const char* format, ...) {
     if(logLevel > enableLogLevel){
             return;
     }
@@ -453,7 +459,7 @@ void Log::flush() const{
 }
 
 
-void Log::LogItself_2(LogMethod logMethod, Level logLevel, const char* format, ...) {
+void Log::logItself(LogMethod logMethod, Level logLevel, const char* format, ...) {
   if(logLevel > enableLogLevel){
         return;
     }
@@ -499,7 +505,7 @@ void Log::LogItself_2(LogMethod logMethod, Level logLevel, const char* format, .
 }
 
 
-void Log::logItself(LogMethod logMethod, Level logLevel, const char* format, ...) {
+void Log::logItself_old(LogMethod logMethod, Level logLevel, const char* format, ...) {
     if(logLevel > enableLogLevel){
         return;
     }
