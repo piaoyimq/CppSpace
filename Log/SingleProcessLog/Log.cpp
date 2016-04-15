@@ -80,44 +80,6 @@ void Log::init(const char* dir, const char* fileName, uint32_t oneLineLogSize, u
 }
 
 
-size_t Log::snprinfLog(Level logLevel, AppModuleId moduleId, char* des, size_t desLength, size_t offset, const char* src, ... ){
-	va_list valst;
-	va_start(valst, src);
-
-	struct timeval now = { 0, 0 };
-	gettimeofday(&now, NULL);
-	time_t t = now.tv_sec;
-	struct tm* sys_tm = localtime(&t);
-	struct tm my_tm = *sys_tm;
-
-	pid_t tid = getTid();
-	map<pid_t, int>::iterator where = mapThread.find(tid); //pstree -pa [procdssid] ,  ps -Lef
-
-	if (where == mapThread.end()) {
-		mapThread[tid] = 0; //  if use logItself() here, assign mapThread[tid]=0, otherwise assign mapThread[tid]=1
-		printf("%s: Found thread %d, value=%d\n", __FUNCTION__, tid,
-				mapThread[tid]);
-		logItself(CMethod, Info, "%s: Found a new thread %d(LWP) ",
-				__FUNCTION__, tid);
-	} else {
-		mapThread[tid]++;
-		//        printf("mpaThread[%d]=%d\n", tid, mapThread[tid]);
-	}
-
-    uint32_t n = snprintf(des, desLength-offset-1, "%d-%02d-%02d %02d:%02d:%02d [%d](%d) [%s] <%s>: ",
-            my_tm.tm_year + 1900, my_tm.tm_mon + 1, my_tm.tm_mday, my_tm.tm_hour, my_tm.tm_min, my_tm.tm_sec,
-            tid, mapThread[tid], getLogLevelString(logLevel), getLogModuleString(moduleId));
-    uint32_t m = vsnprintf(des + offset + n, desLength-offset-n-1, src, valst);
-    des[offset+n + m ] = '\n';
-    des[offset+n + m+1] = '\0';
-
-
-	va_end(valst);
-	return (offset+n+m+1);
-
-}
-
-
 void Log::writeLog(Level logLevel, AppModuleId moduleId, const char* format, ...) {
 
 
@@ -158,8 +120,7 @@ void Log::writeLog(Level logLevel, AppModuleId moduleId, const char* format, ...
     memset(logItselfBuf, '\0', sizeof(logItselfBuf));
     logItselfLength = 0;
 
-    snprinfLog(logLevel, moduleId, m_buf+k, oneLineLogLength, k, format, valst);
-
+    writeLogBody(logLevel, moduleId, m_buf+k, oneLineLogLength, k, format, valst);
     log_str = m_buf;
     memset(m_buf, '\0', oneLineLogLength);
     pthread_mutex_unlock(m_mutex);
@@ -319,6 +280,38 @@ void Log::writeLogHead(char *logHead) {
 }
 
 
+size_t Log::writeLogBody(Level logLevel, AppModuleId moduleId, char* des, size_t desLength, size_t offset, const char* format,   va_list valst){
+    struct timeval now = { 0, 0 };
+    gettimeofday(&now, NULL);
+    time_t t = now.tv_sec;
+    struct tm* sys_tm = localtime(&t);
+    struct tm my_tm = *sys_tm;
+
+    pid_t tid = getTid();
+    map<pid_t, int>::iterator where = mapThread.find(tid); //pstree -pa [procdssid] ,  ps -Lef
+
+    if (where == mapThread.end()) {
+        mapThread[tid] = 0; //  if use logItself() here, assign mapThread[tid]=0, otherwise assign mapThread[tid]=1
+        printf("%s: Found thread %d, value=%d\n", __FUNCTION__, tid,
+                mapThread[tid]);
+        logItself(CMethod, Info, "%s: Found a new thread %d(LWP) ",
+                __FUNCTION__, tid);
+    } else {
+        mapThread[tid]++;
+        //        printf("mpaThread[%d]=%d\n", tid, mapThread[tid]);
+    }
+
+    uint32_t n = snprintf(des, desLength-offset-1, "%d-%02d-%02d %02d:%02d:%02d [%d](%d) [%s] <%s>: ",
+            my_tm.tm_year + 1900, my_tm.tm_mon + 1, my_tm.tm_mday, my_tm.tm_hour, my_tm.tm_min, my_tm.tm_sec,
+            tid, mapThread[tid], getLogLevelString(logLevel), getLogModuleString(moduleId));
+    uint32_t m = vsnprintf(des + offset + n, desLength-offset-n-1, format, valst);
+    des[offset+n + m ] = '\n';
+    des[offset+n + m+1] = '\0';
+
+    return (offset+n+m+1);
+}
+
+
 bool Log::moveLogs(const char* oldFullName, const char* newFullName, uint32_t alreadyCompressFileAmount){
     char oldFullNameTemp[DIR_LENGTH+NAME_LENGTH+2]={'\0'};
     char newFullNameTemp[DIR_LENGTH+NAME_LENGTH+2]={'\0'};
@@ -469,7 +462,7 @@ void Log::logItself(LogMethod logMethod, Level logLevel, const char* format, ...
     switch(logMethod){
         case CMethod:{
 
-            logItselfLength +=snprinfLog(logLevel, LogId, logItselfBuf+logItselfLength, sizeof(logItselfBuf), logItselfLength, format, valst);
+            logItselfLength +=writeLogBody(logLevel, LogId, logItselfBuf+logItselfLength, sizeof(logItselfBuf), logItselfLength, format, valst);
             break;
         }
         case CmdMethod:
@@ -491,7 +484,7 @@ void Log::logItself(LogMethod logMethod, Level logLevel, const char* format, ...
             memset(content, '\0', sizeof(content));
             memset(command, '\0', sizeof(command));
 
-            snprinfLog(logLevel, LogId, content, sizeof(content), 0, format, valst);
+            writeLogBody(logLevel, LogId, content, sizeof(content), 0, format, valst);
 
             snprintf(command, sizeof(command), "echo \"%s\" >> %s", content, logFullName);
             system(command);

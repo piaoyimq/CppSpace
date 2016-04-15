@@ -143,7 +143,7 @@ private:
 
     void writeLogHead(char *logHead=NULL);
 
-    size_t snprinfLog(Level logLevel, AppModuleId moduleId, char* des, size_t desLength, size_t offset, const char* src, ... );
+    size_t writeLogBody(Level logLevel, AppModuleId moduleId, char* des, size_t desLength, size_t offset, const char* format,  va_list valst);
 
     bool moveLogs(const char* oldName, const char* newName, uint32_t alreadyCompressFileAmount);
 
