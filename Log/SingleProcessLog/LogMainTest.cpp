@@ -32,12 +32,13 @@ void *f(void* args) {
 
 
 int main(int argc, char* argv[]) {
+
     App_Log(Notice, LastId, "_______Function:%s, %d, line=%d", __FUNCTION__, 1, __LINE__);
 
     App_Log(Debug, LastId, "========Function:%s, %d, line=%d", __FUNCTION__, 2, __LINE__);
 //    exit(0);
     Log::instance().init(".", "my-test.log", 1024, 500000, 2, Debug, 10);
-
+    sleep(3);//piaoyimq, why if lack of sleep(3), it will lost logs.
 
     App_Log(Notice, LastId, "Function:%s, %d, line=%d", __FUNCTION__, 3, __LINE__);
 

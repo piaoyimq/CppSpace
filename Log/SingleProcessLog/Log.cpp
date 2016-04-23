@@ -222,7 +222,7 @@ void Log::writeLog_backup(Level logLevel, AppModuleId moduleId, const char* form
 
 Log::Log() :
         counter(0), isAsync(false), currentLogAmount(0), 
-        oneLineLogLength(ONE_LINE_LOG_LENGTH), splitLines(SPLIT_LINES), logFilesTotalSize(DEFAULT_TOTAL_LOG_SIZE), enableLogLevel(Notice){
+        oneLineLogLength(ONE_LINE_LOG_LENGTH), splitLines(SPLIT_LINES), logFilesTotalSize(DEFAULT_TOTAL_LOG_SIZE), enableLogLevel(Debug){
     memset(logItselfBuf, '\0', sizeof(logItselfBuf));
     m_mutex = new pthread_mutex_t;
     pthread_mutex_init(m_mutex, NULL);
@@ -281,12 +281,12 @@ void Log::writeLogHead(char *logHead) {
 
 
 size_t Log::writeLogBody(Level logLevel, AppModuleId moduleId, char* des, size_t desLength, size_t offset, const char* format,   va_list valst){
-    struct timeval now = { 0, 0 };
+	struct timeval now = { 0, 0 };
     gettimeofday(&now, NULL);
     time_t t = now.tv_sec;
     struct tm* sys_tm = localtime(&t);
     struct tm my_tm = *sys_tm;
-
+//    logItself(CMethod, Info, "%s: ____only for test", __FUNCTION__);
     pid_t tid = getTid();
     map<pid_t, int>::iterator where = mapThread.find(tid); //pstree -pa [procdssid] ,  ps -Lef
 
@@ -304,11 +304,10 @@ size_t Log::writeLogBody(Level logLevel, AppModuleId moduleId, char* des, size_t
     uint32_t n = snprintf(des, desLength-offset-1, "%d-%02d-%02d %02d:%02d:%02d [%d](%d) [%s] <%s>: ",
             my_tm.tm_year + 1900, my_tm.tm_mon + 1, my_tm.tm_mday, my_tm.tm_hour, my_tm.tm_min, my_tm.tm_sec,
             tid, mapThread[tid], getLogLevelString(logLevel), getLogModuleString(moduleId));
-    uint32_t m = vsnprintf(des + offset + n, desLength-offset-n-1, format, valst);
-    des[offset+n + m ] = '\n';
-    des[offset+n + m+1] = '\0';
-
-    return (offset+n+m+1);
+    uint32_t m = vsnprintf(des + n, desLength-offset-n-1, format, valst);
+    des[n + m ] = '\n';
+    des[n + m+1] = '\0';
+    return (n+m+1);
 }
 
 
