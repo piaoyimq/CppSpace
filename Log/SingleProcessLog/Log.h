@@ -148,15 +148,13 @@ private:
     void *async_write_log() const;
 
     //Must a static function, it would be called by pthread_create(), a function pointer point at it.
-    static void *flushLogThread(void* args) { printf("Log thread id: %d\n", getTid()); instance().async_write_log();}
+    static void *flushLogThread(void* args) { instance().async_write_log();}
 
     /* strings for printing message level */
     const char* getLogLevelString(Level logLevel) const {return logLevel < (static_cast<Level>(getArrayLen(logLevelString))) ? logLevelString[logLevel] : "Undefined";}
 
     /* strings for printing message level */
     const char* getLogModuleString(AppModuleId logModule) const { return logModule < (static_cast<AppModuleId>(getArrayLen(logModuleString))) ? logModuleString[logModule] : "Undefined";}
-
-    void logFileCompression(uint32_t alreadyCompressFileAmount) ;
 
     void logfilesControl(int32_t alreadyCompressFileAmount);
 

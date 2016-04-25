@@ -5,4 +5,12 @@ rm -rf log
 rm -rf log-maint-test
 rm -rf ../*.log
 
-g++ -g LogMainTest.cpp Log.cpp -lpthread -o log-main-test
+
+g++ -c  Log.cpp
+ar -crv liblog.a  Log.o
+mv liblog.a ../../build/lib
+
+g++ -g LogMainTest.cpp ../../build/lib/liblog.a -lpthread -o log-main-test
+
+rm -rf *.o *.h.gch
+

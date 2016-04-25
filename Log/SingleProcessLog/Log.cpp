@@ -23,7 +23,7 @@ void Log::init(const char* dir, const char* fileName, uint32_t oneLineLogSize, u
     bool ret = isDirPathExist(dirPathTemp);
     if(false == ret){
         fprintf(stderr, "Process \"%s\": \'%s\' is not exist, use default log directory \'%s\'\n", pidName,  dirPathTemp, LOG_DIRECTORY);
-        logItself(CMethod, Error, "%s: \'%s\' is not exist, use default log directory \'%s\'", __FUNCTION__, dirPathTemp, LOG_DIRECTORY);
+        logItself(CMethod, Critical, "%s: \'%s\' is not exist, use default log directory \'%s\'", __FUNCTION__, dirPathTemp, LOG_DIRECTORY);
         strncpy(dirPathTemp, LOG_DIRECTORY, sizeof(dirPathTemp));
         strncpy(fileNameTemp, logName, sizeof(fileNameTemp));
     }
@@ -51,7 +51,7 @@ void Log::init(const char* dir, const char* fileName, uint32_t oneLineLogSize, u
             }
         }
         else {
-            logItself(CMethod, Error, "%s: move logs failed, use default log file \'%s\'", __FUNCTION__, logFullName);
+            logItself(CMethod, Critical, "%s: move logs failed, use default log file \'%s\'", __FUNCTION__, logFullName);
             char c=getchar();
             m_fp = fopen(logFullName, "a");
             if (NULL == m_fp) {
@@ -89,7 +89,6 @@ void Log::writeLog(Level logLevel, AppModuleId moduleId, const char* format, ...
     }
 	pthread_mutex_lock(m_mutex);
 
-//    printf("gettpid=%u, getTid=%u, pthread_self=%lu\n", getpid(), getTid());
     counter++;
     if (counter % splitLines == 0){
         fflush(m_fp);
@@ -141,7 +140,7 @@ void Log::writeLog(Level logLevel, AppModuleId moduleId, const char* format, ...
 
 Log::Log() :
         counter(0), isAsync(false), currentLogAmount(0), 
-        oneLineLogLength(ONE_LINE_LOG_LENGTH), splitLines(SPLIT_LINES), logFilesTotalSize(DEFAULT_TOTAL_LOG_SIZE), enableLogLevel(Debug){
+        oneLineLogLength(ONE_LINE_LOG_LENGTH), splitLines(SPLIT_LINES), logFilesTotalSize(DEFAULT_TOTAL_LOG_SIZE), enableLogLevel(Notice){
     memset(logItselfBuf, '\0', sizeof(logItselfBuf));
     m_mutex = new pthread_mutex_t;
     pthread_mutex_init(m_mutex, NULL);
@@ -152,8 +151,6 @@ Log::Log() :
     strncpy(dirPath, LOG_DIRECTORY, sizeof(dirPath));
     snprintf(logFullName, sizeof(logFullName), "%s/%s", dirPath, logName);
 
-    printf("Process id: %d\nlogFullName=%s\n", pid, logFullName);
-    
     m_buf = new char[oneLineLogLength];
     memset(m_buf, '\0', oneLineLogLength);
     m_fp = fopen(logFullName, "a");
@@ -205,17 +202,14 @@ size_t Log::writeLogBody(Level logLevel, AppModuleId moduleId, char* des, size_t
     time_t t = now.tv_sec;
     struct tm* sys_tm = localtime(&t);
     struct tm my_tm = *sys_tm;
-//    logItself(CMethod, Info, "%s: ____only for test", __FUNCTION__);
     pid_t tid = getTid();
     map<pid_t, int>::iterator where = mapThread.find(tid); //pstree -pa [procdssid] ,  ps -Lef
 
     if (where == mapThread.end()) {
-        mapThread[tid] = 0; //  if use logItself() here, assign mapThread[tid]=0, otherwise assign mapThread[tid]=1
-        printf("%s: Found thread %d, value=%d\n", __FUNCTION__, tid, mapThread[tid]);
+        mapThread[tid] = 0;
     }
     else{
         mapThread[tid]++;
-        //        printf("mpaThread[%d]=%d\n", tid, mapThread[tid]);
     }
 
     uint32_t n = snprintf(des, desLength-offset-1, "%d-%02d-%02d %02d:%02d:%02d [%d](%d) [%s] <%s>: ",
@@ -261,33 +255,6 @@ void *Log::async_write_log() const {
 }
 
 
-void Log::logFileCompression(uint32_t alreadyCompressFileAmount) {
-    if(alreadyCompressFileAmount < 0){
-        logItself(CMethod, Notice, "%s: variable \"alreadyCompressFileAmount\" is less than 0, will do not compress.", __FUNCTION__);
-        return;
-    }
-    char shellContent[SHELL_CONTENT_LENGTH] = {'\0'};
-    snprintf(shellContent, sizeof(shellContent),
-            "echo '\
-#!/bin/bash\n\
-var=%s\n\
-mv $var $var.1\n\
-echo \"mv $var $var.1\"\n\
-for((i=%u;i>0;i--));\n\
-do\n\
-  mv \"$var.$i.gz\" \"$var.$((i+1)).gz\"\n\
-  echo \"mv $var.$i.gz\" \"$var.$((i+1)).gz\"\n\
-done\n\
-gzip -f $var.1\n\
-echo \"gzip -f $var.1\"\n\
-                    ' > %stest.sh; bash %stest.sh; rm -rf %stest.sh", 
-                    logFullName , alreadyCompressFileAmount, dirPath, dirPath, dirPath);
-//    printf("length shell:%d", strlen(shellContent));
-    // printf("%s\n", shellContent);
-    system(shellContent);
-}
-
-
 void Log::logfilesControl(int32_t alreadyCompressFileAmount) {
     alreadyCompressFileAmount-=1;
 
@@ -315,32 +282,28 @@ void Log::logfilesControl(int32_t alreadyCompressFileAmount) {
         snprintf(logFullNameNewTemp, sizeof(logFullNameNewTemp), "%s.1", logFullName);
         if (0 == stat(logFullNameNewTemp, &statBuff)) {
             uncompressionFileSize = statBuff.st_size;
-        } else {
-            printf("no this file 1\n");
+        }
+        else {
             logItself(CmdMethod, Debug, "%s: no this file \"%s\"", __FUNCTION__, logFullNameNewTemp);
         }
 
 	    snprintf(logFullNameNewTemp, sizeof(logFullNameNewTemp), "%s.1.gz", logFullName);
 		if (0 == stat(logFullNameNewTemp, &statBuff)) {
 		    compressionFileSize = statBuff.st_size;
-		} else {
-		    printf("no this file 2\n");
+		}
+		else {
 			logItself(CmdMethod, Debug, "%s: no this file \"%s\"", __FUNCTION__, logFullNameNewTemp);
 		}
 	}
 
 	static int32_t sequenceId = 0;
 	int32_t realAlreadyCompressFileAmount = alreadyCompressFileAmount-sequenceId;
-//	printf("__1__alreadyCompressFileAmount=%u\n", alreadyCompressFileAmount);
-//	printf("__2__realAlreadyCompressFileAmount=%u, sumSize=%f, com=%f, uncom=%f, logFilesTotalSize=%f\n", realAlreadyCompressFileAmount, (realAlreadyCompressFileAmount) * compressionFileSize + uncompressionFileSize, (realAlreadyCompressFileAmount) * compressionFileSize, uncompressionFileSize, logFilesTotalSize*1024*1024);
 	if ((realAlreadyCompressFileAmount * compressionFileSize + uncompressionFileSize)   > (logFilesTotalSize*1024*1024)) {
-//	    printf("delete sequenceId=%d\n", sequenceId);
 	    logItself(CmdMethod, Notice, "%s: total log size reach the maximum, will delete the file which sequence id is %d", __FUNCTION__, sequenceId);
 		++sequenceId;
 		alreadyCompressFileAmount -= sequenceId;
 	}
 
-//	printf("__3__alreadyCompressFileAmount=%u\n", alreadyCompressFileAmount);
 	for (int32_t i = alreadyCompressFileAmount; i > 0; i--) {
 		snprintf(logFullNameOldTemp, sizeof(logFullNameOldTemp), "%s.%d.gz", logFullName, i);
 		snprintf(logFullNameNewTemp, sizeof(logFullNameNewTemp), "%s.%d.gz", logFullName, i + 1);
