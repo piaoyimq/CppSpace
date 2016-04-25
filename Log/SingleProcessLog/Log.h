@@ -131,8 +131,6 @@ public:
 //    void init(const char* dir, const char* fileName, uint32_t log_buf_size = ONE_LINE_LOG_LENGTH, uint32_t split_lines = SPLIT_LINES, uint32_t max_queue_size = 0);
     void init(const char* dir, const char* fileName, uint32_t oneLineLogSize, uint32_t split_lines ,  double logTotalSize, Level logLevel, uint32_t max_queue_size = 0);
 
-    void writeLog_backup(Level logLevel, AppModuleId moduleId, const char* format, ...);
-
     void writeLog(Level logLevel, AppModuleId moduleId, const char* format, ...);
 
 private:
@@ -165,8 +163,6 @@ private:
     void flush()const;
 
     void logItself(LogMethod logMethod, Level logLevel, const char* format, ...);
-
-    void logItself_old(LogMethod logMethod, Level logLevel, const char* format, ...);
 
 
     /* Attribute area */
