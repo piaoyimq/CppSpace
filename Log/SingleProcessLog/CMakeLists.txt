@@ -1,0 +1,17 @@
+cmake_minimum_required(VERSION 3.0.1)
+
+add_subdirectory(Support/GsnTrace)
+add_subdirectory(Support/tinyxml)
+add_subdirectory(Support/tinyxpath)
+add_subdirectory(Support/memtracker)
+add_subdirectory(Support/monotonic_time)
+add_subdirectory(Support/fildes_redir)
+add_subdirectory(Support/jbmalloc)
+add_subdirectory(Support/time)
+
+add_subdirectory(Platform/EpgPing)
+add_subdirectory(Platform/bsm)
+add_subdirectory(SecurityManagement)
+add_subdirectory(LicenseManagement/licd)
+add_subdirectory(ProcessManagement/CoreProcessWatchdog)
+add_subdirectory(Logging)

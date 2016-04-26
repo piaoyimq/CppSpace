@@ -1,0 +1,21 @@
+epg_add_lib("dhcp"
+    SSC
+    SRC
+        src/
+    PUBLIC
+        fmev
+        eventsupport
+        oamframework
+)
+
+
+epg_add_lib("dhcp_unittests"
+    SSC
+    TEST
+    SRC
+        test-src/
+    PUBLIC
+        dhcp
+)
+
+epg_add_classic_unittest("ut_Dhcp")
