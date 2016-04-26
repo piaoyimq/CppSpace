@@ -1,4 +1,0 @@
-set(GGSN_SRC_ROOT "${CMAKE_CURRENT_SOURCE_DIR}")
-
-add_subdirectory(ggsnc)
-epg_add_platform_subdirectory(ggsnu/edpi "Linux_elc;Linux_x86_64;SEOS_rp;SEOS_vrp")
