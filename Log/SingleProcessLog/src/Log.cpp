@@ -222,7 +222,7 @@ size_t Log::writeLogBody(Level logLevel, AppModuleId moduleId, char* des, size_t
 }
 
 
-bool Log::moveLogs(const char* oldFullName, const char* newFullName, uint32_t alreadyCompressFileAmount){
+bool Log::moveLogs(const char* oldFullName, const char* newFullName, int32_t alreadyCompressFileAmount){
     char oldFullNameTemp[DIR_LENGTH+NAME_LENGTH+2]={'\0'};
     char newFullNameTemp[DIR_LENGTH+NAME_LENGTH+2]={'\0'};
 

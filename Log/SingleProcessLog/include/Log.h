@@ -11,10 +11,12 @@
 #include <map>
 #include <stdarg.h>   //va_start
 #include <sys/syscall.h>
+#include <sys/types.h>
 #include <unistd.h>
 #include <stdint.h>
 #include <dirent.h>
 #include "BlockQueue.h"
+using namespace std;
 
 
 #define STRING_LENGTH 20
@@ -143,7 +145,7 @@ private:
 
     size_t writeLogBody(Level logLevel, AppModuleId moduleId, char* des, size_t desLength, size_t offset, const char* format,  va_list valst);
 
-    bool moveLogs(const char* oldName, const char* newName, uint32_t alreadyCompressFileAmount);
+    bool moveLogs(const char* oldName, const char* newName, int32_t alreadyCompressFileAmount);
 
     void *async_write_log() const;
 
