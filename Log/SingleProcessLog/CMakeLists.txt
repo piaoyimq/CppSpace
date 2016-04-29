@@ -2,13 +2,26 @@ add_compile_options(
     -Wcast-qual
 )
 
-epg_add_lib("singleprocesslog"
+cpp_add_lib("singleprocesslog"
+    #TEST LINUX
     SRC
         src/
 
     INCLUDE
         include/
 
-    PRIVATE
-    #support
+    PUBLIC
+        pthread
 )
+
+
+cpp_add_executable(SingleProcessLogTest
+    #TEST LINUX
+    BASE_DIR "Log/SingleProcessLog/test/"
+    SRC
+        test/
+      
+    PUBLIC
+        singleprocesslog	   
+)
+

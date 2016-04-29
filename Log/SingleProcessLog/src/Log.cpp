@@ -9,6 +9,7 @@
 #include <sstream> //stringstream
 #include <errno.h>
 #include <sys/stat.h>
+extern "C" const char* bin_version_raw;
 
 
 
@@ -161,6 +162,7 @@ Log::Log() :
     }
 
     writeLogHead();
+    logItself(CMethod, Notice, "%s", bin_version_raw);
     logItself(CMethod, Info, "%s: use synchronous type to logging", __FUNCTION__);
 //	sleep(2);//piaoyimq ???
 }

@@ -4,17 +4,17 @@
  *  Created on: Mar 26, 2016
  *      Author: piaoyimq
  */
+#include "Log.h"
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
 #include <stdlib.h>
 #include <signal.h>
-#include "Log.h"
 #include <sys/stat.h>
+//#include <pthread.h>
 
 #define THREAD_NUMBER   1
 #define COMPLEX_TEST     1
-
 
 
 
@@ -32,7 +32,6 @@ void *f(void* args) {
 
 
 int main(int argc, char* argv[]) {
-
     App_Log(Notice, LastId, "_______Function:%s, %d, line=%d", __FUNCTION__, 1, __LINE__);
 
     App_Log(Debug, LastId, "========Function:%s, %d, line=%d", __FUNCTION__, 2, __LINE__);//will not logging it, because the default log level is notice.

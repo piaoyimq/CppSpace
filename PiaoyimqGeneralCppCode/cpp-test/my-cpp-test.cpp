@@ -23,7 +23,7 @@
 #define C_PLUS_PLUS_ELEVEN 0
 
 static const double Pi = 3.14;
-static const char sgwStatsStr[] = "show services epg sgw statistics";
+static const char Str[] = "abc, 123";
 
 enum Color {
     COLOR_RED, COLOR_GREEN, COLOR_YELLOW
