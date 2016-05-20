@@ -75,6 +75,7 @@ message(STATUS "Boost library ${LIB_BOOST_REGEX}")
 add_compile_options(
     # -Werror is defined above
     #-Wall #piaoyimq
+    -g
     -Wextra
     -Wmissing-include-dirs
     -Wcast-align
