@@ -84,7 +84,7 @@ main ()
 		component=${elf##*/}
 		component=${component%%_*}
 		echo "Creating $component NOISREV version info"
-		genbuildver $component ${elf}_ver.c
+		$WS_ROOT/tools/build/genbuildver.sh $component ${elf}_ver.c
 		$COMPILE -c ${elf}_ver.c -o ${elf}_ver.o
 		command+=("${elf}_ver.o")
 	fi
