@@ -4,13 +4,25 @@
  *  Created on: Mar 29, 2016
  *      Author: piaoyimq
  */
-#include "Log.h"
+#include "Log/SingleProcessLog/include/Log.h"
 #include <string.h>
 #include <sstream> //stringstream
 #include <errno.h>
 #include <sys/stat.h>
 
 extern "C" const char* bin_version_raw;
+
+#define ONE_LINE_LOG_LENGTH 		1024
+
+#define FILE_HEAD_LENGTH    			1024
+
+#define SHELL_CONTENT_LENGTH    2048
+
+#define SPLIT_LINES  						2000000
+
+#define DEFAULT_TOTAL_LOG_SIZE	41 //0.09		//1024 //unit is Mbytes, this size is the total compressed logs size, not include the latest uncompressed log file size.
+
+#define LOG_DIRECTORY   ".." //"/var/log/"
 
 void Log::init(const char* dir, const char* fileName, uint32_t oneLineLogSize, uint32_t split_lines, double logTotalSize, Level logLevel,
 		uint32_t max_queue_size)

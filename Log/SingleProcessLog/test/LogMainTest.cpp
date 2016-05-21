@@ -4,7 +4,7 @@
  *  Created on: Mar 26, 2016
  *      Author: piaoyimq
  */
-#include "Log.h"
+#include "Log/SingleProcessLog/include/Log.h"
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>

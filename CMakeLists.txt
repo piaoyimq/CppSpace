@@ -45,12 +45,6 @@ set(CMAKE_C_LINK_EXECUTABLE "${LINKER_PREFIX} ${CMAKE_C_LINK_EXECUTABLE}")
 set(CMAKE_CXX_ARCHIVE_CREATE "<CMAKE_AR> cq <TARGET> <LINK_FLAGS> <OBJECTS>")
 set(CMAKE_CXX_ARCHIVE_APPEND "<CMAKE_AR> q <TARGET> <LINK_FLAGS> <OBJECTS>")
 
-# General includes
-include_directories(SYSTEM
-#    $ENV{BOOST_STAGING}/include#piaoyimq ok
-    #tools/test
-)
-
 # Strip unneeded so-lib dependencies for Linux_X, for example libsctp for EbmStreamRecorder_Linux_i586.elf.
 if(TARGET_OS STREQUAL "Linux")
    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--as-needed")
@@ -112,6 +106,17 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ")
 #  -Wsign-promo
 #  -Wzero-as-null-pointer-constant (GCC 4.7.0)
 
+# General includes
+include_directories(SYSTEM
+#    $ENV{BOOST_STAGING}/include#piaoyimq ok
+    #tools/test
+)
 
+
+include_directories(BEFORE
+    $ENV{WS_ROOT}
+)
+
+add_subdirectory(Common)
 add_subdirectory(Log)
 

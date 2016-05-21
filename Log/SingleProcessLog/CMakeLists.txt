@@ -2,16 +2,19 @@ add_compile_options(
     -Wcast-qual
 )
 
+
+
 cpp_add_lib("singleprocesslog"
     #TEST LINUX
     SRC
         src/
 
-    INCLUDE
-        include/
+ #   INCLUDE
+ #       include/
 
     PUBLIC
         pthread
+        common
 )
 
 

@@ -10,79 +10,33 @@
 #include <stdio.h>
 #include <map>
 #include <stdarg.h>   //va_start
-#include <sys/syscall.h>
 #include <sys/types.h>
-#include <unistd.h>
 #include <stdint.h>
 #include <dirent.h>
 #include "BlockQueue.h"
-using namespace std;
+#include "Common/include/Common.h"
 
-#define STRING_LENGTH 20
+#define DIR_LENGTH 						200
 
-#define DIR_LENGTH 200
+#define STRING_LENGTH 					20
 
-#define NAME_LENGTH 60
+#define NAME_LENGTH 						60
 
-#define BUF_SIZE 1024
+#define BUF_SIZE 								1024
 
-#define ONE_LINE_LOG_LENGTH 1024
-
-#define FILE_HEAD_LENGTH    1024
-
-#define SHELL_CONTENT_LENGTH    2048
-
-#define SPLIT_LINES  2000000
-
-#define DEFAULT_TOTAL_LOG_SIZE	41 //0.09		//1024 //unit is Mbytes, this size is the total compressed logs size, not include the latest uncompressed log file size.
-
-#define LOG_DIRECTORY   ".." //"/var/log/"
-
-#if 1//TODO: would be move to common directory. (piaoyimq)
-inline static pid_t getTid()
-{   // Must a static function, it called by a static funcion flushLogThread().
-	return syscall(SYS_gettid);
-}
-
-inline void getNameByPid(pid_t pid, char *processName)
-{    //should become a un inline function after move to common.
-	char procPidPath[DIR_LENGTH + 1] = { '\0' };
-	char buf[BUF_SIZE] = { '\0' };
-	sprintf(procPidPath, "/proc/%d/status", pid);
-	FILE* fp = fopen(procPidPath, "r");
-	if (NULL != fp)
-	{
-		if (fgets(buf, BUF_SIZE - 1, fp) == NULL)
-		{
-			fclose(fp);
-		}
-		fclose(fp);
-		sscanf(buf, "%*s %s", processName);
-	}
-}
-
-inline bool isDirPathExist(const char* dirpPath)
-{
-	if (NULL == dirpPath || NULL == opendir(dirpPath))
-	{
-		return false;
-	}
-	return true;
-}
-#endif
-
-template<class T>
-inline size_t getArrayLen(T& array)
-{
-	return (sizeof(array) / sizeof(array[0]));
-}
 
 enum AppModuleId
 {
-	LogId = 0, ConfId, LastId
+	LogId = 0,
+	ConfId,
+	LastId
 };
 
-const char logModuleString[][STRING_LENGTH] = { "Log", "Conf" };
+const char logModuleString[][STRING_LENGTH] =
+{
+		"Log",
+		"Conf"
+};
 
 enum Level
 {
@@ -97,15 +51,27 @@ enum Level
 	LastLevel
 };
 
-const char logLevelString[][STRING_LENGTH] = { "EMERG", "ALERT", "CRIT", "ERROR", "WARN", "NOTICE", "INFO", "DEBUG" };
+const char logLevelString[][STRING_LENGTH] =
+{
+		"EMERG",
+		"ALERT",
+		"CRIT",
+		"ERROR",
+		"WARN",
+		"NOTICE",
+		"INFO",
+		"DEBUG"
+};
 
 class Log
 {
 public:
-
 	enum LogMethod
 	{
-		CMethod = 0, CmdMethod, CmdWithHeadMethod, CmdOnlyWriteHeadMethod
+		CMethod = 0,
+		CmdMethod,
+		CmdWithHeadMethod,
+		CmdOnlyWriteHeadMethod
 	};
 
 	static Log& instance()	//Use static implement a instance.
