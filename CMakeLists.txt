@@ -73,7 +73,7 @@ message(STATUS "Boost library ${LIB_BOOST_REGEX}")
 
 # General warning flags
 add_compile_options(
-    #-Werror is defined above
+    -Werror
     -Wall
     -Wextra
     -Wmissing-include-dirs
@@ -113,5 +113,5 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ")
 #  -Wzero-as-null-pointer-constant (GCC 4.7.0)
 
 
-add_subdirectory(Log)#piaoyimq add
+add_subdirectory(Log)
 
