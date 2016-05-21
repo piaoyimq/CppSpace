@@ -13,16 +13,13 @@
 #include <sys/stat.h>
 //#include <pthread.h>
 
-#define THREAD_NUMBER   1
+#define THREAD_NUMBER   10
 #define COMPLEX_TEST     1
-
-
 
 #if COMPLEX_TEST
 void *f(void* args) {
 
-    for (int i = 0; i < 10; i++) {
-//		sleep(1);
+    for (int i = 0; i < 1000000; i++) {
         App_Log(Notice, LastId, "Function:%s, %d, line=%d", __FUNCTION__, 1, __LINE__);
         App_Log(Debug, LastId, "Function:%s, %d, line=%d", __FUNCTION__, 2, __LINE__);
         App_Log(Notice, LastId, "Function:%s,%d, line=%d", __FUNCTION__, 3, __LINE__);
@@ -30,13 +27,12 @@ void *f(void* args) {
 }
 #endif
 
-
 int main(int argc, char* argv[]) {
     App_Log(Notice, LastId, "_______Function:%s, %d, line=%d", __FUNCTION__, 1, __LINE__);
 
-    App_Log(Debug, LastId, "========Function:%s, %d, line=%d", __FUNCTION__, 2, __LINE__);//will not logging it, because the default log level is notice.
-    Log::instance().init(".", "my-test.log", 1024, 500000, 2, Debug, 10);
-    sleep(3);//TODO: why if lack of sleep(3), it will lost logs. (piaoyimq)???
+    App_Log(Debug, LastId, "========Function:%s, %d, line=%d", __FUNCTION__, 2, __LINE__); //will not logging it, because the default log level is notice.
+//    Log::instance().init(".", "my-test.log", 1024, 500000, 2, Debug, 10000);
+    Log::instance().init(".", "my-test.log", 1024, 500000, 2, Debug, 0);
 
     App_Log(Notice, LastId, "Function:%s, %d, line=%d", __FUNCTION__, 3, __LINE__);
 
