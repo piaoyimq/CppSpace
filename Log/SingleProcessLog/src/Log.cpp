@@ -379,7 +379,11 @@ void Log::logfilesControl(int32_t alreadyCompressFileAmount)
 	{
 		snprintf(command, sizeof(command), "gzip -f %s.1", logFullName);
 	}
-	system(command);
+	int ret = system(command);
+	if(-1 == ret)
+	{
+		fprintf(stderr, "Process \"%s\": system error\n", pidName);
+	}
 }
 
 void Log::flush() const
@@ -418,7 +422,12 @@ void Log::logItself(LogMethod logMethod, Level logLevel, const char* format, ...
 		{
 			writeLogHead(content);
 			snprintf(command, sizeof(command), "echo \"%s\" >> %s", content, logFullName);
-			system(command);
+			int ret = system(command);
+			if(-1 == ret)
+			{
+		        fprintf(stderr, "Process \"%s\": system error\n", pidName);
+			}
+			
 			if (CmdOnlyWriteHeadMethod == logMethod)
 			{
 				return;
@@ -431,7 +440,12 @@ void Log::logItself(LogMethod logMethod, Level logLevel, const char* format, ...
 		writeLogBody(logLevel, LogId, content, sizeof(content), 0, format, valst);
 
 		snprintf(command, sizeof(command), "echo \"%s\" >> %s", content, logFullName);
-		system(command);
+		int ret = system(command);
+		if(-1 == ret)
+		{
+		    fprintf(stderr, "Process \"%s\": system error\n", pidName);
+        }
+        
 		break;
 	}
 	default:
