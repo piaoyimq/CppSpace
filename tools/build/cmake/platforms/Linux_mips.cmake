@@ -16,4 +16,4 @@ add_definitions(
 
 set(CMAKE_C_FLAGS "-O1 -ggdb -fvar-tracking-assignments ${CMAKE_C_FLAGS}")
 set(CMAKE_CXX_FLAGS "-O1 -ggdb -fvar-tracking-assignments ${CMAKE_CXX_FLAGS}")
-set(LINKER_PREFIX "do_link -c gcc")
+set(LINKER_PREFIX "$ENV{WS_ROOT}/tools/build/do_link.sh -c gcc")
