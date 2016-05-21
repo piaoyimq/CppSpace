@@ -175,10 +175,6 @@ private:
 
     pthread_mutex_t *m_mutex;
 
-    pthread_cond_t cond;
-
-    pthread_mutex_t c_mutex;
-
     char dirPath[DIR_LENGTH+1];
 
     char logName[NAME_LENGTH+1];   //default logName is "process name+'.log'"
@@ -208,10 +204,6 @@ private:
     size_t queueMaxSize;
 
     bool isAsync;
-    bool isStartUp;
-    uint64_t lostNum;
-
-
 
     Level enableLogLevel;   // enable the log level and the upper level
 };

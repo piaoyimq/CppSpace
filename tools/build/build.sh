@@ -168,7 +168,7 @@ build_config()
 		#echo "Building xxx.."
 		#make -C ${WS_ROOT}/tools/build xxx-${platform}
 
-		if [ "Ninja" == "$GENERATOR" ]
+		if [ "Ninja" == $GENERATOR ]
 		then
 			#if use ninja, you can open the following lines
 			echo "Building using ninja in ${dir}..."
