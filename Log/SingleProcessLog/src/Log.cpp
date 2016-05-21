@@ -15,7 +15,7 @@ extern "C" const char* bin_version_raw;
 
 
 
-void Log::init(const char* dir, const char* fileName, uint32_t oneLineLogSize, uint32_t split_lines, double logTotalSize, Level logLevel, size_t max_queue_size) {
+void Log::init(const char* dir, const char* fileName, uint32_t oneLineLogSize, uint32_t split_lines, double logTotalSize, Level logLevel, uint32_t max_queue_size) {
     char dirPathTemp[DIR_LENGTH+1]={'\0'};
     char fileNameTemp[NAME_LENGTH+1]={'\0'};
     strncpy(dirPathTemp, dir, sizeof(dirPathTemp));
@@ -73,7 +73,7 @@ void Log::init(const char* dir, const char* fileName, uint32_t oneLineLogSize, u
 
     if (max_queue_size >= 1) {
         isAsync = true;
-        queueMaxSize= max_queue_size;
+        m_log_queue = new BlockQueue<string>(max_queue_size);
         pthread_t tid;
         pthread_create(&tid, NULL, flushLogThread, NULL);
         logItself(CMethod, Info, "%s: create a thread \'%d\', use asynchronous type to logging", __FUNCTION__, getTid());
@@ -124,9 +124,9 @@ void Log::writeLog(Level logLevel, AppModuleId moduleId, const char* format, ...
     log_str = m_buf;
     memset(m_buf, '\0', oneLineLogLength);
     pthread_mutex_unlock(m_mutex);
-    printf("logQueue.size()=%d\n", logQueue.size());
-    if (isAsync && logQueue.size() < queueMaxSize) {
-        logQueue.push(log_str);
+
+    if (isAsync && !m_log_queue->full()) {
+        m_log_queue->push(log_str);
     } else {
         pthread_mutex_lock(m_mutex);
         fputs(log_str.c_str(), m_fp);
@@ -247,14 +247,10 @@ bool Log::moveLogs(const char* oldFullName, const char* newFullName, int32_t alr
 }
 
 
-void *Log::async_write_log() {
+void *Log::async_write_log() const {
     string single_log;
-    printf("1-1 logQueue.size()=%d\n", logQueue.size());
-    while (logQueue.size()>0) {
+    while (m_log_queue->pop(single_log)) {
         pthread_mutex_lock(m_mutex);
-        single_log = logQueue.front();
-        logQueue.pop();
-        printf("1-2");
         fputs(single_log.c_str(), m_fp);
         pthread_mutex_unlock(m_mutex);
     }

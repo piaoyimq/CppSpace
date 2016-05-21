@@ -15,7 +15,6 @@
 #include <unistd.h>
 #include <stdint.h>
 #include <dirent.h>
-#include <queue>
 #include "BlockQueue.h"
 using namespace std;
 
@@ -132,7 +131,7 @@ public:
     static Log& instance() { static Log _instance;  return _instance;}  //Use static implement a instance.
 
 //    void init(const char* dir, const char* fileName, uint32_t log_buf_size = ONE_LINE_LOG_LENGTH, uint32_t split_lines = SPLIT_LINES, uint32_t max_queue_size = 0);
-    void init(const char* dir, const char* fileName, uint32_t oneLineLogSize, uint32_t split_lines ,  double logTotalSize, Level logLevel, size_t max_queue_size = 0);
+    void init(const char* dir, const char* fileName, uint32_t oneLineLogSize, uint32_t split_lines ,  double logTotalSize, Level logLevel, uint32_t max_queue_size = 0);
 
     void writeLog(Level logLevel, AppModuleId moduleId, const char* format, ...);
 
@@ -148,7 +147,7 @@ private:
 
     bool moveLogs(const char* oldName, const char* newName, int32_t alreadyCompressFileAmount);
 
-    void *async_write_log();
+    void *async_write_log() const;
 
     //Must a static function, it would be called by pthread_create(), a function pointer point at it.
     static void *flushLogThread(void* args) { instance().async_write_log();}
@@ -199,9 +198,7 @@ private:
 
     uint32_t logItselfLength;
 
-//    BlockQueue<string> *m_log_queue;
-    std::queue<string> logQueue;
-    size_t queueMaxSize;
+    BlockQueue<string> *m_log_queue;
 
     bool isAsync;
 
