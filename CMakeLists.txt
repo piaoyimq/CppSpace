@@ -73,8 +73,8 @@ message(STATUS "Boost library ${LIB_BOOST_REGEX}")
 
 # General warning flags
 add_compile_options(
-    # -Werror is defined above
-    #-Wall #piaoyimq
+    #-Werror is defined above
+    -Wall
     -Wextra
     -Wmissing-include-dirs
     -Wcast-align

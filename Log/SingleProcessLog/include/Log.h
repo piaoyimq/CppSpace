@@ -137,7 +137,9 @@ private:
 	//Must a static function, it would be called by pthread_create(), a function pointer point at it.
 	static void *flushLogThread(void* args)
 	{
+		static_cast<void>(args);
 		instance().async_write_log();
+		return NULL;
 	}
 
 	const char* getLogLevelString(Level logLevel) const //strings for printing message level

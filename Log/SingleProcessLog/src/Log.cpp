@@ -58,7 +58,6 @@ void Log::init(const char* dir, const char* fileName, uint32_t oneLineLogSize, u
 		else
 		{
 			logItself(CMethod, Critical, "%s: move logs failed, use default log file \'%s\'", __FUNCTION__, logFullName);
-			char c = getchar();
 			m_fp = fopen(logFullName, "a");
 			if (NULL == m_fp)
 			{
@@ -169,8 +168,8 @@ void Log::writeLog(Level logLevel, AppModuleId moduleId, const char* format, ...
 }
 
 Log::Log() :
-		counter(0), isAsync(false), currentLogAmount(0), oneLineLogLength(ONE_LINE_LOG_LENGTH), splitLines(SPLIT_LINES), logFilesTotalSize(
-				DEFAULT_TOTAL_LOG_SIZE), enableLogLevel(Notice), lostNum(0)
+		splitLines(SPLIT_LINES), oneLineLogLength(ONE_LINE_LOG_LENGTH), counter(0), currentLogAmount(0), logFilesTotalSize(DEFAULT_TOTAL_LOG_SIZE), isAsync(
+				false), isStartup(false), lostNum(0), enableLogLevel(Notice)
 {
 	memset(logItselfBuf, '\0', sizeof(logItselfBuf));
 	m_mutex = new pthread_mutex_t;
@@ -298,6 +297,7 @@ void *Log::async_write_log()
 		fputs(single_log.c_str(), m_fp);
 		pthread_mutex_unlock(m_mutex);
 	}
+	return NULL;
 }
 
 void Log::logfilesControl(int32_t alreadyCompressFileAmount)
@@ -380,7 +380,7 @@ void Log::logfilesControl(int32_t alreadyCompressFileAmount)
 		snprintf(command, sizeof(command), "gzip -f %s.1", logFullName);
 	}
 	int ret = system(command);
-	if(-1 == ret)
+	if (-1 == ret)
 	{
 		fprintf(stderr, "Process \"%s\": system error\n", pidName);
 	}
@@ -423,11 +423,11 @@ void Log::logItself(LogMethod logMethod, Level logLevel, const char* format, ...
 			writeLogHead(content);
 			snprintf(command, sizeof(command), "echo \"%s\" >> %s", content, logFullName);
 			int ret = system(command);
-			if(-1 == ret)
+			if (-1 == ret)
 			{
-		        fprintf(stderr, "Process \"%s\": system error\n", pidName);
+				fprintf(stderr, "Process \"%s\": system error\n", pidName);
 			}
-			
+
 			if (CmdOnlyWriteHeadMethod == logMethod)
 			{
 				return;
@@ -441,11 +441,11 @@ void Log::logItself(LogMethod logMethod, Level logLevel, const char* format, ...
 
 		snprintf(command, sizeof(command), "echo \"%s\" >> %s", content, logFullName);
 		int ret = system(command);
-		if(-1 == ret)
+		if (-1 == ret)
 		{
-		    fprintf(stderr, "Process \"%s\": system error\n", pidName);
-        }
-        
+			fprintf(stderr, "Process \"%s\": system error\n", pidName);
+		}
+
 		break;
 	}
 	default:
