@@ -108,11 +108,11 @@ public:
 		CMethod = 0, CmdMethod, CmdWithHeadMethod, CmdOnlyWriteHeadMethod
 	};
 
-	static Log& instance()
+	static Log& instance()	//Use static implement a instance.
 	{
 		static Log _instance;
 		return _instance;
-	}  //Use static implement a instance.
+	}
 
 //    void init(const char* dir, const char* fileName, uint32_t log_buf_size = ONE_LINE_LOG_LENGTH, uint32_t split_lines = SPLIT_LINES, uint32_t max_queue_size = 0);
 	void init(const char* dir, const char* fileName, uint32_t oneLineLogSize, uint32_t split_lines, double logTotalSize, Level logLevel,
@@ -122,7 +122,7 @@ public:
 
 private:
 
-	Log(); /*A private declaration for forbid inheriting*/
+	Log(); 	//A private declaration for forbid inheriting
 
 	~Log();
 
@@ -140,14 +140,12 @@ private:
 		instance().async_write_log();
 	}
 
-	/* strings for printing message level */
-	const char* getLogLevelString(Level logLevel) const
+	const char* getLogLevelString(Level logLevel) const //strings for printing message level
 	{
 		return logLevel < (static_cast<Level>(getArrayLen(logLevelString))) ? logLevelString[logLevel] : "Undefined";
 	}
 
-	/* strings for printing message level */
-	const char* getLogModuleString(AppModuleId logModule) const
+	const char* getLogModuleString(AppModuleId logModule) const 	//strings for printing message level
 	{
 		return logModule < (static_cast<AppModuleId>(getArrayLen(logModuleString))) ? logModuleString[logModule] : "Undefined";
 	}
