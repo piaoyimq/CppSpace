@@ -4,7 +4,7 @@
  *  Created on: 2016-05-22
  *      Author: piaoyimq
  */
-#include "Conf/ConfIni/include/inifile.h"
+#include "Conf/ConfIni/include/DIniFile.h"
 #include <stdlib.h>
 #include <iostream>
 
@@ -16,7 +16,7 @@ int main(int argc, char* argv[])
 	int variableInt;
 	double variableFloat;
 
-	DIniFile confFile("/home/piaoyimq/workspace/CppSpace/Conf/ConfIni/test/application.ini");
+	DIniFile confFile("Conf/ConfIni/test/application.ini");
 	variableString = confFile.ReadString("App", "Name", "Undefined");
 	std::cout <<  "[App]  " << "Name=" << variableString << std::endl;
 

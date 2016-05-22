@@ -1,4 +1,4 @@
-#include "Conf/ConfIni/include/inifile.h"
+#include "Conf/ConfIni/include/DIniFile.h"
 #include <stdlib.h>
 #include <assert.h>
 

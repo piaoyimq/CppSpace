@@ -9,7 +9,7 @@
 
 #include <stdlib.h>
 #include <assert.h>
-#include "profile.h"
+#include "TProfile.h"
 //#define CONTENT_MAX_READLEN 200
 class DIniFile
 {
