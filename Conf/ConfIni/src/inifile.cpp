@@ -3,10 +3,10 @@
 #ifdef __UNIX
 #include <ctype.h>
 #endif
-#include "inifile.h"
+#include "Conf/ConfIni/include/inifile.h"
 
 //------------------------------------------------------------------------
-DIniFile::DIniFile(const char *pFileNameP)
+DIniFile::DIniFile(char* pFileNameP)
 {
     assert( pFileNameP );
     pFileName = new char[ strlen(pFileNameP) + 1];
@@ -23,42 +23,42 @@ DIniFile::~DIniFile()
 	delete pProfile;
 	delete[] pFileName;
 }
-/*char* DIniFile::ReadString(const char* pSection, const char* pKey, const char* pDefault)
+/*char* DIniFile::ReadString(char* pSection, char* pKey, char* pDefault)
 {
 	memset(valueBuf,0,CONTENT_MAX_READLEN);
 	if ( !ReadFile(pSection, pKey, valueBuf ) )
-        return (char*) pDefault;
+        return  pDefault;
     else
         return valueBuf;
 }*/
-char * DIniFile::ReadString(const char * pSection,const char * pKey,const char * pDefault)
+char * DIniFile::ReadString(char* pSection,char* pKey, char * pDefault)
 {
 	memset(valueBuf,0,CONTENT_MAX_READLEN);
 	if(!ReadFile(pSection,pKey,valueBuf))
-	return (char *)pDefault;
+	return pDefault;
 	else 
 	return valueBuf;
 
 }
-char * DIniFile::ReadTString(const char * pSection,const char * pKey,const char * pDefault)
+char * DIniFile::ReadTString(char* pSection,char* pKey, char * pDefault)
 {
 	memset(valueBuf,0,CONTENT_MAX_READLEN);
 	if(!ReadTFile(pSection,pKey,valueBuf))
-	return (char *)pDefault;
+	return pDefault;
 	else 
 	return valueBuf;
 }
 
-void  DIniFile::WriteString(const char* pSection, const char* pKey, const char* pValue)
+void  DIniFile::WriteString(char* pSection, char* pKey, char* pValue)
 {
     WriteFile( pSection, pKey, pValue );
 }
-void  DIniFile::WriteTString(const char* pSection, const char* pKey, const char* pValue)
+void  DIniFile::WriteTString(char* pSection, char* pKey, char* pValue)
 {
     WriteFile( pSection, pKey, pValue );
 }
 
-int   DIniFile::ReadInteger(const char* pSection, const char* pKey, const int nDefault)
+int   DIniFile::ReadInteger(char* pSection, char* pKey, const int nDefault)
 {
 	memset((char *)valueBuf,00,CONTENT_MAX_READLEN);	
 	if(!ReadFile(pSection, pKey, valueBuf))
@@ -68,14 +68,14 @@ int   DIniFile::ReadInteger(const char* pSection, const char* pKey, const int nD
 
 }
 
-void  DIniFile::WriteInteger(const char* pSection, const char* pKey, const int nValue)
+void  DIniFile::WriteInteger(char* pSection, char* pKey, const int nValue)
 {
 	memset(valueBuf,0,CONTENT_MAX_READLEN);
 	sprintf(valueBuf,"%d",nValue);
     WriteFile(pSection, pKey, valueBuf);
 }
 /*
-bool  DIniFile::ReadBool(const char* pSection, const char* pKey, const bool Default)
+bool  DIniFile::ReadBool(char* pSection, char* pKey, const bool Default)
 {
 	memset(valueBuf,0,CONTENT_MAX_READLEN);
 	if ( !ReadFile(pSection, pKey, valueBuf) )
@@ -93,12 +93,12 @@ bool  DIniFile::ReadBool(const char* pSection, const char* pKey, const bool Defa
     return false;
 }
 
-void  DIniFile::WriteBool(const char* pSection, const char* pKey, const bool Value)
+void  DIniFile::WriteBool(char* pSection, char* pKey, const bool Value)
 {
     WriteFile(pSection, pKey, (Value ? "true" : "false") );
 }
 */
-double  DIniFile::ReadFloat(const char* pSection, const char* pKey, const double Default)
+double  DIniFile::ReadFloat(char* pSection, char* pKey, const double Default)
 {
 	memset(valueBuf,0,CONTENT_MAX_READLEN);
     if ( !ReadFile(pSection, pKey, valueBuf) )
@@ -107,19 +107,19 @@ double  DIniFile::ReadFloat(const char* pSection, const char* pKey, const double
         return atof(valueBuf);
 }
 
-void  DIniFile::WriteFloat(const char* pSection, const char* pKey, const double Value)
+void  DIniFile::WriteFloat(char* pSection, char* pKey, const double Value)
 {
 	memset(valueBuf,0,CONTENT_MAX_READLEN);
 	sprintf(valueBuf,"%f", Value);
     WriteFile(pSection, pKey, valueBuf);
 }
 
-int  DIniFile::SectionExists(const char* pSection)
+int  DIniFile::SectionExists(char* pSection)
 {
-	return pProfile->FindSection((char*)pSection);
+	return pProfile->FindSection(pSection);
 }
 
-int  DIniFile::ReadSectionKeys(const char* pSection, char**  & pStr)
+int  DIniFile::ReadSectionKeys(char* pSection, char**  & pStr)
 {
 	return ( pProfile->ReadSectionKeys(pSection,pStr) );
 }
@@ -129,29 +129,29 @@ int  DIniFile::ReadSections( char** &pSections)
 	return ( pProfile->ReadSections(pSections) );
 }
 
-int  DIniFile::ReadSectionValues(const char* pSection, char** & pStr)
+int  DIniFile::ReadSectionValues(char* pSection, char** & pStr)
 {
     return ( pProfile->ReadSectionValues(pSection,pStr) );
 }
 
-void  DIniFile::EraseSection(const char* pSection)
+void  DIniFile::EraseSection(char* pSection)
 {
-	pProfile->EraseSection((char*)pSection);
+	pProfile->EraseSection(pSection);
 }
 /*
-bool  DIniFile::KeyExists(const char* pSection, const char* pKey)
+bool  DIniFile::KeyExists(char* pSection, char* pKey)
 {
-	return ( (!pProfile->FindSection((char*)pSection) || 
-              !pProfile->FindName((char*)pSection,(char*)pKey)) \
+	return ( (!pProfile->FindSection(pSection) ||
+              !pProfile->FindName(pSection,pKey)) \
               ? false : true );
 }
 */
-void  DIniFile::DeleteKey(const char* pSection, const char* pKey)
+void  DIniFile::DeleteKey(char* pSection, char* pKey)
 {
-	pProfile->DeleteKey((char*)pSection,(char*)pKey);
+	pProfile->DeleteKey(pSection, pKey);
 }
 
-/*bool  DIniFile::ValueExists(const char* pSection, const char* pKey)
+/*bool  DIniFile::ValueExists(char* pSection, char* pKey)
 {
 	return (pProfile->ValueExists(pSection,pKey) ? true : false ) ;
 }
@@ -163,20 +163,20 @@ void DIniFile::ToLower(char *pBuf, int len)
 }
 
 
-int DIniFile::WriteFile(const char* pSection, const char *pKey, const char *pValue)
+int DIniFile::WriteFile(char* pSection, char *pKey, char *pValue)
 {
     int mError = 0;
     
-	if (!pProfile->FindSection((char*)pSection))
+	if (!pProfile->FindSection(pSection))
 	{
-	 	if (!pProfile->NewValue((char*)pSection, (char*)pKey, (char*)pValue))
+	 	if (!pProfile->NewValue(pSection, pKey, pValue))
 			mError=-1;
 	}
 	/*section exist, but name not exist*/
-	else if (!pProfile->FindName((char*)pSection, (char*)pKey))
-	{	if (pProfile->NewNameOfSection((char*)pSection, (char*)pKey))
+	else if (!pProfile->FindName(pSection, pKey))
+	{	if (pProfile->NewNameOfSection(pSection, pKey))
 		{
-			if (!pProfile->NewValueOfName((char*)pSection, (char*)pKey, (char*)pValue))
+			if (!pProfile->NewValueOfName(pSection, pKey, pValue))
 				mError=-3;
 		}
 		else
@@ -185,23 +185,23 @@ int DIniFile::WriteFile(const char* pSection, const char *pKey, const char *pVal
 	/*section and name both exist*/
 	else
 	{
-		if (!pProfile->WriteString((char*)pSection, \
-            (char*)pKey, 1, (char*)pValue))
+		if (!pProfile->WriteString(pSection, \
+            pKey, 1, pValue))
 			mError=-4;
 	}
 
     return mError;
 }
 
-int DIniFile::ReadFile(const char* pSection, const char *pKey, char *pValue)
+int DIniFile::ReadFile(char* pSection, char*pKey, char *pValue)
 {
-	return pProfile->ReadString((char*)pSection, \
-            (char*)pKey, 1, (char*)pValue);
+	return pProfile->ReadString(pSection, \
+            pKey, 1, pValue);
 }
-int DIniFile::ReadTFile(const char* pSection, const char *pKey, char *pValue)
+int DIniFile::ReadTFile(char* pSection, char*pKey, char *pValue)
 {
-	return pProfile->ReadTString((char*)pSection, \
-            (char*)pKey, 1, (char*)pValue);
+	return pProfile->ReadTString(pSection, \
+            pKey, 1, pValue);
 }
 
 char* DIniFile::encrypt(char *pBuf, int len)

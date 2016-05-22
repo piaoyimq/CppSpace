@@ -1,5 +1,6 @@
-#include "profile.h"
-#include "inifile.h"
+#include "Conf/ConfIni/include/profile.h"
+#include "Conf/ConfIni/include/inifile.h"
+
 //-----------------------function define ----------------------------------
 /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
@@ -66,7 +67,7 @@ int TProfile::FindSection( char* secname )
 {
 	if ( Profile.eof() )
 		Profile.clear();
-	Profile.seekg( 0, ios::beg );
+	Profile.seekg( 0, std::ios::beg );
 	if ( !Profile )
 		return 0;
 	while ( GetLine(Buffer, constLINEBUFFERSIZE, delimENDOFLINE) )
@@ -172,7 +173,7 @@ char* TProfile::FindTValue( char* section, char* name, int index )
 
 int TProfile::Backup( char* backup )
 {
-	ofstream backupfile( backup );
+	std::ofstream backupfile( backup );
 	char buf;
 	if ( Profile.good() && backupfile.good() )
 	{
@@ -187,7 +188,7 @@ int TProfile::Backup( char* backup )
 
 int TProfile::Restore( char* backup )
 {
-	ifstream backupfile( backup );
+	std::ifstream backupfile( backup );
 	char buf;
 	if ( Profile.good() && backupfile.good() )
 	{
@@ -218,8 +219,8 @@ int TProfile::NewSection( char* section )
 		return 0;
 	if ( Profile.eof() )
 		Profile.clear();
-	Profile.seekg( 0, ios::end );
-	Profile << endl << '[' << section << ']' << endl ;
+	Profile.seekg( 0, std::ios::end );
+	Profile << std::endl << '[' << section << ']' << std::endl ;
 	return 1;
 }
 
@@ -239,7 +240,7 @@ int TProfile::NewValue( char* section, char* name, char* value )
 {
 	if ( NewName( section, name ) )
 	{
-		Profile << value << endl;
+		Profile << value << std::endl;
 		return 1;
 	}
 	return 0;
@@ -274,7 +275,7 @@ int TProfile::NewNameOfSection( char* section, char* name )
 	return 0;
 }
 
-int TProfile::PutLine( streampos position, char* newline )
+int TProfile::PutLine( std::streampos position, char* newline )
 {
 	char tempFilename[L_tmpnam];
 	if ( !tmpnam( tempFilename ) )
@@ -284,7 +285,7 @@ int TProfile::PutLine( streampos position, char* newline )
 		if ( Profile.eof() )
 			Profile.clear();
 		Profile.seekp( position );
-		Profile << newline << endl;
+		Profile << newline << std::endl;
 		if ( Restore( tempFilename ) )
 			return (-1==unlink(tempFilename) ? 0 : 1);
 	}
@@ -374,7 +375,7 @@ int TProfile::ReadSections( char** & pSections)
 
 	if ( Profile.eof() )
 		Profile.clear();
-	Profile.seekg( 0, ios::beg );
+	Profile.seekg( 0, std::ios::beg );
 	if ( !Profile ) {
 		return 0;//1 is true,0 is false
 	}
@@ -505,7 +506,7 @@ int TProfile::ReturnValue(char* pContent,char*  pValue)
 }
 
 ///////////
-int   TProfile::ReadSectionKeys(const char* pSection, char** & pStr)
+int   TProfile::ReadSectionKeys(char* pSection, char** & pStr)
 {
 	/*read  all key names of specified section
 	return value is the number of char array, 
@@ -517,7 +518,7 @@ int   TProfile::ReadSectionKeys(const char* pSection, char** & pStr)
 
 	if ( Profile.eof() )
 		Profile.clear();
-	Profile.seekg( 0, ios::beg );
+	Profile.seekg( 0, std::ios::beg );
 	if ( !Profile ) {
 		return 0;//1 is true,0 is false
 	}
@@ -532,7 +533,7 @@ int   TProfile::ReadSectionKeys(const char* pSection, char** & pStr)
 	mCount=0;
 	while ( GetLine(Buffer, constLINEBUFFERSIZE, delimENDOFLINE) )  {
 		if (!mStartCopy) {
-			if (IsSection(Buffer,(char*)pSection))
+			if (IsSection(Buffer, pSection))
 				mStartCopy=1;
 		}
 		else {
@@ -564,7 +565,7 @@ int   TProfile::ReadSectionKeys(const char* pSection, char** & pStr)
 	return mCount;
 }
 ////////////
-int  TProfile::ReadSectionValues(const char* pSection, char** &pStr)
+int  TProfile::ReadSectionValues(char* pSection, char** &pStr)
 {
 	/*read  all value of keys in specified section
 	return value is the number of char array, 
@@ -575,7 +576,7 @@ int  TProfile::ReadSectionValues(const char* pSection, char** &pStr)
 
 	if ( Profile.eof() )
 		Profile.clear();
-	Profile.seekg( 0, ios::beg );
+	Profile.seekg( 0, std::ios::beg );
 	if ( !Profile ) {
 		return 0;//1 is true,0 is false
 	}
@@ -590,7 +591,7 @@ int  TProfile::ReadSectionValues(const char* pSection, char** &pStr)
 	mCount=0;
 	while ( GetLine(Buffer, constLINEBUFFERSIZE, delimENDOFLINE) )  {
 		if (!mStartCopy) {
-			if (IsSection(Buffer,(char*)pSection))
+			if (IsSection(Buffer,pSection))
 				mStartCopy=1;
 		}
 		else {
@@ -621,7 +622,7 @@ int  TProfile::ReadSectionValues(const char* pSection, char** &pStr)
 
 }
 ////////////
-int  TProfile::ValueExists(const char* pSection, const char* pKey)
+int  TProfile::ValueExists(char* pSection, const char* pKey)
 {
 	//return 1 is true,0 is false
 	char *pIsSection=NULL;
@@ -630,7 +631,7 @@ int  TProfile::ValueExists(const char* pSection, const char* pKey)
 
 	if ( Profile.eof() )
 		Profile.clear();
-	Profile.seekg( 0, ios::beg );
+	Profile.seekg( 0, std::ios::beg );
 	if ( !Profile ) {
 		return 0;//1 is true,0 is false
 	}
@@ -641,7 +642,7 @@ int  TProfile::ValueExists(const char* pSection, const char* pKey)
 	//read each line  in file
 	while ( GetLine(Buffer, constLINEBUFFERSIZE, delimENDOFLINE) )  {
 		if (!mStartCopy) {
-			if (IsSection(Buffer,(char*)pSection)) //find section
+			if (IsSection(Buffer, pSection)) //find section
 				mStartCopy=1;
 		}
 		else {

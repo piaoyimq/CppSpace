@@ -119,4 +119,5 @@ include_directories(BEFORE
 
 add_subdirectory(Common)
 add_subdirectory(Log)
+add_subdirectory(Conf)
 

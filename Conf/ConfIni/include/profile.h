@@ -4,8 +4,8 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <iostream.h>
-#include <fstream.h>
+#include <iostream>
+#include <fstream>
 #include <ctype.h>
 
 #define __UNIX
@@ -43,8 +43,8 @@ const char delimREMARK       = '#' ;
 
 class TProfile
 {
-	fstream   Profile;
-	streampos posOldLine;
+	std::fstream   Profile;
+	std::streampos posOldLine;
 	char      Buffer[constLINEBUFFERSIZE];
 	char*     bufferPtr;
 	char      Token[constTOKENBUFFERSIZE];
@@ -58,12 +58,12 @@ public:
 	/////2000/3/30 add begin
 
 	//return 1 is true,0 is false
-	int  ValueExists(const char* pSection, const char* pKey);
+	int  ValueExists(char* pSection, const char* pKey);
 
 	//read  all value of keys in specified section
 	//return value is the number of char array, 
 	//caller must free alloced memory!! 
-	int  ReadSectionValues(const char* pSection, char** &pStr);
+	int  ReadSectionValues(char* pSection, char** &pStr);
 
 	//erase specified section all content,include key ,value and specified section name itself 
 	void  EraseSection(char* pSection);
@@ -86,7 +86,7 @@ public:
 	//read  all key names of specified section
 	//return value is the number of char array, 
 	//caller must free alloced memory!! 
-    int  ReadSectionKeys(const char* pSection, char** & pStr) ;
+    int  ReadSectionKeys(char* pSection, char** & pStr) ;
 
 	//read all sections name
 	//1 is true,0 is false
@@ -98,10 +98,10 @@ public:
 
 	TProfile () { mLesslen=0;}
 	~TProfile() { Profile.close(); mLesslen=0;}
-	TProfile( char* filename ) : Profile( filename, ios::in|ios::out ) { }
+	TProfile( char* filename ) : Profile( filename, std::ios::in|std::ios::out ) { }
 
-	fstream& File() { return Profile; }
-	fstream& Open( char* filename, int mode = ios::in|ios::out )
+	std::fstream& File() { return Profile; }
+	std::fstream& Open( char* filename, std::ios::openmode mode = std::ios::in|std::ios::out )
 	{
 		Profile.open( filename, mode );
 		return Profile;
@@ -204,7 +204,7 @@ private:
 	int GetLine( char* pch, int nCount, char delim = delimENDOFLINE );
 	int GetLine( unsigned char* puch, int nCount, char delim = delimENDOFLINE );
 	
-	int PutLine ( streampos position, char* newline );
+	int PutLine ( std::streampos position, char* newline );
 	int PutValue( char* section, char* name, char* buffer, int index, char* value );
 
 	int Backup( char* backup );
