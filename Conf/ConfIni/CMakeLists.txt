@@ -3,8 +3,6 @@ add_compile_options(
 )
 
 
-
-
 cpp_add_lib("confini"
     #TEST LINUX
     SRC
