@@ -1,0 +1,43 @@
+CXX = /usr/vacpp/bin/xlC_r
+LD = /usr/vacpp/bin/xlC_r
+OBJDIR = ../bin
+LDFLAGS = -bdynamic -brtl
+CCLIB = $(LD) $(LDFLAGS) $(OBJ_LIST) -G -o $(APP_LIB)
+
+CXXFLAGS = -g -qnotempinc -bdynamic -brtl -D_RWCONFIG=15d  -DRW_NO_STL -qchars=signed -qnamemangling=v5
+INCLUDE_PATH = -I/usr/vacpp/include \
+               -I$(RW_HOME) \
+               -I$(RW_HOME)/include \
+               -I../include \
+               -I$(ODBCHOME)/include
+
+CLOBJ = $(CXX) $(CXXFLAGS) $(INCLUDE_PATH) -c
+
+FILE_LIST =	inifile.cpp profile.cpp
+
+OBJ_LIST = $(FILE_LIST:%.cpp=$(OBJDIR)/%.o)
+APP_LIB = $(PROG_LIB:%=$(OBJDIR)/lib%.so)
+
+PROG_LIB = cfg
+CCOBJ = $(CLOBJ)
+
+default : $(PROG_LIB)
+
+$(PROG_LIB) : $(OBJ_LIST)
+	@echo compile $(APP_LIB) ......
+	@echo $(CCLIB)
+	@$(CCLIB) 
+	@echo \*\*\* $(LIB_DIR)/$(PROG_LIB) COMPILE COMPLETE!
+	@echo
+
+$(OBJDIR)/%.o : %.cpp 
+	@echo compile $< ......
+	@echo $(CCOBJ)
+	@$(CCOBJ) $< -o $@
+
+clean :
+	rm -rf $(OBJ_LIST) $(APP_LIB)
+
+install:
+	if test -f $(APP_LIB); then cp $(APP_LIB) $(IPNMSHOME)/lib;fi;
+
