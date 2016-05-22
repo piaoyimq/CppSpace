@@ -1,11 +1,11 @@
-#include "Conf/ConfIni/include/DIniFile.h"
+#include "Conf/ConfIni/include/ConfigIni.h"
 #include <stdlib.h>
 #include <assert.h>
 
 
 
 //------------------------------------------------------------------------
-DIniFile::DIniFile(const char* pFileNameP)
+ConfigIni::ConfigIni(const char* pFileNameP)
 {
 	assert(pFileNameP);
 	pFileName = new char[strlen(pFileNameP) + 1];
@@ -16,13 +16,13 @@ DIniFile::DIniFile(const char* pFileNameP)
 	assert(pProfile);
 }
 
-DIniFile::~DIniFile()
+ConfigIni::~ConfigIni()
 {
 	delete[] valueBuf;
 	delete pProfile;
 	delete[] pFileName;
 }
-/*char* DIniFile::ReadString(const char* pSection, const char* pKey, char* pDefault)
+/*char* ConfigIni::ReadString(const char* pSection, const char* pKey, char* pDefault)
  {
  memset(valueBuf,0,CONTENT_MAX_READLEN);
  if ( !ReadFile(pSection, pKey, valueBuf ) )
@@ -30,7 +30,7 @@ DIniFile::~DIniFile()
  else
  return valueBuf;
  }*/
-const char * DIniFile::ReadString(const char* pSection, const char* pKey, const char * pDefault)
+const char * ConfigIni::ReadString(const char* pSection, const char* pKey, const char * pDefault)
 {
 	memset(valueBuf, 0, CONTENT_MAX_READLEN);
 	if (!ReadFile(pSection, pKey, valueBuf))
@@ -39,7 +39,7 @@ const char * DIniFile::ReadString(const char* pSection, const char* pKey, const 
 		return valueBuf;
 
 }
-const char * DIniFile::ReadTString(const char* pSection, const char* pKey, const char * pDefault)
+const char * ConfigIni::ReadTString(const char* pSection, const char* pKey, const char * pDefault)
 {
 	memset(valueBuf, 0, CONTENT_MAX_READLEN);
 	if (!ReadTFile(pSection, pKey, valueBuf))
@@ -48,16 +48,16 @@ const char * DIniFile::ReadTString(const char* pSection, const char* pKey, const
 		return valueBuf;
 }
 
-void DIniFile::WriteString(const char* pSection, const char* pKey, const char* pValue)
+void ConfigIni::WriteString(const char* pSection, const char* pKey, const char* pValue)
 {
 	WriteFile(pSection, pKey, pValue);
 }
-void DIniFile::WriteTString(const char* pSection, const char* pKey, char* pValue)
+void ConfigIni::WriteTString(const char* pSection, const char* pKey, char* pValue)
 {
 	WriteFile(pSection, pKey, pValue);
 }
 
-int DIniFile::ReadInteger(const char* pSection, const char* pKey, int nDefault)
+int ConfigIni::ReadInteger(const char* pSection, const char* pKey, int nDefault)
 {
 	memset((char *) valueBuf, 00, CONTENT_MAX_READLEN);
 	if (!ReadFile(pSection, pKey, valueBuf))
@@ -67,14 +67,14 @@ int DIniFile::ReadInteger(const char* pSection, const char* pKey, int nDefault)
 
 }
 
-void DIniFile::WriteInteger(const char* pSection, const char* pKey, const int nValue)
+void ConfigIni::WriteInteger(const char* pSection, const char* pKey, const int nValue)
 {
 	memset(valueBuf, 0, CONTENT_MAX_READLEN);
 	sprintf(valueBuf, "%d", nValue);
 	WriteFile(pSection, pKey, valueBuf);
 }
 /*
- bool  DIniFile::ReadBool(const char* pSection, const char* pKey, const bool Default)
+ bool  ConfigIni::ReadBool(const char* pSection, const char* pKey, const bool Default)
  {
  memset(valueBuf,0,CONTENT_MAX_READLEN);
  if ( !ReadFile(pSection, pKey, valueBuf) )
@@ -92,12 +92,12 @@ void DIniFile::WriteInteger(const char* pSection, const char* pKey, const int nV
  return false;
  }
 
- void  DIniFile::WriteBool(const char* pSection, const char* pKey, const bool Value)
+ void  ConfigIni::WriteBool(const char* pSection, const char* pKey, const bool Value)
  {
  WriteFile(pSection, pKey, (Value ? "true" : "false") );
  }
  */
-double DIniFile::ReadFloat(const char* pSection, const char* pKey,  double Default)
+double ConfigIni::ReadFloat(const char* pSection, const char* pKey,  double Default)
 {
 	memset(valueBuf, 0, CONTENT_MAX_READLEN);
 	if (!ReadFile(pSection, pKey, valueBuf))
@@ -106,62 +106,62 @@ double DIniFile::ReadFloat(const char* pSection, const char* pKey,  double Defau
 		return atof(valueBuf);
 }
 
-void DIniFile::WriteFloat(const char* pSection, const char* pKey, const double Value)
+void ConfigIni::WriteFloat(const char* pSection, const char* pKey, const double Value)
 {
 	memset(valueBuf, 0, CONTENT_MAX_READLEN);
 	sprintf(valueBuf, "%f", Value);
 	WriteFile(pSection, pKey, valueBuf);
 }
 
-int DIniFile::SectionExists(const char* pSection)
+int ConfigIni::SectionExists(const char* pSection)
 {
 	return pProfile->FindSection(pSection);
 }
 
-int DIniFile::ReadSectionKeys(const char* pSection, char** & pStr)
+int ConfigIni::ReadSectionKeys(const char* pSection, char** & pStr)
 {
 	return (pProfile->ReadSectionKeys(pSection, pStr));
 }
 
-int DIniFile::ReadSections(char** &pSections)
+int ConfigIni::ReadSections(char** &pSections)
 {
 	return (pProfile->ReadSections(pSections));
 }
 
-int DIniFile::ReadSectionValues(const char* pSection, char** & pStr)
+int ConfigIni::ReadSectionValues(const char* pSection, char** & pStr)
 {
 	return (pProfile->ReadSectionValues(pSection, pStr));
 }
 
-void DIniFile::EraseSection(const char* pSection)
+void ConfigIni::EraseSection(const char* pSection)
 {
 	pProfile->EraseSection(pSection);
 }
 /*
- bool  DIniFile::KeyExists(const char* pSection, const char* pKey)
+ bool  ConfigIni::KeyExists(const char* pSection, const char* pKey)
  {
  return ( (!pProfile->FindSection(pSection) ||
  !pProfile->FindName(pSection,pKey)) \
               ? false : true );
  }
  */
-void DIniFile::DeleteKey(const char* pSection, const char* pKey)
+void ConfigIni::DeleteKey(const char* pSection, const char* pKey)
 {
 	pProfile->DeleteKey(pSection, pKey);
 }
 
-/*bool  DIniFile::ValueExists(const char* pSection, const char* pKey)
+/*bool  ConfigIni::ValueExists(const char* pSection, const char* pKey)
  {
  return (pProfile->ValueExists(pSection,pKey) ? true : false ) ;
  }
  */
-void DIniFile::ToLower(char *pBuf, int len)
+void ConfigIni::ToLower(char *pBuf, int len)
 {
 	for (int i = 0; i < len; i++)
 		pBuf[i] = ::tolower(pBuf[i]);
 }
 
-int DIniFile::WriteFile(const char* pSection, const char* pKey, const char *pValue)
+int ConfigIni::WriteFile(const char* pSection, const char* pKey, const char *pValue)
 {
 	int mError = 0;
 
@@ -192,16 +192,16 @@ int DIniFile::WriteFile(const char* pSection, const char* pKey, const char *pVal
 	return mError;
 }
 
-int DIniFile::ReadFile(const char* pSection, const char*pKey, char *pValue)
+int ConfigIni::ReadFile(const char* pSection, const char*pKey, char *pValue)
 {
 	return pProfile->ReadString(pSection, pKey, 1, pValue);
 }
-int DIniFile::ReadTFile(const char* pSection, const char*pKey, char *pValue)
+int ConfigIni::ReadTFile(const char* pSection, const char*pKey, char *pValue)
 {
 	return pProfile->ReadTString(pSection, pKey, 1, pValue);
 }
 
-char* DIniFile::encrypt(char *pBuf, int len)
+char* ConfigIni::encrypt(char *pBuf, int len)
 {
 	int mI;
 	for (int i = 0; i < len; i++)
@@ -214,7 +214,7 @@ char* DIniFile::encrypt(char *pBuf, int len)
 	return pBuf;
 }
 
-char* DIniFile::decrypt(char *pBuf, int len)
+char* ConfigIni::decrypt(char *pBuf, int len)
 {
 	int mI;
 	for (int i = 0; i < len; i++)

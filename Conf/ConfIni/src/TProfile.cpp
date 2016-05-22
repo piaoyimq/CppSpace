@@ -1,5 +1,5 @@
 #include "Conf/ConfIni/include/TProfile.h"
-#include "Conf/ConfIni/include/DIniFile.h"
+#include "Conf/ConfIni/include/ConfigIni.h"
 
 //-----------------------function define ----------------------------------
 /////////////////////////////////////////////////////////////////////

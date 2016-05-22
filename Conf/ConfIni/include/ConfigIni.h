@@ -1,17 +1,17 @@
 //------------------------------------------------------------------------
-// inifile.h is used for declaration of class DInifile
+// inifile.h is used for declaration of class ConfigIni
 //------------------------------------------------------------------------
 /*attention:
  at end of ini file,must end with empty line,or the end data can not read!
  */
-#ifndef DInifileH
-#define DInifileH
+#ifndef ConfigIniH
+#define ConfigIniH
 
 #include <stdlib.h>
 #include <assert.h>
 #include "TProfile.h"
 //#define CONTENT_MAX_READLEN 200
-class DIniFile
+class ConfigIni
 {
 private:
 	TProfile *pProfile;
@@ -21,8 +21,8 @@ private:
 	int nStrCount;
 //	char Buf[CONTENT_MAX_READLEN];
 public:
-	DIniFile(const char *pFileNameP);
-	~DIniFile();
+	ConfigIni(const char *pFileNameP);
+	~ConfigIni();
 
 	void ToLower(char *pBuf, int len);
 	const char* ReadString(const char* pSection, const char* pKey, const char* pDefault);
