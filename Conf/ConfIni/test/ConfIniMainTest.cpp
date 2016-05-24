@@ -9,33 +9,18 @@
 #include <stdlib.h>
 #include <iostream>
 
+ConfigIni confFile("Conf/ConfIni/test/application.ini");
 
 TEST(ConfigIni, ReadString) {
-//  Counter c;
-
-  // EXPECT_EQ() evaluates its arguments exactly once, so they
-  // can have side effects.
-
-//  EXPECT_EQ(0, c.Increment());
-//  EXPECT_EQ(1, c.Increment());
-//  EXPECT_EQ(2, c.Increment());
-  ConfigIni confFile("Conf/ConfIni/test/application.ini");
-//  const char* varString;
-//  varString = confFile.ReadString("App", "Name", "Undefined");
-  EXPECT_EQ("a", confFile.ReadString("App", "Name", "Undefined"));
+   EXPECT_TRUE(strcmp("Firefox", confFile.ReadString("App", "Name", "Undefined")) == 0);
+   EXPECT_STREQ("Firefox", confFile.ReadString("App", "Name", "Undefined"));
 }
-//int main(int argc, char* argv[])
-//{
-//	static_cast<void>(argc);
-//	static_cast<void>(argv);
-//	const char* variableString;
-//	int variableInt;
-//	double variableFloat;
-//
-//	ConfigIni confFile("Conf/ConfIni/test/application.ini");
-//	variableString = confFile.ReadString("App", "Name", "Undefined");
-//	std::cout <<  "[App]  " << "Name=" << variableString << std::endl;
-//
+
+TEST(ConfigIni, ReadTString) {
+   EXPECT_STREQ("Mozilla", confFile.ReadTString("App", "Vendor", "Undefined"));
+   EXPECT_STREQ("Undefined", confFile.ReadTString("App", "Vndor", "Undefined"));
+}
+
 //	variableString = confFile.ReadString("Ap", "Name", "Undefined");
 //	std::cout <<  "[Ap]   " << "Name=" << variableString << std::endl;
 //
