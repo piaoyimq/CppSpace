@@ -10,7 +10,7 @@ trap 'echo -e "\nAborted due to unhandled error $? in $0 near line $LINENO on th
 shopt -s extglob # Support fancy globbing
 
 # Global/env defaults
-[ -n "$BUILD_DIR_CMAKE" ] || export BUILD_DIR_CMAKE="$WS_ROOT/build"
+[ -n "$BUILD_DIR_CMAKE" ] || export BUILD_DIR_CMAKE="$WS_ROOT/output"
 [ -n "$JOB_CORES" ] || export JOB_CORES=16
 [ "$BUILD_WITH_GCOV" == true ] || export BUILD_WITH_GCOV=false
 VALID_PLATFORMS="Linux_x86|Linux_mips"

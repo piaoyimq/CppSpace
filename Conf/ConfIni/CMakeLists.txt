@@ -21,5 +21,6 @@ cpp_add_executable(ConfIniTest
       
     PUBLIC
         confini	   
+	googletest
 )
 
