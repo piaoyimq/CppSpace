@@ -1,5 +1,6 @@
 #include "Conf/ConfIni/include/TProfile.h"
 #include "Conf/ConfIni/include/ConfigIni.h"
+#include<unistd.h>
 
 //-----------------------function define ----------------------------------
 /////////////////////////////////////////////////////////////////////
