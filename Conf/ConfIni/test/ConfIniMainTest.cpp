@@ -18,7 +18,7 @@ TEST(ConfigIni, ReadString) {
 
 TEST(ConfigIni, ReadTString) {
    EXPECT_STREQ("Mozilla", confFile.ReadTString("App", "Vendor", "Undefined"));
-   EXPECT_STREQ("Undefined", confFile.ReadTString("App", "Vndor", "Undefined"));
+   EXPECT_STREQ("Undefine", confFile.ReadTString("App", "Vndor", "Undefined"));
 }
 
 //	variableString = confFile.ReadString("Ap", "Name", "Undefined");

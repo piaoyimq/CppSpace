@@ -1,8 +1,11 @@
-#!/bin/bash -E
+#!/bin/bash
+#-E
 # -*- mode:sh; tab-width:4; indent-tabs-mode:t; -*-
 # vim: set filetype=bash syntax=sh autoindent noexpandtab tabstop=4 shiftwidth=4 :
 
 # A build wrapper calling CMake and ninja supporting standardized variant folders and start_job.
+
+set -e
 export WS_ROOT=$HOME/workspace/CppSpace
 
 # Setup shell
@@ -71,6 +74,29 @@ err_exit()
 {
 	echo -e "\nError: $2\nAborting..." >&2
 	exit $1
+}
+
+run_ut()
+{
+    set +e 
+    file_list=$(ls $BUILD_DIR_CMAKE/$config/bin|grep Test)
+	echo $file_list
+	echo "$BUILD_DIR_CMAKE/$config/bin"
+    array=($file_list)
+    
+    length=${#array[@]}
+    if [ $length -ne 0 ]
+    then
+        for ((i=0; i<$length; i++))
+            do
+    	    echo
+    	    echo -e "\033[33m**********  Perform [$i] ${array[$i]}  **********\033[0m"
+    	    echo
+				cd $WS_ROOT
+                ./output/$config/bin/${array[$i]}
+            done
+    fi
+
 }
 
 # Clean, generate and build for config $1
@@ -181,6 +207,8 @@ build_config()
 			echo "Building using make in ${dir}..."
 			make -f $dir/Makefile #or use make -C $dir
 		fi
+
+		run_ut
 
 	fi
 }
