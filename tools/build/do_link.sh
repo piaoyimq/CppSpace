@@ -90,7 +90,7 @@ main ()
 	fi
 
 	# Do actual linking
-	echo -e "\033[32mSuccessfully linked: $elf\033[0m"
+	echo -e "\033[32mSuccessfully linking $elf\033[0m"
 	"${command[@]}"
 
 	# Create unstripped/stripped binaries with version info appended according to all rules
