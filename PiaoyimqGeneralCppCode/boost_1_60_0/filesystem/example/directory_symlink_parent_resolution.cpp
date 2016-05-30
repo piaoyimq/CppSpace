@@ -19,23 +19,23 @@ using namespace boost::filesystem;
 int cpp_main(int argc, char* argv[])
 {
 # ifdef BOOST_WINDOWS_API
-  cout  << "BOOST_WINDOWS_API" << endl;
+	cout << "BOOST_WINDOWS_API" << endl;
 # else
-  cout  << "BOOST_POSIX_API" << endl;
+	cout << "BOOST_POSIX_API" << endl;
 # endif
 
-  path test_dir(current_path() / "dspr_demo");
+	path test_dir(current_path() / "dspr_demo");
 
-  remove_all(test_dir);
-  create_directories(test_dir / "a/c/d");
-  current_path(test_dir / "a");
-  create_directory_symlink("c/d", "b");
-  save_string_file("name.txt", "Windows");
-  save_string_file("c/name.txt", "POSIX");
-  current_path(test_dir);
-  std::string s;
-  load_string_file("a/b/../name.txt", s);
-  cout << s << endl;
+	remove_all(test_dir);
+	create_directories(test_dir / "a/c/d");
+	current_path(test_dir / "a");
+	create_directory_symlink("c/d", "b");
+	save_string_file("name.txt", "Windows");
+	save_string_file("c/name.txt", "POSIX");
+	current_path(test_dir);
+	std::string s;
+	load_string_file("a/b/../name.txt", s);
+	cout << s << endl;
 
-  return 0;
+	return 0;
 }
