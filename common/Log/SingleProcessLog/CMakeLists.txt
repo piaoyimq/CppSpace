@@ -20,7 +20,7 @@ cpp_add_lib("singleprocesslog"
 
 cpp_add_executable(SingleProcessLogTest
     #TEST LINUX
-    BASE_DIR "Log/SingleProcessLog/test/"
+    BASE_DIR "common/Log/SingleProcessLog/test/"
     SRC
         test/
       

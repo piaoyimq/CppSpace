@@ -3,25 +3,24 @@ add_compile_options(
 )
 
 
-
-
-cpp_add_lib("common"
+cpp_add_lib("confini"
     #TEST LINUX
     SRC
-        src/Common.cpp
+        src/
 
     PUBLIC
         pthread
 )
 
 
-cpp_add_executable(CommonTest
+cpp_add_executable(ConfIniTest
     #TEST LINUX
-    BASE_DIR "Common/test"
+    BASE_DIR "common/Conf/ConfIni/test"
     SRC
         test/
       
     PUBLIC
-        common	   
+        confini	   
+	googletest
 )
 

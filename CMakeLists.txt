@@ -114,11 +114,11 @@ include_directories(SYSTEM
 
 
 include_directories(BEFORE
-    $ENV{WS_ROOT}
+    $ENV{WS_ROOT}/common
 )
 
-add_subdirectory(Common)
-add_subdirectory(Log)
-add_subdirectory(Conf)
-add_subdirectory(Ut)
+add_subdirectory(common/Common)
+add_subdirectory(common/Log)
+add_subdirectory(common/Conf)
+add_subdirectory(common/Ut)
 
