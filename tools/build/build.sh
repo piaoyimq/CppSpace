@@ -27,6 +27,7 @@ CLEAN=false
 FORCE_BUILD=false
 FORCE_GENERATE=false
 PRINT_TARGETS=false
+RUN_TESTCASE=false
 
 # Print usage
 usage()
@@ -51,8 +52,10 @@ Where <options> are:
     Build, skip generation unless -g is also specified.
  -D
     Clean, delete build folder contents before generate/build.
- -t
+ -p
     Print valid components/targets.
+ -t
+    Run test case after build finished.
  -v
     Verbose, more output from CMake and ninja.
  -x
@@ -76,7 +79,7 @@ err_exit()
 	exit $1
 }
 
-run_ut()
+run_unit()
 {
     set +e 
     file_list=$(ls $BUILD_DIR_CMAKE/$config/bin|grep Test)
@@ -138,7 +141,7 @@ build_config()
 	for cmp in ${COMPONENTS[@]}
 	do
 		case "$cmp" in
-			all|clean|build.ninja|help|test|*.esc|all_esc|gtest|gmock|pgw|pgwtest|*_${platform}*) # Unmodified targets
+			all|clean|build.ninja|help|test|gtest|*_${platform}*) # Unmodified targets
 				targets+=" $cmp"
 				;;
 			*@(${VALID_PLATFORMS/|/*|*})*) # Skipping components for other platform
@@ -208,8 +211,12 @@ build_config()
 			make -f $dir/Makefile #or use make -C $dir
 		fi
 
-		run_ut
-
+    	if $RUN_TESTCASE
+    	then
+    		echo "Run unit test:"
+    		run_unit
+    		return 0
+    	fi
 	fi
 }
 
@@ -219,7 +226,7 @@ main ()
 	local config
 	GENERATOR="Unix Makefiles"
 	# Parse options
-	while getopts "c:bgG:Dtvxh" flag
+	while getopts "c:bgG:Dptvxh" flag
 	do
 		case $flag in
 			c ) CONFIGS="${OPTARG//,/ }";;
@@ -227,7 +234,8 @@ main ()
 			g ) FORCE_GENERATE=true;;
 			G ) GENERATOR=$OPTARG;;
 			D ) CLEAN=true;;
-			t ) PRINT_TARGETS=true;;
+			p ) PRINT_TARGETS=true;;
+			t ) RUN_TESTCASE=true;;
 			v ) CMAKEFLAGS+=" -LAH"
 				NINJAFLAGS+=" -v -d keeprsp"
 				;;

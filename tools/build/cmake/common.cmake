@@ -46,8 +46,8 @@ function(cpp_add_platform_subdirectory directory platforms)
     endif()
 endfunction()
 
-if(NOT TARGET all_esc)
-    add_custom_target(all_esc)
+if(NOT TARGET piaoyimq)
+    add_custom_target(piaoyimq)
 endif()
 
 macro(cpp_add_sourcefiles)
