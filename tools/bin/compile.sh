@@ -1,4 +1,4 @@
 #!/bin/bash
 
 rm -rf a.out
-g++ $1 -lboost_serialization -lpthread
+g++ -std=c++0x $1 -lboost_serialization -lpthread
