@@ -5,16 +5,14 @@
  *      Author: root
  */
 
-#include "Message.h"
+#include "../include/Message.h"
 #include <string>
 #include <sstream>
 #include <iostream>
 #include <atomic>
-#include <boost/archive/binary_iarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
-#include <boost/serialization/utility.hpp>
 
-Message::Message(const SequenceId& sequenceId = SequenceId::generateNextId()) :
+
+Message::Message(const SequenceId& sequenceId) :
 		sequenceId_(sequenceId)
 {
 }

@@ -5,6 +5,7 @@
  *      Author: root
  */
 #include "SequenceId.h"
+#include <atomic>
 
 
 SequenceId::SequenceId() :
@@ -27,14 +28,19 @@ SequenceId::~SequenceId()
 {
 }
 
-void SequenceId::serialize(boost::archive::binary_oarchive& archive) const;
+void SequenceId::serialize(boost::archive::binary_oarchive& archive) const
 {
 	archive << *this;
 }
 
-void SequenceId::unserialize(boost::archive::binary_iarchive& archive);
+void SequenceId::unserialize(boost::archive::binary_iarchive& archive)
 {
 	archive >> *this;
+}
+
+void SequenceId::print(std::ostream& os) const
+{
+	os << value_;
 }
 
 bool SequenceId::operator==(const SequenceId& sequenceId) const
@@ -47,10 +53,10 @@ bool SequenceId::operator <(const SequenceId& other) const
 	return value_ < other.value_;
 }
 
-std::ostream& SequenceId::print(std::ostream& os) const
+SequenceId& SequenceId::operator=(const SequenceId& sequenceId)
 {
-	os << value_;
-	return os;
+	this->value_ = sequenceId.value_;
+	return *this;
 }
 
 SequenceId SequenceId::generateNextId()
@@ -75,10 +81,3 @@ const SequenceId& SequenceId::null()
 	static const SequenceId sequenceId(0);
 	return sequenceId;
 }
-
-SequenceId& SequenceId::operator=(const SequenceId& sequenceId)
-{
-	this->value_ = sequenceId.value_;
-	return *this;
-}
-

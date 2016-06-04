@@ -8,8 +8,7 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
 #include <string>
-#include <boost/archive/binary_oarchive.hpp> //serialization
-#include <boost/archive/binary_iarchive.hpp> //deserialization
+#include "../src/SequenceId.h"
 
 class Message: public PrintOut
 {
@@ -46,5 +45,6 @@ void Message::serialize(Archive & ar, const unsigned int /* file_version */)
 {
 	ar & sequenceId_;
 }
+
 #endif
 

@@ -3,25 +3,26 @@ add_compile_options(
 )
 
 
-
-
-cpp_add_lib("common"
+cpp_add_lib("ipcmessage"
     #TEST LINUX
     SRC
         src/
 
     PUBLIC
+	common
+	boost_serialization
         pthread
 )
 
 
-cpp_add_executable(CommonTest
+cpp_add_executable(IpcMessageMain
     #TEST LINUX
-    BASE_DIR "general/common/test"
+    BASE_DIR "general/ipc/ipc-message/test"
     SRC
         test/
       
     PUBLIC
-        common	   
+        ipcmessage	   
+	googletest
 )
 

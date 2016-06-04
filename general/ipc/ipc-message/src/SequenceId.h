@@ -4,8 +4,11 @@
  *  Created on: 2016年6月4日
  *      Author: root
  */
+#include <boost/archive/binary_oarchive.hpp> //serialization
+#include <boost/archive/binary_iarchive.hpp> //deserialization
+#include "common/include/Common.h"
 
-class SequenceId
+class SequenceId : public PrintOut
 {
 public:
 	explicit SequenceId();
@@ -16,11 +19,11 @@ public:
 	virtual void serialize(boost::archive::binary_oarchive& archive) const;
 	virtual void unserialize(boost::archive::binary_iarchive& archive);
 
+//	std::ostream& print(std::ostream& os) const;
+	virtual void print(std::ostream& os) const;
 	SequenceId& operator=(const SequenceId& sequenceId);
 	bool operator==(const SequenceId& sequenceId) const;
 	bool operator <(const SequenceId& other) const;
-
-	std::ostream& print(std::ostream& os) const;
 
 	static SequenceId generateNextId();
 	static const SequenceId& null();
@@ -40,3 +43,5 @@ void SequenceId::serialize(Archive & ar, const unsigned int /* file_version */)
 {
 	ar & value_;
 }
+
+//std::ostream& operator<<(std::ostream& s, const SequenceId& sequenceId);

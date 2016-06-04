@@ -5,7 +5,7 @@
  *      Author: root
  */
 
-#include "common/include/PrintOut.h"
+#include "PrintOut.h"
 
 PrintOut::PrintOut()
 {
@@ -23,4 +23,8 @@ std::string PrintOut::toString() const
     return ss.str();
 }
 
-
+std::ostream & operator<<(std::ostream& os, const PrintOut& printOut)
+{
+	printOut.print(os);
+    return os;
+}

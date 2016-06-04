@@ -22,4 +22,7 @@ public:
     std::string toString() const;
 };
 
+std::ostream & operator<<(std::ostream& os, const PrintOut& printOut); //why  can not become a class member function??
+
+
 #endif /* GENERAL_COMMON_INCLUDE_PRINTOUT_H_ */

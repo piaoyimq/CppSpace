@@ -73,6 +73,7 @@ add_compile_options(
     -Wmissing-include-dirs
     -Wcast-align
     -Winvalid-pch
+    -std=c++0x
 
     #The flags below are flags that we would like to introduce, but can't enable yet because there are still warnings left that need to be fixed first
     #DO NOT remove this list, we'll step by step uncomment these lines:
@@ -120,5 +121,6 @@ include_directories(BEFORE
 add_subdirectory(general/common)
 add_subdirectory(general/log)
 add_subdirectory(general/config)
+add_subdirectory(general/ipc)
 add_subdirectory(general/ut)
 
