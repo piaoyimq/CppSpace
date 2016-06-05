@@ -23,5 +23,6 @@ cpp_add_executable(CommonTest
       
     PUBLIC
         common	   
+	googletest
 )
 

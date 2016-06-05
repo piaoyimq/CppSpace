@@ -39,7 +39,7 @@ void TestReq::printMessage(std::ostream& os) const
 
 int TestReq::getId() const
 {
-	return InterfaceMessage::ReqId;
+	return ReqId;
 }
 
 const std::string& TestReq::getTestReqData() const

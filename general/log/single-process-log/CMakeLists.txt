@@ -26,5 +26,6 @@ cpp_add_executable(SingleProcessLogTest
       
     PUBLIC
         singleprocesslog	   
+	googletest
 )
 

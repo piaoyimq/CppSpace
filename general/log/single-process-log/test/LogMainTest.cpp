@@ -5,6 +5,7 @@
  *      Author: piaoyimq
  */
 #include "log/single-process-log/include/Log.h"
+#include "ut/googletest/include/gtest/gtest.h"
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
@@ -12,14 +13,14 @@
 #include <signal.h>
 #include <sys/stat.h>
 
-#define THREAD_NUMBER   10
+#define THREAD_NUMBER   3
 #define COMPLEX_TEST     1
 
 #if COMPLEX_TEST
 void *f(void* args)
 {
 	static_cast<void>(args);
-	for (int i = 0; i < 1000000; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		App_Log(Notice, LastId, "Function:%s, %d, line=%d", __FUNCTION__, 1, __LINE__);
 		App_Log(Debug, LastId, "Function:%s, %d, line=%d", __FUNCTION__, 2, __LINE__);
@@ -29,10 +30,8 @@ void *f(void* args)
 }
 #endif
 
-int main(int argc, char* argv[])
+void logTest()
 {
-	static_cast<void>(argc);
-	static_cast<void>(argv);
 	App_Log(Notice, LastId, "_______Function:%s, %d, line=%d", __FUNCTION__, 1, __LINE__);
 
 	App_Log(Debug, LastId, "========Function:%s, %d, line=%d", __FUNCTION__, 2, __LINE__); //will not logging it, because the default log level is notice.
@@ -66,7 +65,17 @@ int main(int argc, char* argv[])
 		}
 	}
 #endif
-
-	return 0;
 }
 
+TEST(LogTest, function)
+{
+	logTest();
+}
+
+int main(int argc, char **argv)
+{
+	std::cout << "Running main() from " << __FILE__ << std::endl;
+
+	testing::InitGoogleTest(&argc, argv);
+	return RUN_ALL_TESTS();
+}

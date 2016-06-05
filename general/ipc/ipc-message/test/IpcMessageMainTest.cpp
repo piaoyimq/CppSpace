@@ -5,12 +5,21 @@
  *      Author: root
  */
 #include "TestReq.h"
-int main()
-{
-	std::string s = "get sysinfo";
-	TestReq testReq(s);
+#include "ut/googletest/include/gtest/gtest.h"
 
-	std::cout << "____" << testReq << std::endl;
+
+std::string str = "get sysinfo";
+TestReq testReq(str);
+
+TEST(TestReq, getId)
+{
+	EXPECT_EQ(InterfaceMessage::ReqId, testReq.getId());
+}
+
+
+
+//
+//	std::cout << "____" << testReq << std::endl;
 //	std::ostringstream archiveStream;
 //	boost::archive::binary_oarchive archive(archiveStream);
 //
@@ -27,4 +36,12 @@ int main()
 //	msgb.unserialize(iar);
 //
 //	std::cout << "____" << msgb.a << " ____" << msgb.sequenceId_.value_ << std::endl;
+
+
+int main(int argc, char **argv)
+{
+	std::cout << "Running main() from " << __FILE__ << std::endl;
+
+	testing::InitGoogleTest(&argc, argv);
+	return RUN_ALL_TESTS();
 }

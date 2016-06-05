@@ -39,7 +39,7 @@ void TestRsp::printMessage(std::ostream& os) const
 
 int TestRsp::getId() const
 {
-	return InterfaceMessage::RspId;
+	return RspId;
 }
 
 bool TestRsp::isSuccess() const

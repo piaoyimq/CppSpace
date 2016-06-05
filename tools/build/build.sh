@@ -93,7 +93,7 @@ run_unit()
         for ((i=0; i<$length; i++))
             do
     	    echo
-    	    echo -e "\033[33m**********  Perform [$i] ${array[$i]}  **********\033[0m"
+    	    echo -en "\033[33m**********  Perform ["$((i + 1))"] ${array[$i]}  **********\033[0m"
     	    echo
 				cd $WS_ROOT
                 ./output/$config/bin/${array[$i]}

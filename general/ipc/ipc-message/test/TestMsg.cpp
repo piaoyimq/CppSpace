@@ -38,7 +38,7 @@ void TestMsg::printMessage(std::ostream& os) const
 
 int TestMsg::getId() const
 {
-	return InterfaceMessage::MsgId;
+	return MsgId;
 }
 
 const std::string& TestMsg::getCmdRspData() const

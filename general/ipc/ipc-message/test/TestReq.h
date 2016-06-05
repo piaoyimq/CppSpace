@@ -29,7 +29,7 @@ private:
 
 	template<class Archive>
 	inline void serialize(Archive & ar, const unsigned int /* file_version */);
-	std::string reqData;
+	std::string reqData;		// it can be a self-definition class.
 };
 
 template<class Archive>

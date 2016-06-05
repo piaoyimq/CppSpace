@@ -163,7 +163,7 @@ void Log::writeLog(Level logLevel, AppModuleId moduleId, const char* format, ...
 		}
 		else
 		{
-			printf("not startup");
+//			printf("not startup");
 			pthread_mutex_lock(m_mutex);
 			fputs(log_str.c_str(), m_fp);
 			pthread_mutex_unlock(m_mutex);
@@ -302,7 +302,7 @@ void *Log::async_write_log()
 {
 	string single_log;
 	isStartup = true;
-	printf("ok\n");
+//	printf("ok\n");
 	while (m_log_queue->pop(single_log))
 	{
 		pthread_mutex_lock (m_mutex);

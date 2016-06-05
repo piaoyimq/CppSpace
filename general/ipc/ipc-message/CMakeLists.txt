@@ -15,7 +15,7 @@ cpp_add_lib("ipcmessage"
 )
 
 
-cpp_add_executable(IpcMessageMain
+cpp_add_executable(IpcMessageMainTest
     #TEST LINUX
     BASE_DIR "general/ipc/ipc-message/test"
     SRC
