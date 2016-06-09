@@ -54,37 +54,13 @@ class State
 		*/
 		struct _specification
 		{
-			void *func;			// Pointer to the action
+			void (*func)(char*);			// Pointer to the action
 			char name[50],		// Name of the action
 				 event[50];		// Event this specification is tied to
 			int type;			// Type of action
 		} mSpecification[10];	// 3 main actions + 4-mMaxEvents
 
-		/*
-			eWhen
-				- Actions to define within the state
-		*/
-		enum eWhen
-		{
-			eOnEntry = 0,	// Action taken on entering the state
-			eDo,			// Action taken during entering the state until leaving the state
-			eOnExit,		// Action taken on leaving the state
-			eOnEvent		// Action taken based on the event received
-							// - Specify Event, Arguments, and Condition
-		};
 
-		/*
-			eType
-				- Specifies the action type
-				- Only action is supported
-		*/
-		enum eType
-		{
-			eAction = 0,	// Action is a function
-							// Specify Name
-			eSendEvent		// Send an event
-							// - Specify Name, Arguments, and Target
-		};
 
 		char mName[50],		// Name of the state
 			 mArgs[255],	// History
@@ -95,6 +71,31 @@ class State
 			mMaxEvents;			// Max number of events (6)
 
 	public:
+		/*
+					eWhen
+						- Actions to define within the state
+				*/
+				enum eWhen
+				{
+					eOnEntry = 0,	// Action taken on entering the state
+					eDo,			// Action taken during entering the state until leaving the state
+					eOnExit,		// Action taken on leaving the state
+					eOnEvent		// Action taken based on the event received
+									// - Specify Event, Arguments, and Condition
+				};
+
+				/*
+					eType
+						- Specifies the action type
+						- Only action is supported
+				*/
+				enum eType
+				{
+					eAction = 0,	// Action is a function
+									// Specify Name
+					eSendEvent		// Send an event
+									// - Specify Name, Arguments, and Target
+				};
 		/*
 			Constructor / Destructor
 		*/
@@ -132,13 +133,12 @@ class State
 				@param: funcPtr
 					- Specify what function will be executed for this state
 		*/
-		void addAction (int when, int type, char *name, void *funcPtr);	// Set default action
-		void addAction (int when, int type, char *name, char *event, void *funcPtr);	// Set OnEvent action
-
+		void addAction (eWhen when, eType type, char *name, char *event, void (*funcPtr)(char*));	// Set OnEvent action
+		void addAction (eWhen when, eType type, char *name, void (*funcPtr)(char*));// Set default action
 		/*
 			Operator Methods
 		*/
-		void setName (char *name);
+		void setName (const char *name);
 
 		/*
 			Accessor Methods

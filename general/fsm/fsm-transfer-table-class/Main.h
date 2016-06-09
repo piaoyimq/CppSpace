@@ -14,7 +14,6 @@
 
 
 // Necessary includes
-	#include <windows.h>
 	#include "FSM/FSM.h"
 	#include "FSM/State.h"
 

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#ulimit -a
+#ulimit -c unlimited
 rm -rf a.out
-#g++ -std=c++0x "$@" -lboost_serialization -lpthread
-g++  "$@" -lboost_serialization -lpthread
+g++ -g -std=c++0x "$@" -lboost_serialization -lpthread

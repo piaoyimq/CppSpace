@@ -130,26 +130,26 @@ State* State::outgoing (char *event)
 /*
 	addAction
 */
-void State::addAction (int when, int type, char *name, void *funcPtr)
+void State::addAction (eWhen when, eType type, char *actionName, void (*funcPtr)(char*))
 {
 	if ( (when == eOnEntry) || (when == eDo) || (when == eOnExit) )
 	{
 		if ( type == eAction )
 		{
-			strcpy(mSpecification[when].name, name);
+			strcpy(mSpecification[when].name, actionName);
 			mSpecification[when].type = type;
 			mSpecification[when].func = funcPtr;
 		}
 	}
 }
 
-void State::addAction (int when, int type, char *name, char *event, void *funcPtr)
+void State::addAction (eWhen when, eType type, char *actionName, char *event, void (*funcPtr)(char*))
 {
 	if ( (when == eOnEvent) )
 	{
 		if ( (type == eAction) && (mNumEvents < mMaxEvents) )
 		{
-			strcpy(mSpecification[when+mNumEvents].name, name);
+			strcpy(mSpecification[when+mNumEvents].name, actionName);
 			strcpy(mSpecification[when+mNumEvents].event, event);
 			mSpecification[when+mNumEvents].type = type;
 			mSpecification[when+mNumEvents].func = funcPtr;
@@ -162,7 +162,7 @@ void State::addAction (int when, int type, char *name, char *event, void *funcPt
 /*
 	Operator Methods
 */
-void State::setName (char *name)
+void State::setName (const char *name)
 {
 	strcpy(mName, name);
 }
