@@ -67,7 +67,7 @@ void toOpen(Door& door);
 void toClose(Door& door);
 void toLock(Door& door);
 typedef void (*pfToState)(Door& door);
-pfToState g_pFun[] = { toOpen, toClose, toLock }; //状态枚举值对应下标
+pfToState g_pFun[] = { toOpen, toClose, toLock }; //状态枚举值(State)对应下标
 
 void toOpen(Door& door)
 {
