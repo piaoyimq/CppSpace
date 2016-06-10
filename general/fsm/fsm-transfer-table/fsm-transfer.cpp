@@ -7,19 +7,35 @@
 
 #include <iostream>
 
-#define TRANS(arg1, arg2, fp1, fp2)\
-for (int i = 0; i < sizeof(fp1) / sizeof(fsm::StateTransfer<State, Event>); ++i)\
+#define TRANS(arg1, arg2, arg3, arg4, fp1, fp2) \
+for (int i = 0; i < sizeof(fp1) / sizeof(fsm::StateTransfer<arg3::State, arg3::Event>); ++i)\
 {\
-	if (arg1.state == fp1[i].currentState && arg2 == fp1[i].event)\
+	if (arg1.arg4.state == fp1[i].currentState && arg2 == fp1[i].event)\
 	{\
-		fp2[fp1[i].NextState](arg1);\
-		arg1.transferTimes++;\
+		(arg1.*fp2[fp1[i].NextState])(arg1.arg4);\
+		arg1.arg4.transferTimes++;\
 		std::cout << "transfer ok!\n";\
 		break;\
 	}\
+	if((sizeof(fp1) / sizeof(fsm::StateTransfer<arg3::State, arg3::Event>)) == i+1)\
+	{\
+		std::cout << "This event cannot transfer current state!!\n";\
+	}\
 }
 
-#define TRANSFER(arg1, arg2) 		TRANS(arg1, arg2, g_stateTransferTable, g_pFun)
+
+//#define TRANS(arg1, arg2, arg3, fp1, fp2) \
+//for (int i = 0; i < sizeof(fp1) / sizeof(fsm::StateTransfer<arg1.arg3.State, arg1.arg3.Event>); ++i)\
+//{\
+//	if (arg1.arg3.state == fp1[i].currentState && arg2 == fp1[i].event)\
+//	{\
+//		(arg1.*fp2[fp1[i].NextState])(arg1.arg3);\
+//		arg1.arg3.transferTimes++;\
+//		std::cout << "transfer ok!\n";\
+//		break;\
+//	}\
+//}
+
 
 namespace fsm
 {
@@ -57,78 +73,99 @@ void transfer(fsm::Door<State>& door, const Event event)
 #endif
 }
 
-enum State
+
+
+
+
+#define TRANSFER(arg1, arg2) 		TRANS(arg1, arg2, DoorSm, door, g_stateTransferTable, g_pFun)
+class DoorSm
 {
-	OPENED,
-	CLOSED,
-	LOCKED
-};
+public:
+	enum State
+	{
+		S_OPENED,
+		S_CLOSED,
+		S_LOCKED
+	};
 
-enum Event
+	enum Event
+	{
+		E_OPEN,
+		E_CLOSE,
+		E_LOCK,
+		E_UNLOCK
+	};
+
+	fsm::Door<DoorSm::State> door ;
+		DoorSm()
+		{
+			door.state = S_CLOSED;
+			door.transferTimes = 0;
+		}
+
+		~DoorSm(){}
+
+ void toOpen(fsm::Door<State>& door)
 {
-	OPEN,
-	CLOSE,
-	LOCK,
-	UNLOCK
-};
-
-void toOpen(fsm::Door<State>& door);
-void toClose(fsm::Door<State>& door);
-void toLock(fsm::Door<State>& door);
-
-typedef void (*pfToState)(fsm::Door<State>& door);
-pfToState g_pFun[] = { toOpen, toClose, toLock }; //状态枚举值(State)对应下标
-
-
-fsm::StateTransfer<State, Event> g_stateTransferTable[]=
-													  {
-															  { OPENED, CLOSE, CLOSED },
-															  { CLOSED, OPEN, OPENED },
-															  { CLOSED, LOCK, LOCKED },
-															  { LOCKED, UNLOCK, CLOSED },
-													  };
-
-
-
-
-
-//class DoorSm
-//{
-
-void toOpen(fsm::Door<State>& door)
-{
-	door.state = OPENED;
+	door.state = S_OPENED;
 	std::cout << "open the door!\n";
 }
 
 void toClose(fsm::Door<State>& door)
 {
-	door.state = CLOSED;
+	door.state = S_CLOSED;
 	std::cout << "close the door!\n";
 }
 
 void toLock(fsm::Door<State>& door)
 {
-	door.state = LOCKED;
+	door.state = S_LOCKED;
 	std::cout << "lock the door!\n";
 }
 
 void printDoor(const fsm::Door<State>& door)
 {
+	std::cout << "\n<<=============================\n";
 	std::string stateNote[] = { "opened", "closed", "locked" }; // 下标正好对应状态枚举值
 	std::cout << "the door's state is: " << stateNote[door.state] << std::endl;
 	std::cout << "the door transfer times is: " << door.transferTimes << std::endl;
+
+	std::cout << "==============================>>\n";
 }
+};
+
+
+typedef void (DoorSm::*pfToState)(fsm::Door<DoorSm::State>& door);
+pfToState g_pFun[] =
+{
+		&DoorSm::toOpen,
+		&DoorSm::toClose,
+		&DoorSm::toLock
+}; //状态枚举值(State)对应下标
+
+
+fsm::StateTransfer<DoorSm::State, DoorSm::Event> g_stateTransferTable[]=
+{
+	  { DoorSm::S_OPENED, DoorSm::E_CLOSE, DoorSm::S_CLOSED },
+	  { DoorSm::S_CLOSED, DoorSm::E_OPEN,  DoorSm::S_OPENED },
+	  { DoorSm::S_CLOSED, DoorSm::E_LOCK,  DoorSm::S_LOCKED },
+	  { DoorSm::S_LOCKED, DoorSm::E_UNLOCK,DoorSm::S_CLOSED },
+};
 
 int main()
 {
-	fsm::Door<State> door = { CLOSED, 0 };
-	printDoor(door);
-	TRANSFER(door, OPEN);
-	printDoor(door);
-	TRANSFER(door, LOCK);
-	printDoor(door);
-	TRANSFER(door, CLOSE);
-	printDoor(door);
+	DoorSm doorSm;
+
+	doorSm.printDoor(doorSm.door);
+
+	TRANSFER(doorSm, DoorSm::E_OPEN);
+	doorSm.printDoor(doorSm.door);
+
+	TRANSFER(doorSm, DoorSm::E_LOCK);
+	doorSm.printDoor(doorSm.door);
+
+	TRANSFER(doorSm, DoorSm::E_CLOSE);
+	doorSm.printDoor(doorSm.door);
+
 	return 0;
 }
