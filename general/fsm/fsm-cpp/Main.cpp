@@ -63,7 +63,7 @@ void init()
 
 	// TurnedOn state
 	cState[1].setName("TurnedOn");
-	cState[1].addAction(State::eOnEntry, State::eAction, "Action: TurnOn", sTurnedOn_OnEntry);
+	cState[1].addAction(State::eOnEntry, State::eAction, "Action: TurnOn", sTurnedOn_OnEntry);//if have no any other action, we can add the "eOnEntry" actin as the default action
 	cState[1].addTransition("TurnOff", &cState[0]);
 	cState[1].addTransition("GoToActivity", &cState[2]);
 

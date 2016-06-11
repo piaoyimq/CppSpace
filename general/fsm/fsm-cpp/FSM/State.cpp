@@ -8,7 +8,7 @@
 *   long as credit is given where due.	*
 ****************************************/
 
-
+#include <iostream>
 #include "State.h"
 
 
@@ -55,7 +55,7 @@ void State::clean ()
 /*
 	Transitions
 */
-void State::addTransition (char *event, State *cState)
+void State::addTransition (const char *event, State *cState)
 {
 	// Add a transition to the list
 	if (mNumTransitions < mMaxEvents)
@@ -66,7 +66,7 @@ void State::addTransition (char *event, State *cState)
 	}
 }
 
-bool State::incoming (char *event, char *args)
+bool State::incoming (char *event, const char *args)
 {
 	strcpy(mEvent, event);
 	strcpy(mArgs, args);
@@ -75,8 +75,10 @@ bool State::incoming (char *event, char *args)
 		Loop through all OnEvent functions and process them
 		Otherwise continue with standard actions
 	*/
+
 	if (mNumEvents > 0)
 	{
+		std::cout << __FUNCTION__ << ", IF" << std::endl;
 		for (int i = eOnEvent; i < (eOnEvent+mNumEvents); i++)
 		{
 			if ( strcmp(mSpecification[i].event, event) == 0 )
@@ -91,6 +93,7 @@ bool State::incoming (char *event, char *args)
 	}
 	else
 	{
+		std::cout << __FUNCTION__ << ", else" << std::endl;
 		// Perform OnEntry and OnDo
 		for (int i = 0; i < 2; i++)
 		{
@@ -106,7 +109,7 @@ bool State::incoming (char *event, char *args)
 	return false;
 }
 
-State* State::outgoing (char *event)
+State* State::outgoing (const char *event)
 {
 	// Find the State to which this event is tied to
 	for (int i = 0; i < mNumTransitions; i++)
@@ -114,8 +117,8 @@ State* State::outgoing (char *event)
 		if ( strcmp(mTransition[i].event, event) == 0 )
 		{
 			// Run the exit action
-			if (mSpecification[eOnExit].func != NULL)
-			{
+			if (mSpecification[eOnExit].func != NULL && strcmp(getName(), mTransition[i].cTo->getName()) != 0)
+			{//if the next state not is the current state, then excute exit function
 				mFunc = (mFuncPtr)mSpecification[eOnExit].func;
 				mFunc(mArgs);
 			}
@@ -130,7 +133,7 @@ State* State::outgoing (char *event)
 /*
 	addAction
 */
-void State::addAction (eWhen when, eType type, char *actionName, void (*funcPtr)(char*))
+void State::addAction (eWhen when, eType type, const char *actionName, void (*funcPtr)(char*))
 {
 	if ( (when == eOnEntry) || (when == eDo) || (when == eOnExit) )
 	{
@@ -143,7 +146,7 @@ void State::addAction (eWhen when, eType type, char *actionName, void (*funcPtr)
 	}
 }
 
-void State::addAction (eWhen when, eType type, char *actionName, char *event, void (*funcPtr)(char*))
+void State::addAction (eWhen when, eType type, const char *actionName, const char *event, void (*funcPtr)(char*))
 {
 	if ( (when == eOnEvent) )
 	{

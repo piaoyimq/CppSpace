@@ -42,25 +42,7 @@ static const QEVENT testQEvt[] =
    {E_SIG, 0, 0}, {F_SIG, 0, 0}, {G_SIG, 0, 0}, {H_SIG, 0, 0}
 };
 
-int main()
-{
-   printf("Hiberarchy state machine testing\n");
 
-   Initial(0);       // trigger initial transition
-   for (;;)
-   {
-		char c;
-		printf("\nSignal<-");
-		c = getc(stdin);
-		getc(stdin); // discard '\n'
-		if (c < 'a' || 'h' < c)
-		{
-			return 0;
-		}
-		Q_Dispatch(&testQEvt[c - 'a']); // dispatch
-	}
-	return 0;
-}
 
 /**
  * @ingroup app
@@ -226,4 +208,24 @@ QSTATE s211(QEVENT const *e) {
    case G_SIG: printf("s211-G;"); Q_TRAN(s0);  return 0;
    }
    return (QSTATE)s21;
+}
+
+int main()
+{
+   printf("Hiberarchy state machine testing\n");
+
+   Initial(0);       // trigger initial transition
+   for (;;)
+   {
+		char c;
+		printf("\nSignal<-");
+		c = getc(stdin);
+		getc(stdin); // discard '\n'
+		if (c < 'a' || 'h' < c)
+		{
+			return 0;
+		}
+		Q_Dispatch(&testQEvt[c - 'a']); // dispatch
+	}
+	return 0;
 }

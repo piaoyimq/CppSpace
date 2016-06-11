@@ -37,7 +37,7 @@ void FSM::addStates (State *cStates)
 /*
 	event
 */
-bool FSM::inEvent (char *event, char *args)
+bool FSM::inEvent (char *event, const char *args)
 {
 	// Input the event into the current state
 	if ( cCurrentState != NULL )
@@ -48,7 +48,7 @@ bool FSM::inEvent (char *event, char *args)
 	return false;
 }
 
-bool FSM::outEvent (char *event, char *args)
+bool FSM::outEvent (char *event, const char *args)
 {
 	// Output the event into the current state
 	if ( (cStateList != NULL) && (cCurrentState != NULL) )

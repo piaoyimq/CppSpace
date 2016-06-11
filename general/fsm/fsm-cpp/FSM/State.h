@@ -30,7 +30,7 @@ class State
 				- Function pointer for state actions
 				- All state functions are in the form: char*, suplemented with args
 		*/
-		typedef void* (*mFuncPtr) (char *args);
+		typedef void* (*mFuncPtr) (const char *args);
 		mFuncPtr mFunc;
 
 		struct _transition
@@ -116,9 +116,9 @@ class State
 					- If provided, it will be passed on to the action
 				- Return true if switch is successful
 		*/
-		void addTransition (char *event, State *cState);
-		bool incoming (char *event, char *args);
-		State *outgoing (char *event);
+		void addTransition (const char *event, State *cState);
+		bool incoming (char *event, const char *args);
+		State *outgoing (const char *event);
 
 		/*
 			addAction
@@ -133,8 +133,8 @@ class State
 				@param: funcPtr
 					- Specify what function will be executed for this state
 		*/
-		void addAction (eWhen when, eType type, char *name, char *event, void (*funcPtr)(char*));	// Set OnEvent action
-		void addAction (eWhen when, eType type, char *name, void (*funcPtr)(char*));// Set default action
+		void addAction (eWhen when, eType type, const char *name, const char *event, void (*funcPtr)(char*));	// Set OnEvent action
+		void addAction (eWhen when, eType type, const char *name, void (*funcPtr)(char*));// Set default action
 		/*
 			Operator Methods
 		*/

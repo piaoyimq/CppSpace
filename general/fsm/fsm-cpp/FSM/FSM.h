@@ -53,8 +53,8 @@ class FSM
 				- Incomming events are for starting the FSM
 				- Outgoing events are also "incoming" when transitioning between states
 		*/
-		bool inEvent (char *event, char *args);
-		bool outEvent (char *event, char *args);
+		bool inEvent (char *event, const char *args);
+		bool outEvent (char *event, const char *args);
 
 		/*
 			Accessor Methods
