@@ -8,7 +8,11 @@
 #define 	FSM_TRANSFER_H
 #include <iostream>
 
-
+/*
+ * Only support one state  tranfser to the another state triggered by one event,
+ * not support multi event.
+ *
+ */
 
 /* Attention:
  * If you need include this directory,

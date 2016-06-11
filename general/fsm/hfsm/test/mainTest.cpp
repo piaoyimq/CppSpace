@@ -4,8 +4,7 @@
  *  Created on: 2016年6月11日
  *      Author: piaoyimq
  */
-#include "FSM/FSM.h"
-#include "FSM/State.h"
+#include "../include/FSM.h"
 #include <iostream>
 
 FSM cFSM;

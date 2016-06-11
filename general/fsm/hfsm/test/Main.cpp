@@ -8,9 +8,11 @@
  *   long as credit is given where due.	*
  ****************************************/
 
-#include "Main.h"
-#include "resource.h"
 #include <iostream>
+#include "../include/FSM.h"
+
+FSM cFSM;
+State cState[6];
 
 char selEvent[50], lastState[50];
 unsigned int eventID;
