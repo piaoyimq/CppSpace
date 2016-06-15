@@ -1,0 +1,67 @@
+
+namespace st_asio_wrapper
+{
+
+用于在st_server_socket_base中操作st_server_base的接口，st_server_socket_base使用，st_server_base实现
+class i_server
+{
+public:
+	virtual st_service_pump& get_service_pump() = 0;
+	virtual const st_service_pump& get_service_pump() const = 0;
+获取st_service_pump。
+	virtual bool del_client(const boost::shared_ptr<st_timer>& client_ptr) = 0;
+关闭一个连接时，st_server_socket调用这个方法，i_server的实现者（st_server就是一个i_server的实现者）一般来说应该把这个连接从自己的
+客户端对象池里面删除，调用这个方法的最佳时期是在on_recv_error里面。
+注意，client_ptr看起来是一个st_timer，其实它的类型是st_server_base中的Socket模板参数，用st_timer完全是为了不让i_server带一个类似于
+Socket的模板参数，带上之后会有模板参数的循环依赖的问题，如果哪位同仁可以解决此问题，麻烦告诉我一声。
+i_server的实现者在使用client_ptr参数之前，会转换成Socket类型，请看st_server的实现。
+};
+
+服务端套接字类
+template<typename Packer = DEFAULT_PACKER, typename Unpacker = DEFAULT_UNPACKER, typename Server = i_server, typename Socket = boost::asio::ip::tcp::socket>
+
+class st_server_socket_base : public st_tcp_socket_base<Socket, Packer, Unpacker>, public boost::enable_shared_from_this<st_server_socket_base<Packer, Unpacker, Server, Socket>>
+{
+public:
+	st_server_socket_base(Server& server_);
+
+	template<typename Arg>
+	st_server_socket_base(Server& server_, Arg& arg);
+ssl使用。
+
+	virtual void reset();
+重置所有，st_object_pool在重用时会调用。st_server_socket的子类可重写它以重置自己的状态，记得最后需要调用本类的reset。
+
+	void disconnect();
+直接调用force_close。
+
+	void force_close();
+强制退出————调用父类的同名函数。
+
+	void graceful_close(bool sync = true);
+优雅关闭————调用父类的同名函数。
+
+	void show_info(const char* head, const char* tail) const;
+在head和tail中间，显示对方的地址（IP加端口）。
+
+	void show_info(const char* head, const char* tail, const boost::system::error_code& ec) const;
+同上，但加上了显示ec.message.data()的内容。
+
+protected:
+	virtual bool do_start();
+开始，这里开始的意义是，马上开始接收数据。
+
+	virtual void on_unpack_error();
+解包错误，默认的行为是关闭连接，可以重写以自定义行为。
+
+	virtual void on_recv_error(const error_code& ec);
+连接断开，默认的行为是调用i_server::del_client，可以重写以自定义行为。
+
+protected:
+	Server& server;
+用于操控st_server，st_server在创建（其实是st_object_pool创建，st_server是其子类）st_server_socket的时候，会把自己的引用通过构造函数传入。
+};
+typedef st_server_socket_base<> st_server_socket;
+
+} //namespace
+
