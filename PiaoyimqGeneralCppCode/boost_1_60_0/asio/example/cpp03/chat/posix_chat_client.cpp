@@ -54,6 +54,10 @@ private:
             boost::asio::placeholders::error,
             boost::asio::placeholders::bytes_transferred));
     }
+    else
+    {
+    	throw boost::system::system_error(error);
+    }
   }
 
   void handle_read_header(const boost::system::error_code& error)
