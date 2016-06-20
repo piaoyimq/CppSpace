@@ -15,7 +15,6 @@ class filter_container
 {
 public:
 	typedef boost::filter_iterator<Predicate, Iterator> FilterIter;
-
 	filter_container(Predicate p, Iterator begin, Iterator end) :
 			m_begin(p, begin, end), m_end(p, end, end)
 	{

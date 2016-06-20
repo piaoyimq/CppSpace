@@ -71,17 +71,14 @@ enum session_idx_member
 typedef boost::multi_index::multi_index_container<session_stu,
 		boost::multi_index::indexed_by<
 				boost::multi_index::ordered_unique<boost::multi_index::tag<sid>, BOOST_MULTI_INDEX_MEMBER(session_stu, DWORD, id)>,
-boost::multi_index::ordered_non_unique<
-boost::multi_index::tag<sbusiness_type>, BOOST_MULTI_INDEX_MEMBER(session_stu, WORD, business_type)>,
-boost::multi_index::ordered_non_unique<
-boost::multi_index::tag<saddress>, BOOST_MULTI_INDEX_MEMBER(session_stu, std::string, address)>,
-boost::multi_index::ordered_non_unique<
-boost::multi_index::tag<sapp_id>, BOOST_MULTI_INDEX_MEMBER(session_stu, DWORD, app_id)>
->
+				boost::multi_index::ordered_non_unique<boost::multi_index::tag<sbusiness_type>, BOOST_MULTI_INDEX_MEMBER(session_stu, WORD, business_type)>,
+				boost::multi_index::ordered_non_unique<boost::multi_index::tag<saddress>, BOOST_MULTI_INDEX_MEMBER(session_stu, std::string, address)>,
+				boost::multi_index::ordered_non_unique<boost::multi_index::tag<sapp_id>, BOOST_MULTI_INDEX_MEMBER(session_stu, DWORD, app_id)>
+		>
 > session_set;
 
-#define MULTI_MEMBER_CON(Tag) boost::multi_index::index<session_set,Tag>::type&
-#define MULTI_MEMBER_ITR(Tag) boost::multi_index::index<session_set,Tag>::type::iterator
+#define MULTI_MEMBER_CON(Tag) const typename boost::multi_index::index<session_set,Tag>::type&
+#define MULTI_MEMBER_ITR(Tag) typename boost::multi_index::index<session_set,Tag>::type::iterator
 
 struct is_business_type
 {
@@ -119,7 +116,7 @@ public:
 			return;
 		}
 
-		MULTI_MEMBER_CON(Tag)idx = boost::multi_index::get<Tag>(m_sessions);
+		MULTI_MEMBER_CON(Tag) idx = boost::multi_index::get<Tag>(m_sessions);
 		//BOOST_AUTO(idx, boost::multi_index::get<Tag>(m_sessions));
 		BOOST_AUTO(iter, idx.find(m));
 
@@ -157,7 +154,7 @@ public:
 			return socket_session_ptr();
 		}
 
-		MULTI_MEMBER_CON(Tag)idx = boost::multi_index::get<Tag>(m_sessions);
+		MULTI_MEMBER_CON(Tag) idx = boost::multi_index::get<Tag>(m_sessions);
 
 		//对容器的元素条件过滤
 		is_business_type predicate(m);

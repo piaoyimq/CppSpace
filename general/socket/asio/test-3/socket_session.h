@@ -33,7 +33,7 @@
 #pragma once
 #include <iostream>
 #include <list>
-#include <hash_map>
+//#include <hash_map>
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
 #include <boost/shared_ptr.hpp>
@@ -41,27 +41,21 @@
 #include <boost/thread.hpp>
 #include <boost/thread/mutex.hpp>
 #include <boost/enable_shared_from_this.hpp>
-#include <firebird/log/logger_log4.hpp>
-#include <firebird/detail/config.hpp>
-#include <firebird/socket_utils/message_archive.hpp>
+
+#include "message.hpp"
+
+
 
 using boost::asio::ip::tcp;
 
 namespace firebird
 {
-enum command
-{
-	heartbeat = 0, regist, normal
-};
-
 const std::string tag = "KDS";
 
-class FIREBIRD_DECL socket_session;
+class  socket_session;
 typedef boost::shared_ptr<socket_session> socket_session_ptr;
 
-class FIREBIRD_DECL socket_session:
-public boost::enable_shared_from_this<socket_session>,
-private boost::noncopyable
+class  socket_session: public boost::enable_shared_from_this<socket_session>, private boost::noncopyable
 {
 public:
 	typedef boost::function<void(socket_session_ptr)> close_callback;

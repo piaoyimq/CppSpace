@@ -11,7 +11,7 @@
 #include "socket_session.h"
 #include "session_manager.h"
 #include <boost/algorithm/string.hpp>
-#include <firebird/message/message.hpp>
+#include "message.hpp"
 
 namespace firebird
 {

@@ -27,7 +27,7 @@ namespace firebird
 {
 using boost::asio::ip::tcp;
 
-class FIREBIRD_DECL server_socket_utils
+class  server_socket_utils
 {
 private:
 	boost::asio::io_service m_io_srv;
