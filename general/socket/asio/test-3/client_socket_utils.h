@@ -15,7 +15,7 @@
 
 namespace firebird
 {
-class FIREBIRD_DECL client_socket_utils
+class client_socket_utils
 {
 public:
 	client_socket_utils();
@@ -25,7 +25,9 @@ public:
 	void session_connect(socket_session_ptr pSession);
 	//socket_session_ptr get_session(std::string& addr);
 	boost::asio::io_service& get_io_service()
-	{	return m_io_srv;}
+	{
+		return m_io_srv;
+	}
 
 protected:
 	virtual void handle_read_data(message& msg, socket_session_ptr pSession) = 0;
