@@ -159,7 +159,9 @@ public:
 		//对容器的元素条件过滤
 		is_business_type predicate(m);
 		FilterContainer fc(predicate, idx.begin(), idx.end());
-		FilterContainer::FilterIter iter = fc.begin();
+		filter_container<is_business_type, MULTI_MEMBER_ITR(Tag)>::FilterIter iter = fc.begin();
+//		FilterContainer::FilterIter iter = fc.begin();
+		StudentContainer::index<stu_name>::type::iterator itL
 
 		if (fc.begin() == fc.end())
 		{
