@@ -16,7 +16,7 @@ using std::cout;
 using std::endl;
 using namespace boost::filesystem;
 
-int cpp_main(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
 # ifdef BOOST_WINDOWS_API
 	cout << "BOOST_WINDOWS_API" << endl;

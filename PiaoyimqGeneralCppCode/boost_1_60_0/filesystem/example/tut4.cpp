@@ -37,13 +37,25 @@ int main(int argc, char* argv[])
 
         std::vector<std::string> v;
 
+#if 0
         for (auto&& x : directory_iterator(p))
           v.push_back(x.path().filename().string()); 
+#else
+        directory_iterator end_iter;
+        for(directory_iterator pos(p); pos != end_iter; pos++)
+        {
+        	v.push_back(pos->path().filename());
+        }
+#endif
 
-        std::sort(v.begin(), v.end());  
+        std::sort(v.begin(), v.end());
 
+#if 0
         for (auto&& x : v)
           cout << "    " << x << '\n';
+#else
+        std::copy(v.begin(), v.end(), std::ostream_iterator<std::string>(std::cout, "\n"));
+#endif
       }
       else
         cout << p << " exists, but is not a regular file or directory\n";

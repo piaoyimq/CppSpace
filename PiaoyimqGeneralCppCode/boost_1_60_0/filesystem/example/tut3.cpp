@@ -38,6 +38,14 @@ int main(int argc, char* argv[])
         	cout << "    " << x.path() << '\n';
 #else
             directory_iterator end;
+            /**无参构造函数是最后那个iterator的value 摘抄如下
+           *If the end of the directory elements is reached, the iterator becomes equal to the end iterator value.
+           *If  The constructor directory_iterator() with no arguments always constructs an end iterator object,
+           *If  which is the only legitimate iterator to be used for the end condition. The result of operator* on an end iterator is not defined.
+           *If   For any other iterator value a const directory_entry& is returned. The result ofoperator-> on an end iterator is not defined.
+           *If    For any other iterator value a const directory_entry* is returned.
+           *
+           **/
             for (directory_iterator pos(p); pos != end; pos++)
             	cout << "    " << pos->path() << '\n';
 #endif
