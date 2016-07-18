@@ -1069,6 +1069,11 @@ bool isDirExist(const char* dir){
 	return true;
 }
 
+void stringTest()
+{
+	std::string s(41, '-');
+	std::cout << s  << std::string(20, '*')<< std::endl;
+}
 int main() {
     PRINT_COLOR(RED, "===> Enter main\n\n");
 //    int_pointer();
@@ -1132,16 +1137,7 @@ int main() {
    
     // App_Log(3, 4, "Test=%d", 3);
     
-    renameTest("/home/coding/workspace/CppSpace/PiaoyimqGeneralCppCode/cpp-test/my-test.log", "/home/coding/workspace/CppSpace/Log/Log1/my-test-new.log", 3);
-
-    bool a =isDirExist("/home/coding/workspace/CppSpace/Log/Log1");
-    if(true ==a ){
-        printf("true\n");
-    }
-    else{
-        printf("false\n");
-    }
-    
+    stringTest();
     PRINT_COLOR(RED, "\n\nExit main ===>||\n");
 }
 
