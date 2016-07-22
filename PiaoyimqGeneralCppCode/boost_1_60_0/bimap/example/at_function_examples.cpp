@@ -47,7 +47,8 @@ void first_bimap()
     assert( bm.empty() );
 
     bm.left["one"] = 1; // Ok
-
+    std::cout << bm.left["one"] << std::endl;
+//    std::cout << bm.right[1] << std::endl;//??
     assert( bm.left.at("one") == 1 ); // Ok
     //]
 }

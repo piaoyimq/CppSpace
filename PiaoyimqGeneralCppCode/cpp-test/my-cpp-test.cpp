@@ -1009,6 +1009,8 @@ static struct AppModule logModuleList[LAST_ID]={
         {CONF_ID, "CONF"},
 };
 
+
+
 namespace my{
 template <class T>
 size_t getArrayLen(T& array){
@@ -1074,6 +1076,57 @@ void stringTest()
 	std::string s(41, '-');
 	std::cout << s  << std::string(20, '*')<< std::endl;
 }
+
+static int a = 10;
+int& returnReference()
+{
+	a++;
+	return a;
+}
+
+
+
+void returnReferenceTest()
+{
+//	int b=0;
+	int& b = returnReference();
+	std::cout << "a" << a << std::endl;
+	std::cout << "b" << b << std::endl;
+	b++;
+	std::cout << "a" << a << std::endl;
+	std::cout << "b" << b << std::endl;
+
+
+	int c =0;
+
+}
+
+struct sTest
+{
+	std::shared_ptr<int> value ;
+};
+
+sTest b;
+sTest& returnReferenceSharePointer()
+{
+	b.value = std::make_shared<int>(9);
+	return b;
+}
+
+void returnReferenceSharePointerTest()
+{
+	sTest c;
+	c = returnReferenceSharePointer();
+	std::cout << "b1= " << *b.value << std::endl;
+	std::cout << "c1= " << *c.value << std::endl;
+
+//	++(*c.value);
+	*c.value = 99;
+	std::cout << "b2= " << *b.value << std::endl;
+	std::cout << "c2= " << *c.value << std::endl;
+
+}
+
 int main() {
     PRINT_COLOR(RED, "===> Enter main\n\n");
 //    int_pointer();
@@ -1137,7 +1190,9 @@ int main() {
    
     // App_Log(3, 4, "Test=%d", 3);
     
-    stringTest();
+//    stringTest();
+    returnReferenceTest();
+    returnReferenceSharePointerTest();
     PRINT_COLOR(RED, "\n\nExit main ===>||\n");
 }
 
