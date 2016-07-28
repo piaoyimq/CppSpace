@@ -1,4 +1,4 @@
-#Sun May 22 21:40:14 CST 2016
+#Wed Jul 27 07:17:44 CEST 2016
 /instance/org.eclipse.cdt.managedbuilder.core/properties/classic.null.1169188913/cdt.managedbuild.toolchain.gnu.base.1903365855=cdt.managedbuild.tool.gnu.cpp.compiler.base.249586758\=rebuildState\\\=true\\n\ncdt.managedbuild.toolchain.gnu.base.678963486\=rebuildState\\\=true\\n\ncdt.managedbuild.toolchain.gnu.base.1903365855\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.assembler.base.153903796\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.linker.base.113294952\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.cpp.linker.base.1989722884\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.compiler.base.1508321700\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.archiver.base.2042346044\=rebuildState\\\=true\\n\n
 /instance/org.eclipse.cdt.managedbuilder.core/properties/mpcd_wp471_10_pm.null.1639351748/cdt.managedbuild.toolchain.gnu.base.852358358=cdt.managedbuild.tool.gnu.archiver.base.1255600739\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.assembler.base.1665248593\=rebuildState\\\=true\\n\ncdt.managedbuild.toolchain.gnu.base.1467128085\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.cpp.compiler.base.1092308660\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.linker.base.951222840\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.compiler.base.276627203\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.cpp.linker.base.1339421873\=rebuildState\\\=true\\n\ncdt.managedbuild.toolchain.gnu.base.852358358\=rebuildState\\\=true\\n\n
 /instance/org.eclipse.team.ui/org.eclipse.team.ui.first_time=false
@@ -7,6 +7,7 @@
 /instance/org.eclipse.rse.core/useridperkey=eselnts1325.Local\=ezhweib;
 /instance/org.eclipse.ant.ui/useQuickDiffPrefPage=true
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_space_between_empty_braces_in_array_initializer=do not insert
+/instance/org.eclipse.cdt.managedbuilder.core/properties/CppSpace.null.1335355082/cdt.managedbuild.toolchain.gnu.base.1162622758=cdt.managedbuild.tool.gnu.c.linker.base.1292207958\=rebuildState\\\=true\\n\ncdt.managedbuild.toolchain.gnu.base.1162622758\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.archiver.base.856609965\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.assembler.base.1885896968\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.compiler.base.1008466395\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.cpp.compiler.base.533923533\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.cpp.linker.base.1488811615\=rebuildState\\\=true\\n\ncdt.managedbuild.toolchain.gnu.base.2085349466\=rebuildState\\\=true\\n\n
 /instance/org.eclipse.cdt.managedbuilder.core/properties/ggsnu.null.611199410/0.190616381.122230286.1509350884.2021852487=\#\n\#Mon Jan 30 16\:40\:00 CET 2012\norg.eclipse.cdt.build.core.settings.holder.libs.929185900\=\\\#\\n\\\#Wed Oct 26 18\\\:21\\\:49 CEST 2011\\nrebuildState\\\=true\\n\norg.eclipse.cdt.build.core.settings.holder.1905333606\=\\\#\\n\\\#Wed Oct 26 18\\\:21\\\:49 CEST 2011\\nrebuildState\\\=true\\n\norg.eclipse.cdt.build.core.prefbase.toolchain.1370790032\=\\\#\\n\\\#Wed Oct 26 18\\\:21\\\:49 CEST 2011\\nrebuildState\\\=true\\n\norg.eclipse.cdt.build.core.settings.holder.1868180550\=\\\#\\n\\\#Mon Jan 30 16\\\:40\\\:00 CET 2012\\nrebuildState\\\=true\\n\norg.eclipse.cdt.build.core.settings.holder.1713234745\=\\\#\\n\\\#Mon Jan 30 16\\\:40\\\:00 CET 2012\\nrebuildState\\\=true\\n\n0.190616381.122230286.1509350884.2021852487\=\\\#\\n\\\#Mon Jan 30 16\\\:40\\\:00 CET 2012\\nrebuildState\\\=true\\n\norg.eclipse.cdt.build.core.settings.holder.libs.1739939919\=\\\#\\n\\\#Mon Jan 30 16\\\:40\\\:00 CET 2012\\nrebuildState\\\=true\\n\norg.eclipse.cdt.build.core.settings.holder.5703508\=\\\#\\n\\\#Wed Oct 26 18\\\:21\\\:49 CEST 2011\\nrebuildState\\\=true\\n\norg.eclipse.cdt.build.core.prefbase.toolchain.709669809\=\\\#\\n\\\#Mon Jan 30 16\\\:40\\\:00 CET 2012\\nrebuildState\\\=true\\n\norg.eclipse.cdt.build.core.settings.holder.1700792629\=\\\#\\n\\\#Wed Oct 26 18\\\:21\\\:49 CEST 2011\\nrebuildState\\\=true\\n\norg.eclipse.cdt.build.core.settings.holder.56018255\=\\\#\\n\\\#Mon Jan 30 16\\\:40\\\:00 CET 2012\\nrebuildState\\\=true\\n\n
 /instance/org.eclipse.cdt.core/indexer/indexAllHeaderVersions=true
 /instance/org.eclipse.epp.logging.aeri.ide/resetSendModeOn=0
@@ -52,7 +53,7 @@
 /instance/org.eclipse.ui.workbench/org.eclipse.e4.ui.css.theme.e4_default.org.eclipse.ui.workbench.INACTIVE_TAB_INNER_KEYLINE_COLOR=255,255,255
 /instance/org.eclipse.debug.ui/preferredDetailPanes=ModuleDetailPane\:ModuleDetailPane|DefaultDetailPane\:DefaultDetailPane|NumberFormatPane\:NumberFormatPane|
 /instance/org.eclipse.cdt.managedbuilder.core/properties/resim.cdt.managedbuild.target.gnu.exe.200663924/cdt.managedbuild.config.gnu.exe.release.1213145590=\#\n\#Tue Dec 06 14\:51\:42 CET 2011\ncdt.managedbuild.tool.gnu.archiver.base.1329274956\=\\\#\\n\\\#Tue Dec 06 14\\\:51\\\:42 CET 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.toolchain.gnu.exe.release.177764519\=\\\#\\n\\\#Tue Dec 06 14\\\:51\\\:42 CET 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.assembler.exe.release.1258394875\=\\\#\\n\\\#Tue Dec 06 14\\\:51\\\:42 CET 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.compiler.exe.release.606575651\=\\\#\\n\\\#Tue Dec 06 14\\\:51\\\:42 CET 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.cpp.compiler.exe.release.1204590590\=\\\#\\n\\\#Tue Dec 06 14\\\:51\\\:42 CET 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.cpp.linker.exe.release.2097889104\=\\\#\\n\\\#Tue Dec 06 14\\\:51\\\:42 CET 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.linker.exe.release.1971661514\=\\\#\\n\\\#Tue Dec 06 14\\\:51\\\:42 CET 2011\\nrebuildState\\\=true\\n\n
-@org.eclipse.ui.navigator=3.6.0.v20150422-0725
+@org.eclipse.ui.navigator=3.5.401.v20140724-1117
 /instance/com.coverity.desktop/filter.TO_TRIAGE/filter.checkers=
 /instance/org.eclipse.cdt.ui/org.eclipse.cdt.ui.outline.linktoeditor=true
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_space_before_comma_in_template_parameters=do not insert
@@ -109,7 +110,7 @@
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_new_line_after_opening_brace_in_array_initializer=do not insert
 /instance/org.eclipse.cdt.ui/useAnnotationsPrefPage=true
 /instance/org.eclipse.cdt.ui/org.eclipse.cdt.ui.formatterprofiles.version=1
-@org.eclipse.e4.ui.css.swt.theme=0.10.0.v20150422-0725
+@org.eclipse.e4.ui.css.swt.theme=0.9.300.v20141126-1957
 /instance/org.eclipse.core.resources/description.snapshotinterval=420000
 /instance/org.eclipse.cdt.ui/editor_folding_default_macros=false
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_new_line_before_while_in_do_statement=do not insert
@@ -145,7 +146,7 @@
 /instance/org.eclipse.jdt.ui/org.eclipse.jdt.ui.javadoclocations.migrated=true
 /instance/com.coverity.desktop/analysis.settings/PREF_CMD_LINE_SETTINGS_JAVA/ANALYSIS_OPTIONS=
 /instance/org.eclipse.cdt.ui/editor_folding_default_inactive=false
-@org.eclipse.rse.ui=3.3.100.201503112018
+@org.eclipse.rse.ui=3.3.100.201408221458
 /instance/com.coverity.desktop/filter.TO_TRIAGE/filter.statuses=New
 /instance/org.eclipse.cdt.ui.prj-ComponentLib/buildConsole/keepLog=true
 /instance/org.eclipse.cdt.core/indexer/indexUnusedHeadersWithDefaultLang=true
@@ -162,11 +163,11 @@
 /instance/com.coverity.desktop/filter.OUTSTANDING_DEFECTS/filter.all.components=true
 /instance/org.eclipse.dltk.tcl.formatter/lines.preserve=1
 /instance/org.eclipse.cdt.managedbuilder.core/properties/classic.null.322545425/cdt.managedbuild.toolchain.gnu.base.1292190183=cdt.managedbuild.toolchain.gnu.base.1292190183\=rcState\\\=0\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.linker.base.230809244\=rebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.compiler.base.1521963294\=rebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.assembler.base.1637318674\=rebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.linker.base.988419258\=rebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.archiver.base.711475307\=rebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.compiler.base.1780400542\=rebuildState\\\=false\\n\ncdt.managedbuild.toolchain.gnu.base.959611687\=rebuildState\\\=true\\n\n
-/instance/org.eclipse.ui.workbench/ENABLED_DECORATORS=org.eclipse.cdt.ui.indexedFiles\:false,org.eclipse.cdt.managedbuilder.ui.excludedFile\:true,org.eclipse.cdt.managedbuilder.ui.includeFolder\:true,org.eclipse.cdt.internal.ui.CustomBuildSettingsDecorator\:true,org.eclipse.egit.ui.internal.decorators.GitLightweightDecorator\:true,org.eclipse.mylyn.context.ui.decorator.interest\:true,org.eclipse.mylyn.tasks.ui.decorators.task\:true,org.eclipse.mylyn.team.ui.changeset.decorator\:true,org.eclipse.rse.core.virtualobject.decorator\:true,org.eclipse.rse.core.binary.executable.decorator\:true,org.eclipse.rse.core.script.executable.decorator\:true,org.eclipse.rse.core.java.executable.decorator\:true,org.eclipse.rse.core.library.decorator\:true,org.eclipse.rse.core.link.decorator\:true,org.eclipse.rse.subsystems.error.decorator\:true,org.eclipse.linuxtools.tmf.ui.trace_folder.decorator\:true,org.eclipse.linuxtools.tmf.ui.experiment_folder.decorator\:true,org.eclipse.linuxtools.tmf.ui.linked_trace.decorator\:true,org.eclipse.ui.LinkedResourceDecorator\:true,org.eclipse.ui.SymlinkDecorator\:true,org.eclipse.ui.VirtualResourceDecorator\:true,org.eclipse.ui.ContentTypeDecorator\:true,org.eclipse.ui.ResourceFilterDecorator\:false,
+/instance/org.eclipse.ui.workbench/ENABLED_DECORATORS=org.eclipse.cdt.ui.indexedFiles\:false,org.eclipse.cdt.managedbuilder.ui.excludedFile\:true,org.eclipse.cdt.managedbuilder.ui.includeFolder\:true,org.eclipse.cdt.internal.ui.CustomBuildSettingsDecorator\:true,org.eclipse.egit.ui.internal.decorators.GitLightweightDecorator\:true,org.eclipse.linuxtools.tmf.ui.trace_folder.decorator\:true,org.eclipse.linuxtools.tmf.ui.experiment_folder.decorator\:true,org.eclipse.linuxtools.tmf.ui.linked_trace.decorator\:true,org.eclipse.mylyn.context.ui.decorator.interest\:true,org.eclipse.mylyn.tasks.ui.decorators.task\:true,org.eclipse.mylyn.team.ui.changeset.decorator\:true,org.eclipse.rse.core.virtualobject.decorator\:true,org.eclipse.rse.core.binary.executable.decorator\:true,org.eclipse.rse.core.script.executable.decorator\:true,org.eclipse.rse.core.java.executable.decorator\:true,org.eclipse.rse.core.library.decorator\:true,org.eclipse.rse.core.link.decorator\:true,org.eclipse.rse.subsystems.error.decorator\:true,org.eclipse.team.cvs.ui.decorator\:true,org.eclipse.ui.LinkedResourceDecorator\:true,org.eclipse.ui.SymlinkDecorator\:true,org.eclipse.ui.VirtualResourceDecorator\:true,org.eclipse.ui.ContentTypeDecorator\:true,org.eclipse.ui.ResourceFilterDecorator\:false,org.python.pydev.navigator.decorator.problemsLabelDecorator\:true,
 /instance/org.eclipse.ui.ide/SAVE_ALL_BEFORE_BUILD=true
 /instance/org.eclipse.cdt.core/indexer/filesToParseUpFront=
 /instance/org.eclipse.ui.workbench/RUN_IN_BACKGROUND=true
-@org.eclipse.ui=3.107.0.v20150507-1945
+@org.eclipse.ui=3.106.1.v20141002-1150
 /instance/com.coverity.desktop/conf.-1/CENTRAL_PROJECT=epg_junos
 /instance/com.coverity.desktop/filter.NEW_THIS_WEEK/filter.components=
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.compact_else_if=false
@@ -209,7 +210,8 @@
 /instance/net.sourceforge.eclipseccase/net.sourceforge.eclipseccase.clearcasePrimaryGroup=users
 /instance/org.epic.perleditor/sourceCriticLevel2=Warning
 /instance/org.epic.perleditor/sourceCriticLevel1=Warning
-@org.eclipse.cdt.debug.core=7.7.0.201602051005
+@org.python.pydev=4.5.5.201603221110
+@org.eclipse.cdt.debug.core=7.6.0.201502131403
 /instance/com.coverity.desktop/analysis.settings/PREF_CMD_LINE_SETTINGS_JAVA/BUILD_OPTIONS=
 /instance/com.coverity.desktop/conf.-1/USE_SSL=false
 /instance/org.eclipse.cdt.managedbuilder.core/properties/ggsn_include.null.646543397/0.2144551444=\#\n\#Mon Apr 22 13\:28\:54 CEST 2013\norg.eclipse.cdt.build.core.settings.holder.9971280\=\\\#\\n\\\#Mon Apr 22 13\\\:28\\\:54 CEST 2013\\nrebuildState\\\=false\\n\norg.eclipse.cdt.build.core.settings.holder.764139297\=\\\#\\n\\\#Mon Apr 22 13\\\:28\\\:54 CEST 2013\\nrebuildState\\\=false\\n\norg.eclipse.cdt.build.core.settings.holder.1296834950\=\\\#\\n\\\#Mon Apr 22 13\\\:28\\\:54 CEST 2013\\nrebuildState\\\=false\\n\norg.eclipse.cdt.build.core.settings.holder.1819421151\=\\\#\\n\\\#Mon Apr 22 13\\\:28\\\:54 CEST 2013\\nrebuildState\\\=false\\n\norg.eclipse.cdt.build.core.prefbase.toolchain.315260215\=\\\#\\n\\\#Mon Apr 22 13\\\:28\\\:54 CEST 2013\\nrebuildState\\\=false\\n\n0.2144551444\=\\\#\\n\\\#Mon Apr 22 13\\\:28\\\:54 CEST 2013\\nrcState\\\=0\\nrebuildState\\\=false\\n\norg.eclipse.cdt.build.core.settings.holder.libs.1786045715\=\\\#\\n\\\#Mon Apr 22 13\\\:28\\\:54 CEST 2013\\nrebuildState\\\=false\\n\n
@@ -232,11 +234,11 @@
 /instance/com.coverity.desktop/filter.TO_TRIAGE/clause.0/object.0=New
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_space_after_unary_operator=do not insert
 /instance/org.eclipse.cdt.ui.prj-ndpi/buildConsole/keepLog=true
-@org.eclipse.cdt.make.core=7.3.0.201602051005
+@org.eclipse.cdt.make.core=7.3.0.201502131403
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.enumIdentifier=error
 /instance/org.eclipse.ui.editors/taskIndicationColor=127,130,85
 /instance/org.eclipse.jdt.ui/useQuickDiffPrefPage=true
-@org.eclipse.mylyn.tasks.ui=3.18.0.v20151211-2235
+@org.eclipse.mylyn.tasks.ui=3.14.2.v20150217-2341
 /instance/org.eclipse.egit.ui/refesh_only_when_active=false
 /instance/org.python.pydev/USE_PYDEV_ONLY_ON_DOC_SAVE=true
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.continuation_indentation_for_array_initializer=2
@@ -246,7 +248,7 @@
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_space_between_empty_parens_in_method_invocation=do not insert
 /instance/com.coverity.desktop/conf.-1/TRIAGE_SCOPE_TYPE=SELECTED_PROJECT
 /instance/com.coverity.desktop/analysis.settings/PREF_CMD_LINE_SETTINGS_JAVA/CHECKERS_PREF=
-@org.eclipse.egit.core=4.1.1.201511131810-r
+@org.eclipse.egit.core=3.4.2.201412180340-r
 /configuration/org.eclipse.core.net/org.eclipse.core.net.hasMigrated=true
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.alignment_for_expression_list=0
 /instance/com.coverity.desktop/analysis.settings/PREF_CMD_LINE_SETTINGS_CPP/POST_ANALYZE_HOOK=
@@ -274,7 +276,7 @@
 /instance/org.eclipse.ui.editors/org.eclipse.cdt.codan.ui.annotation.warning.GoToNextNavigationTarget=false
 /instance/org.eclipse.e4.ui.css.swt.theme/themeid=org.eclipse.e4.ui.css.theme.e4_default
 /instance/org.python.pydev/OPERATORS_COLOR=26,26,26
-@org.eclipse.cdt.managedbuilder.core=8.3.0.201602051005
+@org.eclipse.cdt.managedbuilder.core=8.3.0.201502131403
 /instance/com.coverity.desktop/filter.HIGH_SEVERITY/clause.1/subject=severityName
 /instance/org.eclipse.cdt.managedbuilder.core/properties/classic.null.1735506657/cdt.managedbuild.toolchain.gnu.base.729123977=cdt.managedbuild.toolchain.gnu.base.729123977\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.linker.base.755368842\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.compiler.base.1152785844\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.assembler.base.2092390655\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.archiver.base.2139718528\=rebuildState\\\=true\\n\ncdt.managedbuild.toolchain.gnu.base.121195501\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.cpp.linker.base.251587817\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.cpp.compiler.base.2129902477\=rebuildState\\\=true\\n\n
 /instance/org.eclipse.jsch.core/CVSSSH2PreferencePage.PREF_AUTH_METHODS_ORDER=gssapi-with-mic,publickey,password,keyboard-interactive
@@ -320,7 +322,7 @@
 /instance/org.epic.perleditor/SHOW_WARNINGS=0
 /instance/com.coverity.desktop/conf.-1/HOST_NAME=eselnlx1039.mo.sw.ericsson.se
 /instance/org.eclipse.jdt.ui/spelling_ignore_upper=true
-@org.eclipse.jsch.core=1.2.0.v20141202-1415
+@org.eclipse.jsch.core=1.1.500.v20131112-1442
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.keep_else_statement_on_same_line=false
 /instance/org.eclipse.cdt.managedbuilder.core/properties/libggsnutil.cdt.managedbuild.target.gnu.lib.1361243588/cdt.managedbuild.config.gnu.lib.debug.1050412452.326066963=\#\n\#Tue Dec 06 14\:51\:19 CET 2011\ncdt.managedbuild.tool.gnu.archiver.lib.debug.347226394\=\\\#\\n\\\#Tue Dec 06 14\\\:51\\\:19 CET 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.toolchain.gnu.lib.debug.1319629231\=\\\#\\n\\\#Tue Dec 06 14\\\:51\\\:19 CET 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.assembler.lib.debug.855557570\=\\\#\\n\\\#Tue Dec 06 14\\\:51\\\:19 CET 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.compiler.lib.debug.562328971\=\\\#\\n\\\#Tue Dec 06 14\\\:51\\\:19 CET 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.compiler.lib.debug.2011014430\=\\\#\\n\\\#Tue Dec 06 14\\\:51\\\:19 CET 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.linker.base.362268633\=\\\#\\n\\\#Tue Dec 06 14\\\:51\\\:19 CET 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.config.gnu.lib.debug.1050412452.326066963\=\\\#\\n\\\#Tue Dec 06 14\\\:51\\\:19 CET 2011\\nrcState\\\=0\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.linker.base.1094209662\=\\\#\\n\\\#Tue Dec 06 14\\\:51\\\:19 CET 2011\\nrebuildState\\\=false\\n\n
 /instance/com.coverity.desktop/analysis.settings/PREF_CMD_LINE_SETTINGS_CPP/ANALYSIS_OPTIONS=
@@ -328,14 +330,14 @@
 /instance/org.eclipse.cdt.ui/semanticHighlighting.enum.enabled=true
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_space_after_comma_in_template_parameters=insert
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.brace_position_for_block=next_line
-@org.eclipse.ui.editors=3.9.0.v20150213-1939
+@org.eclipse.ui.editors=3.8.200.v20140401-1310
 /instance/org.eclipse.rse.ui/org.eclipse.rse.preferences.verify.connection=false
 /instance/org.eclipse.cdt.managedbuilder.core/properties/libggsnutil.cdt.managedbuild.target.gnu.lib.1361243588/cdt.managedbuild.config.gnu.lib.debug.1050412452=\#\n\#Wed Jun 01 07\:34\:28 CEST 2011\ncdt.managedbuild.tool.gnu.c.linker.base.1618428707\=\\\#\\n\\\#Wed Jun 01 07\\\:34\\\:28 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.compiler.lib.debug.1687356411\=\\\#\\n\\\#Wed Jun 01 07\\\:34\\\:28 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.toolchain.gnu.lib.debug.1176233262\=\\\#\\n\\\#Wed Jun 01 07\\\:34\\\:28 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.config.gnu.lib.debug.1050412452\=\\\#\\n\\\#Wed Jun 01 07\\\:34\\\:28 CEST 2011\\nrcState\\\=0\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.assembler.lib.debug.192922301\=\\\#\\n\\\#Wed Jun 01 07\\\:34\\\:28 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.linker.base.333655719\=\\\#\\n\\\#Wed Jun 01 07\\\:34\\\:28 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.compiler.lib.debug.242192680\=\\\#\\n\\\#Wed Jun 01 07\\\:34\\\:28 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.archiver.lib.debug.1713581904\=\\\#\\n\\\#Wed Jun 01 07\\\:34\\\:28 CEST 2011\\nrebuildState\\\=false\\n\n
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_space_before_comma_in_method_declaration_parameters=do not insert
 /instance/org.eclipse.ui.views.log/groupBy=0
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_space_before_comma_in_expression_list=do not insert
 /instance/com.coverity.desktop/filter.HIGH_SEVERITY/clause.0/type=com.coverity.desktop.model.filters.Triple
-@org.eclipse.cdt.ui=5.11.0.201602051005
+@org.eclipse.cdt.ui=5.9.0.201502131403
 /instance/se.ericsson.cade.eclipse.tools.common_prefs///workspace/git/ezhweib/epg-4/tools/App/toside_ws/common_prefs_toside070.epf=1319189594000
 /instance/org.eclipse.cdt.ui.prj-egatk/buildConsole/keepLog=true
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.assertIdentifier=error
@@ -347,7 +349,7 @@
 /instance/com.coverity.desktop/filter.TO_TRIAGE/filter.type.LAST_DETECTED/date.filter.state=0
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.indent_access_specifier_extra_spaces=0
 /instance/org.eclipse.titan.designer/org.eclipse.titan.designer.reconcilerTimeout=10
-/instance/org.eclipse.ui.ide/platformState=1460690107543
+/instance/org.eclipse.ui.ide/platformState=1427351276068
 /instance/org.eclipse.cdt.ui.prj-agent++/buildConsole/logLocation=/workspace/git/ezhweib/epg-3/tools/App/eclipse_ws/workspace/.metadata/.plugins/org.eclipse.cdt.ui/agent++.build.log
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_space_before_opening_paren_in_parenthesized_expression=do not insert
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_space_before_opening_bracket=do not insert
@@ -357,6 +359,7 @@
 /instance/com.coverity.desktop/com.coverity.desktop.preferences.filters=NEW_TODAY\!\:\=~\=\:\!NEW_THIS_WEEK\!\:\=~\=\:\!TO_TRIAGE\!\:\=~\=\:\!TO_FIX\!\:\=~\=\:\!OUTSTANDING_DEFECTS
 /instance/org.eclipse.dltk.launching/org.eclipse.dltk.launching.PREF_INTERPRETER_XML=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\n<interpreterSettings>\n<defaultInterpreter environment\="org.eclipse.dltk.core.environment.localEnvironment" id\="61,net.sourceforge.shelled.ui.interpreter.ShellScriptInstallType13,1317210770279" nature\="net.sourceforge.shelled.core.nature"/>\n<interpreterType id\="net.sourceforge.shelled.ui.interpreter.ShellScriptInstallType">\n<interpreter environmentId\="org.eclipse.dltk.core.environment.localEnvironment" id\="1317210770279" name\="bash" path\="/bin/bash"/>\n<interpreter environmentId\="org.eclipse.dltk.core.environment.localEnvironment" id\="1317210800406" name\="sh" path\="/bin/sh"/>\n<interpreter environmentId\="org.eclipse.dltk.core.environment.localEnvironment" id\="1317210844923" name\="ksh" path\="/bin/ksh"/>\n<interpreter environmentId\="org.eclipse.dltk.core.environment.localEnvironment" id\="1317210844925" name\="zsh" path\="/bin/zsh"/>\n<interpreter environmentId\="org.eclipse.dltk.core.environment.localEnvironment" id\="1317210844926" name\="csh" path\="/bin/csh"/>\n<interpreter environmentId\="org.eclipse.dltk.core.environment.localEnvironment" id\="1317210844928" name\="tcsh" path\="/bin/tcsh"/>\n<interpreter environmentId\="org.eclipse.dltk.core.environment.localEnvironment" id\="1317210844930" name\="sh(1)" path\="/usr/bin/sh"/>\n<interpreter environmentId\="org.eclipse.dltk.core.environment.localEnvironment" id\="1317210844933" name\="ksh(1)" path\="/usr/bin/ksh"/>\n<interpreter environmentId\="org.eclipse.dltk.core.environment.localEnvironment" id\="net.sourceforge.shelled.ui.interpreter.default" name\="/bin/sh" path\="/bin/bash"/>\n</interpreterType>\n</interpreterSettings>\n
 /instance/org.eclipse.cdt.ui/semanticHighlighting.globalVariable.italic=false
+@org.eclipse.team.cvs.ui=3.3.600.v20130514-1224
 /instance/org.eclipse.cdt.managedbuilder.core/properties/ggsnu.null.611199410/0.190616381.122230286.1923747293=org.eclipse.cdt.build.core.prefbase.toolchain.664433344\=rebuildState\\\=true\\n\norg.eclipse.cdt.build.core.settings.holder.351326347\=rebuildState\\\=true\\n\norg.eclipse.cdt.build.core.settings.holder.libs.732381475\=rebuildState\\\=true\\n\norg.eclipse.cdt.build.core.settings.holder.138818566\=rebuildState\\\=true\\n\norg.eclipse.cdt.build.core.settings.holder.147542135\=rebuildState\\\=true\\n\n
 /instance/org.epic.perleditor/SYNTAX_VALIDATION_IDLE_INTERVAL=1516
 /instance/org.eclipse.ant.ui/useAnnotationsPrefPage=true
@@ -384,7 +387,7 @@
 /instance/org.eclipse.cdt.managedbuilder.core/properties/epg.null.406224348/org.eclipse.cdt.cmake.toolChain.debug.2119573025.1379437426.1578283546.1070582906.1210150372.1137566859=org.eclipse.cdt.cmake.compiler.c.454099431\=rebuildState\\\=true\\n\norg.eclipse.cdt.cmake.toolChain.debug.1877877576\=rebuildState\\\=true\\n\norg.eclipse.cdt.cmake.cmake.1380153179\=rebuildState\\\=true\\n\norg.eclipse.cdt.cmake.compiler.c++.1993518659\=rebuildState\\\=true\\n\n
 /instance/org.eclipse.cdt.ui/hoverModifiers=org.eclipse.cdt.ui.BestMatchHover;0;org.eclipse.cdt.debug.internal.ui.editors.DebugTextHover;\!0;org.eclipse.cdt.ui.ProblemHover;\!0;org.eclipse.cdt.ui.CDocHover;\!0;org.eclipse.cdt.ui.CMacroExpansionHover;\!0;org.eclipse.cdt.ui.CSourceHover;Shift;org.eclipse.cdt.ui.AnnotationHover;\!0;
 /instance/org.epic.perleditor/ENABLE_DEBUG_CONSOLE=0
-@org.eclipse.cdt.debug.ui=7.5.0.201602051005
+@org.eclipse.cdt.debug.ui=7.5.0.201502131403
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.classpathVariable.JRE_SRCROOT=
 /instance/org.eclipse.ui.workbench/ColorsAndFontsPreferencePage.expandedCategories=Torg.eclipse.ui.workbenchMisc\tTorg.eclipse.cdt.ui.presentation\tTorg.eclipse.cdt.ui.CEditor.presentation
 /instance/org.eclipse.cdt.managedbuilder.core/properties/ggsnc_git.null.964634690/cdt.managedbuild.toolchain.gnu.base.1364435590=\#\n\#Mon Apr 22 13\:32\:26 CEST 2013\ncdt.managedbuild.tool.gnu.c.linker.base.1890781979\=\\\#\\n\\\#Mon Apr 22 13\\\:32\\\:26 CEST 2013\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.linker.base.499858591\=\\\#\\n\\\#Mon Apr 22 13\\\:32\\\:26 CEST 2013\\nrebuildState\\\=false\\n\ncdt.managedbuild.toolchain.gnu.base.2032775256\=\\\#\\n\\\#Mon Apr 22 13\\\:32\\\:26 CEST 2013\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.assembler.base.194444300\=\\\#\\n\\\#Mon Apr 22 13\\\:32\\\:26 CEST 2013\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.compiler.base.424359179\=\\\#\\n\\\#Mon Apr 22 13\\\:32\\\:26 CEST 2013\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.compiler.base.1030522863\=\\\#\\n\\\#Mon Apr 22 13\\\:32\\\:26 CEST 2013\\nrebuildState\\\=false\\n\ncdt.managedbuild.toolchain.gnu.base.1364435590\=\\\#\\n\\\#Mon Apr 22 13\\\:28\\\:54 CEST 2013\\nrcState\\\=0\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.archiver.base.800255728\=\\\#\\n\\\#Mon Apr 22 13\\\:32\\\:26 CEST 2013\\nrebuildState\\\=false\\n\n
@@ -404,7 +407,7 @@
 /instance/org.eclipse.help.base/dialog_infopop=false
 /instance/com.coverity.desktop/filter.TO_TRIAGE/filter.all.checkers=true
 /instance/org.eclipse.mylyn.tasks.ui/org.eclipse.mylyn.tasks.ui.welcome.message=true
-@org.eclipse.cdt.mylyn.ui=3.18.0.v20151013-1847
+@org.eclipse.cdt.mylyn.ui=3.14.2.v20150218-0125
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.indent_switchstatements_compare_to_cases=true
 /instance/org.epic.perleditor/CodeAssist.autoActivationDelay=100
 /instance/org.eclipse.cdt.ui/semanticHighlighting.globalVariable.bold=true
@@ -435,7 +438,7 @@
 /instance/net.sourceforge.eclipseccase/net.sourceforge.eclipseccase.merge.external=true
 /instance/org.eclipse.epp.usagedata.recording/org.eclipse.epp.usagedata.recording.last-upload=1286797373241
 /instance/com.coverity.desktop/filter.TO_TRIAGE/clause.0/type=com.coverity.desktop.model.filters.Triple
-@org.eclipse.team.core=3.7.100.v20150203-1452
+@org.eclipse.team.core=3.7.0.v20130514-1224
 /instance/com.coverity.desktop/analysis.settings/PREF_CMD_LINE_SETTINGS_JAVA/EXTRA_BUILD_OPTIONS=
 /instance/org.eclipse.cdt.ui/c_string=235,224,165
 /instance/com.coverity.desktop/analysis.settings/PREF_NUMBER_OF_WORKERS=8
@@ -477,6 +480,7 @@
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.alignment_for_compact_if=16
 /instance/com.coverity.desktop/filter.TO_TRIAGE/filter.statuses.all=false
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_space_after_assignment_operator=insert
+/instance/org.eclipse.cdt.ui.prj-CppSpace/buildConsole/logLocation=/home/ezhweib/CodeWorkSpace/C-CppProject/.metadata/.plugins/org.eclipse.cdt.ui/CppSpace.build.log
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_space_before_opening_angle_bracket_in_template_arguments=do not insert
 /instance/org.eclipse.egit.ui/merge_mode=0
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_space_before_closing_paren_in_catch=do not insert
@@ -492,6 +496,7 @@
 /instance/org.epic.perleditor/insertTabOnIndent=4
 /instance/org.epic.perleditor/Occurrences.keepMarks=true
 /instance/org.eclipse.team.ui/teamContentDescriptors/org.eclipse.egit.ui.changeSetModel/enabled=true
+/instance/org.eclipse.linuxtools.systemtap.ui.ide/ExcludedKernelSource=CVS/\:.svn/\:{arch}/\:.arch-ids/\:.bzr/\:debian/\:.git/\:
 /instance/org.eclipse.ui.workbench/org.eclipse.ui.commands=<?xml version\="1.0" encoding\="UTF-8"?>\n<org.eclipse.ui.commands>\n<keyBinding contextId\="org.eclipse.cdt.ui.macroExpansionHoverScope" keyConfigurationId\="org.eclipse.ui.defaultAcceleratorConfiguration" keySequence\="F3"/>\n<keyBinding contextId\="org.eclipse.cdt.make.ui.makefileEditorScope" keyConfigurationId\="org.eclipse.ui.defaultAcceleratorConfiguration" keySequence\="F3"/>\n<keyBinding contextId\="org.eclipse.cdt.ui.cEditorScope" keyConfigurationId\="org.eclipse.ui.defaultAcceleratorConfiguration" keySequence\="F4"/>\n<keyBinding contextId\="org.eclipse.cdt.ui.cEditorScope" keyConfigurationId\="org.eclipse.ui.defaultAcceleratorConfiguration" keySequence\="F3"/>\n<keyBinding contextId\="org.eclipse.ui.textEditorScope" keyConfigurationId\="org.eclipse.ui.defaultAcceleratorConfiguration" keySequence\="CTRL+K"/>\n<keyBinding contextId\="org.eclipse.ui.textEditorScope" keyConfigurationId\="org.eclipse.ui.defaultAcceleratorConfiguration" keySequence\="CTRL+SHIFT+K"/>\n<keyBinding contextId\="org.eclipse.cdt.ui.cViewScope" keyConfigurationId\="org.eclipse.ui.defaultAcceleratorConfiguration" keySequence\="F4"/>\n<keyBinding contextId\="org.eclipse.cdt.ui.cViewScope" keyConfigurationId\="org.eclipse.ui.defaultAcceleratorConfiguration" keySequence\="F3"/>\n<keyBinding commandId\="org.eclipse.ui.edit.findNext" contextId\="org.python.pydev.ui.editor.scope" keyConfigurationId\="org.eclipse.ui.defaultAcceleratorConfiguration" keySequence\="F4"/>\n<keyBinding commandId\="org.eclipse.ui.edit.findPrevious" contextId\="org.python.pydev.ui.editor.scope" keyConfigurationId\="org.eclipse.ui.defaultAcceleratorConfiguration" keySequence\="F3"/>\n<keyBinding commandId\="org.eclipse.ui.edit.findPrevious" contextId\="org.eclipse.cdt.ui.cEditorScope" keyConfigurationId\="org.eclipse.ui.defaultAcceleratorConfiguration" keySequence\="F3"/>\n<keyBinding commandId\="org.eclipse.ui.edit.findNext" contextId\="org.eclipse.cdt.ui.cEditorScope" keyConfigurationId\="org.eclipse.ui.defaultAcceleratorConfiguration" keySequence\="F4"/>\n</org.eclipse.ui.commands>
 /instance/org.python.pydev/STRING_COLOR=235,224,165
 /instance/org.eclipse.ui.ide/EXIT_PROMPT_ON_CLOSE_LAST_WINDOW=false
@@ -518,8 +523,8 @@
 /instance/org.eclipse.cdt.ui.prj-resim/buildConsole/keepLog=true
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_space_after_opening_brace_in_array_initializer=insert
 /instance/com.coverity.desktop/analysis.settings/PREF_CONFIGURATION_FILE_PATH_=/proj/epg/tools/coverity/coverity-linux64-6.5.0/cov-sa-linux64-6.5.0/config/coverity_config.xml
-/instance/org.eclipse.cdt.ui/content_assist_category_order=org.eclipse.cdt.ui.templateProposalCategory\:0\u0000org.eclipse.cdt.ui.parserProposalCategory\:1\u0000org.eclipse.cdt.ui.helpProposalCategory\:2\u0000org.eclipse.cdt.ui.textProposalCategory\:65538\u0000
 /instance/org.eclipse.cdt.managedbuilder.core/properties/mpg.cdt.managedbuild.target.gnu.exe.585684263/cdt.managedbuild.config.gnu.exe.debug.653144161=\#\n\#Wed Jun 01 09\:54\:48 CEST 2011\ncdt.managedbuild.tool.gnu.c.compiler.exe.debug.62050178\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.1021687068\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.toolchain.gnu.exe.debug.1627895504\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.archiver.base.1678381169\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.assembler.exe.debug.314266422\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\norg.eclipse.cdt.managedbuilder.ui.rcbs.415469968\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.compiler.exe.debug.2142847381.1812173579\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.archiver.base.1796971746\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.config.gnu.exe.debug.653144161.204304121\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.linker.exe.debug.803885504\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.compiler.exe.debug.257200469.924437229\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.archiver.base.2015299223\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.config.gnu.exe.debug.653144161.617306566\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.1396952132\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.compiler.exe.debug.72162882\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.linker.exe.debug.589701119\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.linker.exe.debug.493560641\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.compiler.exe.debug.62050178.343516119\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.assembler.exe.debug.1124357328\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.linker.exe.debug.1187593736\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.config.gnu.exe.debug.653144161.1309579031\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.compiler.exe.debug.62050178.1874284831\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.compiler.exe.debug.2142847381\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.linker.exe.debug.648170009\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.config.gnu.exe.debug.653144161.653082334\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.linker.exe.debug.10822288\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.compiler.exe.debug.257200469.1174399633\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.archiver.base.1406635095\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.compiler.exe.debug.257200469\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.archiver.base.806510450\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.config.gnu.exe.debug.653144161.857194249\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.toolchain.gnu.exe.debug.306830237\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.assembler.exe.debug.621245942\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.1454727598\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.compiler.exe.debug.62050178.1339336042\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.1903746977\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.assembler.exe.debug.765327204\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.archiver.base.2023171259\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.config.gnu.exe.debug.653144161.56416219\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.toolchain.gnu.exe.debug.285983761\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.config.gnu.exe.debug.653144161.2043528018\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.compiler.exe.debug.587394510\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.linker.exe.debug.915777362\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.config.gnu.exe.debug.653144161.1428235456\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.assembler.exe.debug.1414413354\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.compiler.exe.debug.62050178.352787820\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.config.gnu.exe.debug.653144161.921686984\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.linker.exe.debug.106510498\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.config.gnu.exe.debug.653144161.1676778332\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.toolchain.gnu.exe.debug.1761698349\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.compiler.exe.debug.62050178.699782282\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.511377265\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.assembler.exe.debug.290946973\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.assembler.exe.debug.976645761\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.1991545419\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.compiler.exe.debug.1711074309\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.toolchain.gnu.exe.debug.58939811\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.archiver.base.27249475\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.archiver.base.593882105\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.linker.exe.debug.90998986\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.assembler.exe.debug.1321178834\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.linker.exe.debug.1331983696\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.toolchain.gnu.exe.debug.2089152667\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.compiler.exe.debug.606237109\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.config.gnu.exe.debug.653144161\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrcState\\\=0\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.linker.exe.debug.1605673915\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.753578531\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.linker.exe.debug.1637531607\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.257463980\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.linker.exe.debug.1812303587\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.config.gnu.exe.debug.653144161.1314128434\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.toolchain.gnu.exe.debug.775950604\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.compiler.exe.debug.62050178.901760267\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.archiver.base.1674991993\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.linker.exe.debug.1136441975\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.linker.exe.debug.826437547\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.compiler.exe.debug.1184094584\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.compiler.exe.debug.554647921\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.compiler.exe.debug.62050178.161023744\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.toolchain.gnu.exe.debug.317435055\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.assembler.exe.debug.1047944632\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.741482350\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.toolchain.gnu.exe.debug.1390136281\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.linker.exe.debug.731708951\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.linker.exe.debug.958639555\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.compiler.exe.debug.554647921.1190335068\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.config.gnu.exe.debug.653144161.1359220570\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.cpp.linker.exe.debug.259433988\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.config.gnu.exe.debug.653144161.688630305\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.config.gnu.exe.debug.653144161.712202616\=\\\#\\n\\\#Wed Jun 01 09\\\:54\\\:48 CEST 2011\\nrebuildState\\\=false\\n\n
+/instance/org.eclipse.cdt.ui/content_assist_category_order=org.eclipse.cdt.ui.templateProposalCategory\:0\u0000org.eclipse.cdt.ui.parserProposalCategory\:1\u0000org.eclipse.cdt.ui.helpProposalCategory\:2\u0000org.eclipse.cdt.ui.textProposalCategory\:65538\u0000
 /instance/org.eclipse.jdt.ui/spelling_ignore_sentence=true
 /instance/com.coverity.desktop/analysis.settings/ANALYSIS_CUSTOM_TRIAL_KEY=false
 /instance/org.eclipse.ui.editors/indexResultIndication=false
@@ -527,6 +532,7 @@
 /instance/org.eclipse.ui/ENABLE_ANIMATIONS=false
 /instance/org.eclipse.ui.workbench/org.eclipse.e4.ui.css.theme.e4_default.org.eclipse.ui.workbench.INACTIVE_UNSELECTED_TABS_COLOR_START=255,255,255
 /instance/com.coverity.desktop/filter.NEW_THIS_WEEK/filter.all.checkers=true
+@org.eclipse.linuxtools.systemtap.ui.ide=2.3.0.201502180018
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_new_line_before_closing_brace_in_array_initializer=do not insert
 /instance/org.eclipse.ui.workbench/org.eclipse.e4.ui.css.theme.e4_default.org.eclipse.ui.workbench.ACTIVE_TAB_OUTLINE_COLOR=180,180,180
 /instance/org.eclipse.cdt.managedbuilder.core/properties/mpcd_wp471_10_pm.null.528136142/cdt.managedbuild.toolchain.gnu.base.1297381329=cdt.managedbuild.tool.gnu.c.linker.base.1120051854\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.archiver.base.638896228\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.assembler.base.35965374\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.compiler.base.245322298\=rebuildState\\\=true\\n\ncdt.managedbuild.toolchain.gnu.base.1491600278\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.cpp.compiler.base.1244229596\=rebuildState\\\=true\\n\ncdt.managedbuild.toolchain.gnu.base.1297381329\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.cpp.linker.base.528154494\=rebuildState\\\=true\\n\n
@@ -571,6 +577,7 @@
 /instance/org.eclipse.cdt.ui.prj-snmp++/buildConsole/logLocation=/workspace/git/ezhweib/epg-3/tools/App/eclipse_ws/workspace/.metadata/.plugins/org.eclipse.cdt.ui/snmp++.build.log
 /instance/com.coverity.desktop/analysis.settings/ANALYSIS_ENABLED=true
 /instance/com.coverity.desktop/filter.TO_TRIAGE/filter.actions=
+/instance/org.eclipse.cdt.managedbuilder.core/properties/CppSpace.null.591166030/cdt.managedbuild.toolchain.gnu.base.713731865=cdt.managedbuild.tool.gnu.archiver.base.1953519395\=rebuildState\\\=true\\n\ncdt.managedbuild.toolchain.gnu.base.713731865\=rebuildState\\\=true\\n\ncdt.managedbuild.toolchain.gnu.base.674869822\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.cpp.linker.base.1348071572\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.compiler.base.1068121059\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.cpp.compiler.base.291553549\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.assembler.base.662096903\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.linker.base.1728388019\=rebuildState\\\=true\\n\n
 /instance/org.eclipse.jdt.ui/org.eclipse.jdt.ui.formatterprofiles.version=12
 /instance/com.coverity.desktop/filter.HIGH_SEVERITY/clause.1/object.0=Major
 /instance/com.coverity.desktop/conf.-1/CENTRAL_PROJECT_ENABLED=true
@@ -579,7 +586,7 @@
 /instance/org.eclipse.cdt.ui/content_assist_disabled_computers=org.eclipse.cdt.ui.textProposalCategory\u0000org.eclipse.cdt.ui.parserProposalCategory\u0000
 /instance/org.eclipse.egit.ui/resourcehistory_graph_split=292,697
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.alignment_for_member_access=0
-@org.eclipse.mylyn.monitor.ui=3.18.0.v20151009-1724
+@org.eclipse.mylyn.monitor.ui=3.14.2.v20150217-2244
 /instance/org.eclipse.ui.ide/PROBLEMS_FILTERS_MIGRATE=true
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_space_after_comma_in_declarator_list=insert
 /instance/com.coverity.desktop/analysis.settings/PREF_CMD_LINE_SETTINGS_JAVA/CHECKERS_PREF_NAMES=
@@ -594,7 +601,7 @@
 /instance/com.coverity.desktop/filter.NEW_TODAY/filter.components=
 /instance/com.coverity.desktop/filter.TO_TRIAGE/filter.type.LAST_FIXED/date.filter.state=0
 /instance/org.python.pydev/KEYWORD_COLOR=173,33,33
-@org.eclipse.cdt.core=5.11.0.201602051005
+@org.eclipse.cdt.core=5.9.1.201502131403
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_space_after_comma_in_base_types=insert
 /instance/com.coverity.desktop/conf.-1/PASSWORD_SAVED=false
 /instance/org.eclipse.debug.ui/StringVariablePreferencePage=211,175,175,140,
@@ -602,7 +609,7 @@
 /instance/org.eclipse.cdt.managedbuilder.core/properties/egatku.cdt.managedbuild.target.gnu.lib.476776992/cdt.managedbuild.config.gnu.lib.debug.907165634.1258189523=\#\n\#Fri Apr 01 11\:05\:12 CEST 2011\ncdt.managedbuild.toolchain.gnu.lib.debug.493591314\=\\\#\\n\\\#Fri Apr 01 11\\\:05\\\:12 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.linker.base.1051417163\=\\\#\\n\\\#Fri Apr 01 11\\\:05\\\:12 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.archiver.lib.debug.2133523061\=\\\#\\n\\\#Fri Apr 01 11\\\:05\\\:12 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.config.gnu.lib.debug.907165634.1258189523\=\\\#\\n\\\#Fri Apr 01 11\\\:05\\\:12 CEST 2011\\nrcState\\\=-1\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.compiler.lib.debug.573725574\=\\\#\\n\\\#Fri Apr 01 11\\\:05\\\:12 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.assembler.lib.debug.1107734641\=\\\#\\n\\\#Fri Apr 01 11\\\:05\\\:12 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.linker.base.899477538\=\\\#\\n\\\#Fri Apr 01 11\\\:05\\\:12 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.compiler.lib.debug.575526428\=\\\#\\n\\\#Fri Apr 01 11\\\:05\\\:12 CEST 2011\\nrebuildState\\\=false\\n\n
 /instance/org.eclipse.cdt.ui/scalability.detect=false
 /instance/org.eclipse.debug.ui/pref_state_memento.org.eclipse.debug.ui.BreakpointView=<?xml version\="1.0" encoding\="UTF-8"?>\n<VariablesViewMemento org.eclipse.debug.ui.SASH_DETAILS_PART\="315" org.eclipse.debug.ui.SASH_VIEW_PART\="684">\n<PRESENTATION_CONTEXT_PROPERTIES IMemento.internal.id\="org.eclipse.debug.ui.BreakpointView">\n<BOOLEAN BOOLEAN\="true" IMemento.internal.id\="org.eclipse.debug.ui.check"/>\n</PRESENTATION_CONTEXT_PROPERTIES>\n</VariablesViewMemento>
-@org.eclipse.ui.workbench=3.107.1.v20160120-2131
+@org.eclipse.ui.workbench=3.106.2.v20150204-1030
 /instance/org.eclipse.ui.views.log/orderValue=-1
 /instance/com.coverity.desktop/filter.NEW_THIS_WEEK/filter.actions=
 /instance/org.eclipse.cdt.managedbuilder.core/properties/snmp++.cdt.managedbuild.target.gnu.lib.1008890223/cdt.managedbuild.config.gnu.lib.debug.1871164062=\#\n\#Wed Jun 01 11\:41\:33 CEST 2011\ncdt.managedbuild.tool.gnu.c.linker.base.1908629115\=\\\#\\n\\\#Wed Jun 01 11\\\:41\\\:33 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.toolchain.gnu.lib.debug.741719416\=\\\#\\n\\\#Wed Jun 01 11\\\:41\\\:33 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.assembler.lib.debug.153422594\=\\\#\\n\\\#Wed Jun 01 11\\\:41\\\:33 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.compiler.lib.debug.682940609\=\\\#\\n\\\#Wed Jun 01 11\\\:41\\\:33 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.config.gnu.lib.debug.1871164062\=\\\#\\n\\\#Wed Jun 01 11\\\:41\\\:33 CEST 2011\\nrcState\\\=0\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.archiver.lib.debug.923869147\=\\\#\\n\\\#Wed Jun 01 11\\\:41\\\:33 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.compiler.lib.debug.741141084\=\\\#\\n\\\#Wed Jun 01 11\\\:41\\\:33 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.linker.base.655666024\=\\\#\\n\\\#Wed Jun 01 11\\\:41\\\:33 CEST 2011\\nrebuildState\\\=false\\n\n
@@ -617,7 +624,7 @@
 /instance/org.eclipse.epp.usagedata.gathering/org.eclipse.epp.usagedata.gathering.enabled=false
 /instance/com.coverity.desktop/filter.NEW_THIS_WEEK/filter.severities.all=true
 /instance/org.python.pydev/com.aptana.db.ide-idUUID=be8eac11-a754-4a11-91bf-d25a0539070e
-@org.eclipse.egit.ui=4.1.1.201511131810-r
+@org.eclipse.egit.ui=3.4.2.201412180340-r
 /instance/org.eclipse.dltk.tcl.formatter/formatter.profiles.active=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\n<profiles>\n<profile formatter\="org.eclipse.dltk.tcl.formatter.TclformatterFactory" name\="EPG Profile [built-in]" version\="1">\n<setting id\="line.file.require.after" value\="1"/>\n<setting id\="wrap.comments" value\="false"/>\n<setting id\="line.file.proc.between" value\="1"/>\n<setting id\="lines.preserve" value\="1"/>\n<setting id\="formatter.indentation.size" value\="4"/>\n<setting id\="formatter.tabulation.char" value\="space"/>\n<setting id\="indent.script" value\="true"/>\n<setting id\="wrap.comments.length" value\="80"/>\n<setting id\="formatter.tabulation.size" value\="4"/>\n<setting id\="indent.after.backslash" value\="true"/>\n</profile>\n</profiles>\n
 /instance/com.coverity.desktop/filter.HIGH_SEVERITY/clausesCount=2
 /instance/com.coverity.desktop/filter.NEW_TODAY/filter.severities=
@@ -636,7 +643,7 @@
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_space_before_closing_brace_in_array_initializer=insert
 /instance/com.coverity.desktop/filter.HIGH_SEVERITY/clause.1/predicate=IS
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.alignment_for_enumerator_list=48
-@org.eclipse.core.resources=3.10.1.v20150725-1910
+@org.eclipse.core.resources=3.9.1.v20140825-1431
 /instance/com.coverity.desktop/filter.OUTSTANDING_DEFECTS/clausesCount=1
 /instance/org.eclipse.dltk.debug/dbgp_bind_address=autodetect
 /instance/org.eclipse.cdt.managedbuilder.core/properties/ggsnc.cdt.managedbuild.target.gnu.exe.191317836/cdt.managedbuild.config.gnu.exe.debug.250881501=\#\n\#Wed Jun 01 07\:34\:25 CEST 2011\ncdt.managedbuild.tool.gnu.c.linker.exe.debug.1096224161\=\\\#\\n\\\#Wed Jun 01 07\\\:34\\\:25 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.804210725\=\\\#\\n\\\#Wed Jun 01 07\\\:34\\\:25 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.linker.exe.debug.1883194210\=\\\#\\n\\\#Wed Jun 01 07\\\:34\\\:25 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.archiver.base.1474279194\=\\\#\\n\\\#Wed Jun 01 07\\\:34\\\:25 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.compiler.exe.debug.1243625392\=\\\#\\n\\\#Wed Jun 01 07\\\:34\\\:25 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.toolchain.gnu.exe.debug.1366395979\=\\\#\\n\\\#Wed Jun 01 07\\\:34\\\:25 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.assembler.exe.debug.424371474\=\\\#\\n\\\#Wed Jun 01 07\\\:34\\\:25 CEST 2011\\nrebuildState\\\=false\\n\ncdt.managedbuild.config.gnu.exe.debug.250881501\=\\\#\\n\\\#Wed Jun 01 07\\\:34\\\:25 CEST 2011\\nrcState\\\=0\\nrebuildState\\\=false\\n\n
@@ -648,7 +655,7 @@
 /instance/com.coverity.desktop/filter.HIGH_IMPACT/clausesCount=2
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.join_wrapped_lines=true
 /instance/com.coverity.desktop/filter.NEW_TODAY/filter.classifications.all=true
-@org.eclipse.search=3.10.0.v20150318-0856
+@org.eclipse.search=3.9.100.v20140226-1637
 /instance/org.eclipse.dltk.ruby.ui/sourceHoverBackgroundColor=255,255,191
 /instance/org.eclipse.cdt.ui/scalability.numberOfLines=100000
 /instance/com.coverity.desktop/filter.NEW_TODAY/clausesCount=1
@@ -660,10 +667,10 @@
 /instance/com.coverity.desktop/filter.TO_FIX/clause.0/subject=statusName
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_space_before_colon_in_conditional=insert
 /instance/com.coverity.desktop/filter.OUTSTANDING_DEFECTS/filter.type.LAST_FIXED/date.filter.state=0
-@org.eclipse.ui.ide=3.11.0.v20150825-2158
+@org.eclipse.ui.ide=3.10.2.v20141118-1227
 /instance/org.eclipse.cdt.managedbuilder.core/properties/classic.null.1136522619/cdt.managedbuild.toolchain.gnu.base.403561725=cdt.managedbuild.tool.gnu.cpp.compiler.base.339814418\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.archiver.base.542855522\=rebuildState\\\=true\\n\ncdt.managedbuild.toolchain.gnu.base.844446229\=rebuildState\\\=true\\n\ncdt.managedbuild.toolchain.gnu.base.403561725\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.assembler.base.1332004610\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.cpp.linker.base.571352832\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.linker.base.1734050830\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.compiler.base.249637565\=rebuildState\\\=true\\n\n
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_new_line_before_else_in_if_statement=insert
-@org.eclipse.core.runtime=3.11.1.v20150903-1804
+@org.eclipse.core.runtime=3.10.0.v20140318-2214
 /instance/org.eclipse.cdt.managedbuilder.core/properties/epgconfd.cdt.managedbuild.target.gnu.exe.1359844694/cdt.managedbuild.config.gnu.exe.release.1412592587=\#\n\#Wed Aug 31 16\:49\:15 CEST 2011\ncdt.managedbuild.tool.gnu.c.linker.exe.release.655395055\=\\\#\\n\\\#Wed Aug 31 16\\\:49\\\:15 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.archiver.base.1661991000\=\\\#\\n\\\#Wed Aug 31 16\\\:49\\\:15 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.compiler.exe.release.1475303517\=\\\#\\n\\\#Wed Aug 31 16\\\:49\\\:15 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.cpp.linker.exe.release.762441451\=\\\#\\n\\\#Wed Aug 31 16\\\:49\\\:15 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.toolchain.gnu.exe.release.346109845\=\\\#\\n\\\#Wed Aug 31 16\\\:49\\\:15 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.cpp.compiler.exe.release.1026238654\=\\\#\\n\\\#Wed Aug 31 16\\\:49\\\:15 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.assembler.exe.release.160738329\=\\\#\\n\\\#Wed Aug 31 16\\\:49\\\:15 CEST 2011\\nrebuildState\\\=true\\n\n
 /instance/org.eclipse.dltk.tcl.ui/formatter.tabulation.size=4
 @org.eclipse.rse.core=3.3.100.201407181907
@@ -679,7 +686,7 @@
 /instance/org.eclipse.ui.editors/printMarginColumn=120
 /instance/org.eclipse.debug.core//org.eclipse.debug.core.PREFERRED_DELEGATES/org.eclipse.cdt.launch.applicationLaunchType=org.eclipse.cdt.dsf.gdb.launch.localCLaunch,debug,;org.eclipse.cdt.cdi.launch.localCLaunch,run,;
 /instance/org.eclipse.cdt.managedbuilder.core/properties/mpcd_wp471_10_pm.null.1206313276/cdt.managedbuild.toolchain.gnu.base.453470834=cdt.managedbuild.tool.gnu.c.linker.base.588496972\=rebuildState\\\=true\\n\ncdt.managedbuild.toolchain.gnu.base.1058179507\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.cpp.linker.base.1993928715\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.assembler.base.601195479\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.compiler.base.1538226052\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.archiver.base.859541881\=rebuildState\\\=true\\n\ncdt.managedbuild.toolchain.gnu.base.453470834\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.cpp.compiler.base.440398339\=rebuildState\\\=true\\n\n
-@org.eclipse.help.base=4.0.301.v20160212-1500
+@org.eclipse.help.base=4.0.201.v20150204-1700
 /instance/org.eclipse.cdt.ui/c_multi_line_comment=255,255,255
 /instance/org.eclipse.dltk.tcl.ui/useQuickDiffPrefPage=true
 /instance/org.eclipse.cdt.managedbuilder.core/properties/ggsnu.null.611199410/0.190616381.122230286.1824400260=org.eclipse.cdt.build.core.settings.holder.1522062355\=rebuildState\\\=true\\n\norg.eclipse.cdt.build.core.prefbase.toolchain.2131779549\=rebuildState\\\=true\\n\norg.eclipse.cdt.build.core.settings.holder.libs.2053421064\=rebuildState\\\=true\\n\norg.eclipse.cdt.build.core.settings.holder.1761173904\=rebuildState\\\=true\\n\norg.eclipse.cdt.build.core.settings.holder.882565000\=rebuildState\\\=true\\n\n
@@ -692,7 +699,7 @@
 /instance/com.coverity.desktop/filter.NEW_THIS_WEEK/filter.classifications.all=true
 /instance/org.eclipse.debug.ui/pref_state_memento.org.eclipse.debug.ui.RegisterView=<?xml version\="1.0" encoding\="UTF-8"?>\n<VariablesViewMemento org.eclipse.debug.ui.SASH_DETAILS_PART\="315" org.eclipse.debug.ui.SASH_VIEW_PART\="684">\n<COLUMN_SIZES IMemento.internal.id\="org.eclipse.cdt.dsf.ui.COLUMN_ID__VALUE" SIZE\="208"/>\n<COLUMN_SIZES IMemento.internal.id\="org.eclipse.cdt.dsf.ui.COLUMN_ID__NAME" SIZE\="208"/>\n<COLUMN_SIZES IMemento.internal.id\="org.eclipse.cdt.dsf.ui.COLUMN_ID__DESCRIPTION" SIZE\="512"/>\n<PRESENTATION_CONTEXT_PROPERTIES IMemento.internal.id\="org.eclipse.debug.ui.RegisterView">\n<STRING IMemento.internal.id\="org.eclipse.cdt.dsf.ui.viewmodel.update.selectedUpdateScope" STRING\="org.eclipse.cdt.dsf.ui.viewmodel.update.visibleUpdateScope"/>\n</PRESENTATION_CONTEXT_PROPERTIES>\n</VariablesViewMemento>
 /instance/net.sourceforge.eclipseccase/net.sourceforge.eclipseccase.add.master=false
-@org.eclipse.debug.core=3.10.0.v20150303-1130
+@org.eclipse.debug.core=3.9.1.v20140805-1629
 /instance/org.eclipse.ui.workbench//org.eclipse.ui.commands/state/org.eclipse.ui.navigator.resources.nested.changeProjectPresentation/org.eclipse.ui.commands.radioState=false
 /instance/org.eclipse.cdt.ui/semanticHighlighting.namespace.color=30,144,255
 file_export_version=3.0
@@ -712,7 +719,6 @@ file_export_version=3.0
 /instance/org.eclipse.cdt.managedbuilder.core/properties/epgconfd.cdt.managedbuild.target.gnu.exe.1359844694/cdt.managedbuild.config.gnu.exe.debug.1339425424=\#\n\#Wed Aug 31 16\:49\:14 CEST 2011\ncdt.managedbuild.tool.gnu.c.compiler.exe.debug.800792468\=\\\#\\n\\\#Wed Aug 31 16\\\:49\\\:14 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.assembler.exe.debug.2118481248\=\\\#\\n\\\#Wed Aug 31 16\\\:49\\\:14 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.linker.exe.debug.805875937\=\\\#\\n\\\#Wed Aug 31 16\\\:49\\\:14 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.2099690443\=\\\#\\n\\\#Wed Aug 31 16\\\:49\\\:14 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.cpp.linker.exe.debug.1940195529\=\\\#\\n\\\#Wed Aug 31 16\\\:49\\\:14 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.archiver.base.331621018\=\\\#\\n\\\#Wed Aug 31 16\\\:49\\\:14 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.toolchain.gnu.exe.debug.165511616\=\\\#\\n\\\#Wed Aug 31 16\\\:49\\\:14 CEST 2011\\nrebuildState\\\=true\\n\n
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_space_before_binary_operator=insert
 /instance/com.coverity.desktop/filter.MY_OUTSTANDING_DEFECTS/clause.1/subject=ownerName
-@org.eclipse.oomph.setup.ui=1.3.0.v20160213-0953
 /configuration/org.eclipse.ui.ide/RECENT_WORKSPACES=/home/ezhweib/CodeWorkSpace/C-CppProject\n/home/ezhweib/CppWorkplace\n/home/ezhweib/workspace
 /instance/org.eclipse.cdt.core.prj-EPG@epg-2-eclipse-Linux_x86_64/indexer/preferenceScope=0
 /instance/com.coverity.desktop/filter.MY_OUTSTANDING_DEFECTS/clause.0/type=com.coverity.desktop.model.filters.Triple
@@ -764,7 +770,6 @@ file_export_version=3.0
 /instance/org.eclipse.mylyn.tasks.ui/org.eclipse.mylyn.tasks.ui.repositories.synch.schedule=false
 /instance/org.eclipse.ui.workbench/org.eclipse.e4.ui.css.theme.e4_default.org.eclipse.ui.workbench.ACTIVE_TAB_BG_START=255,255,255
 /instance/com.coverity.desktop/filter.TO_TRIAGE/filter.type.FIRST_DETECTED/date.filter.state=0
-@org.eclipse.oomph.workingsets=1.3.0.v20160213-0953
 /instance/com.coverity.desktop/filter.TO_TRIAGE/filter.owners=Current User
 /instance/org.eclipse.cdt.ui/formatter_profile=_basedOnBsd
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_space_between_empty_parens_in_method_declaration=do not insert
@@ -773,7 +778,7 @@ file_export_version=3.0
 /instance/org.eclipse.cdt.managedbuilder.core/properties/sgwsim.cdt.managedbuild.target.gnu.exe.1805205534/cdt.managedbuild.config.gnu.exe.debug.1061449305=\#\n\#Fri Apr 26 09\:56\:08 CEST 2013\ncdt.managedbuild.config.gnu.exe.debug.1061449305\=\\\#\\n\\\#Fri Apr 26 09\\\:56\\\:08 CEST 2013\\nrcState\\\=0\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.assembler.exe.debug.792213646\=\\\#\\n\\\#Fri Apr 26 09\\\:56\\\:08 CEST 2013\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.linker.exe.debug.2074955783\=\\\#\\n\\\#Fri Apr 26 09\\\:56\\\:08 CEST 2013\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.archiver.base.401909023\=\\\#\\n\\\#Fri Apr 26 09\\\:56\\\:08 CEST 2013\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.linker.exe.debug.1237108628\=\\\#\\n\\\#Fri Apr 26 09\\\:56\\\:08 CEST 2013\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.compiler.exe.debug.1864216602\=\\\#\\n\\\#Fri Apr 26 09\\\:56\\\:08 CEST 2013\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.2033759857\=\\\#\\n\\\#Fri Apr 26 09\\\:56\\\:08 CEST 2013\\nrebuildState\\\=false\\n\ncdt.managedbuild.toolchain.gnu.exe.debug.902388222\=\\\#\\n\\\#Fri Apr 26 09\\\:56\\\:08 CEST 2013\\nrebuildState\\\=false\\n\n
 /instance/org.eclipse.cdt.ui/c_keyword=255,0,0
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_new_line_before_colon_in_constructor_initializer_list=do not insert
-@org.eclipse.e4.ui.workbench.renderers.swt=0.13.0.v20150901-1347
+@org.eclipse.e4.ui.workbench.renderers.swt=0.12.2.v20150204-1353
 /instance/org.eclipse.cdt.managedbuilder.core/properties/CppSpace.null.506660965/org.eclipse.linuxtools.cdt.autotools.core.toolChain.2040146750=org.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.gpp.2079909855\=rebuildState\\\=true\\n\norg.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.autogen.752583076\=rebuildState\\\=true\\n\norg.eclipse.linuxtools.cdt.autotools.core.toolChain.2040146750\=rebuildState\\\=true\\n\norg.eclipse.linuxtools.cdt.autotools.core.toolChain.213100617\=rebuildState\\\=true\\n\norg.eclipse.linuxtools.cdt.autotools.core.gnu.toolchain.tool.configure.48302374\=rebuildState\\\=true\\n\norg.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.gcc.1060785375\=rebuildState\\\=true\\n\n
 /instance/com.coverity.desktop/analysis.settings/PREF_ANALYZE_DEPENDENCIES=false
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_space_before_opening_paren_in_exception_specification=insert
@@ -814,14 +819,14 @@ file_export_version=3.0
 /instance/com.coverity.desktop/analysis.settings/ANALYSIS_LICENSE_PATH=/proj/epg/tools/coverity/coverity-linux64-6.5.0/cov-sa-linux64-6.5.0/bin/license.dat
 /instance/com.coverity.desktop/filter.MY_OUTSTANDING_DEFECTS/clause.1/type=com.coverity.desktop.model.filters.Triple
 /instance/net.sourceforge.shelled.ui/useQuickDiffPrefPage=true
-@org.eclipse.mylyn.context.core=3.18.0.v20151013-1847
+@org.eclipse.mylyn.context.core=3.14.2.v20150218-0125
 /instance/org.eclipse.cdt.managedbuilder.core/properties/epg.null.406224348/org.eclipse.cdt.cmake.toolChain.debug.2119573025.1379437426.1578283546.1070582906.1210150372=org.eclipse.cdt.cmake.toolChain.debug.683506869\=rebuildState\\\=true\\n\norg.eclipse.cdt.cmake.cmake.2065186948\=rebuildState\\\=true\\n\norg.eclipse.cdt.cmake.compiler.c++.1837535365\=rebuildState\\\=true\\n\norg.eclipse.cdt.cmake.compiler.c.2071335068\=rebuildState\\\=true\\n\n
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.continuation_indentation=2
 /instance/org.eclipse.dltk.tcl.formatter/line.file.require.after=1
 /instance/org.eclipse.cdt.managedbuilder.core/properties/ggsnc.null.240394275/0.692431777.399872677=org.eclipse.cdt.build.core.settings.holder.libs.1484906104\=rebuildState\\\=true\\n\norg.eclipse.cdt.build.core.settings.holder.1437362865\=rebuildState\\\=true\\n\norg.eclipse.cdt.build.core.prefbase.toolchain.46345195\=rebuildState\\\=true\\n\norg.eclipse.cdt.build.core.settings.holder.2147450181\=rebuildState\\\=true\\n\norg.eclipse.cdt.build.core.settings.holder.1349767522\=rebuildState\\\=true\\n\n
 /instance/com.coverity.desktop/filter.OUTSTANDING_DEFECTS/clause.0/object.0=Dismissed
 /instance/com.coverity.desktop/filter.NEW_THIS_WEEK/filter.type.LAST_FIXED/date.filter.state=0
-@org.eclipse.ui.views.log=1.0.600.v20150513-1840
+@org.eclipse.ui.views.log=1.0.500.v20140512-1221
 /instance/org.eclipse.cdt.managedbuilder.core/properties/ggsnsnmpd.cdt.managedbuild.target.gnu.exe.975658108/cdt.managedbuild.config.gnu.exe.debug.1775475458=\#\n\#Mon Apr 22 13\:28\:55 CEST 2013\ncdt.managedbuild.toolchain.gnu.exe.debug.1155911900\=\\\#\\n\\\#Mon Apr 22 13\\\:28\\\:55 CEST 2013\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.assembler.exe.debug.490061245\=\\\#\\n\\\#Mon Apr 22 13\\\:28\\\:55 CEST 2013\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.cpp.linker.exe.debug.533694850\=\\\#\\n\\\#Mon Apr 22 13\\\:28\\\:55 CEST 2013\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.linker.exe.debug.640288770\=\\\#\\n\\\#Mon Apr 22 13\\\:28\\\:55 CEST 2013\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.compiler.exe.debug.24489638\=\\\#\\n\\\#Mon Apr 22 13\\\:28\\\:55 CEST 2013\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.archiver.base.445097827\=\\\#\\n\\\#Mon Apr 22 13\\\:28\\\:55 CEST 2013\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.54696253\=\\\#\\n\\\#Mon Apr 22 13\\\:28\\\:55 CEST 2013\\nrebuildState\\\=true\\n\n
 /instance/org.eclipse.cdt.managedbuilder.core/properties/epg.null.406224348/org.eclipse.cdt.cmake.toolChain.debug.2119573025.1379437426.1578283546.1070582906.1210150372.1137566859.55412858=org.eclipse.cdt.cmake.compiler.c.1105728941\=rebuildState\\\=true\\n\norg.eclipse.cdt.cmake.cmake.2083904087\=rebuildState\\\=true\\n\norg.eclipse.cdt.cmake.toolChain.debug.455513556\=rebuildState\\\=true\\n\norg.eclipse.cdt.cmake.compiler.c++.1967104395\=rebuildState\\\=true\\n\n
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.compliance=1.6
@@ -829,7 +834,7 @@ file_export_version=3.0
 /instance/net.sourceforge.eclipseccase/net.sourceforge.eclipseccase.activityFormatHelpString=act-{stream}_
 /instance/org.eclipse.dltk.ui/useQuickDiffPrefPage=true
 /instance/com.coverity.desktop/filter.HIGH_IMPACT/clause.0/subject=statusName
-@org.eclipse.cdt.dsf.ui=2.5.0.201602051005
+@org.eclipse.cdt.dsf.ui=2.5.0.201502131403
 /instance/com.coverity.desktop/conf.-1/CIM_USING_GLOBAL_SETTINGS=false
 /instance/org.eclipse.cdt.ui/editor_folding_statements=true
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_space_after_opening_paren_in_cast=do not insert
@@ -879,7 +884,7 @@ file_export_version=3.0
 /instance/org.eclipse.cdt.core.prj-EPG@epg-3-eclipse-Linux_x86_64/indexer/preferenceScope=0
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_space_after_opening_angle_bracket_in_template_parameters=do not insert
 /instance/org.eclipse.cdt.managedbuilder.core/properties/resim.cdt.managedbuild.target.gnu.exe.1527327240/cdt.managedbuild.config.gnu.exe.debug.1985002570=\#\n\#Thu Oct 14 12\:48\:02 CEST 2010\ncdt.managedbuild.tool.gnu.c.linker.exe.debug.476753719\=\\\#\\n\\\#Thu Oct 14 12\\\:48\\\:02 CEST 2010\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.compiler.exe.debug.2021640968\=\\\#\\n\\\#Thu Oct 14 12\\\:48\\\:02 CEST 2010\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.assembler.exe.debug.323317451\=\\\#\\n\\\#Thu Oct 14 12\\\:48\\\:02 CEST 2010\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.cpp.linker.exe.debug.297353873\=\\\#\\n\\\#Thu Oct 14 12\\\:48\\\:02 CEST 2010\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.archiver.base.1060353676\=\\\#\\n\\\#Thu Oct 14 12\\\:48\\\:02 CEST 2010\\nrebuildState\\\=true\\n\ncdt.managedbuild.toolchain.gnu.exe.debug.1936312774\=\\\#\\n\\\#Thu Oct 14 12\\\:48\\\:02 CEST 2010\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.1165605867\=\\\#\\n\\\#Thu Oct 14 12\\\:48\\\:02 CEST 2010\\nrebuildState\\\=true\\n\n
-/instance/org.eclipse.egit.core/GitRepositoriesView.GitDirectories=/home/piaoyimq/workspace/CppSpace/.git\:/workspace/git/ezhweib/epg-2/.git\:/workspace/git/ezhweib/epg-1/.git\:/workspace/git/ezhweib/epg/.git\:/home/ezhweib/CodeWorkSpace/CppSpace/.git\:/workspace/git/ezhweib/epg-3/.git\:
+/instance/org.eclipse.egit.core/GitRepositoriesView.GitDirectories=/home/piaoyimq/workspace/CppSpace/.git\:/workspace/git/ezhweib/epg-2/.git\:/workspace/git/ezhweib/epg-1/.git\:/workspace/git/ezhweib/epg/.git\:/home/ezhweib/workspace/CppSpace/.git\:/home/ezhweib/CodeWorkSpace/CppSpace/.git\:/workspace/git/ezhweib/epg-3/.git\:
 /instance/org.eclipse.ui.editors/errorIndicationInOverviewRuler=false
 /instance/com.google.eclipse.mechanic/showPopup=false
 /instance/org.eclipse.cdt.managedbuilder.core/properties/classic-14b-16r58l.null.27376834/cdt.managedbuild.toolchain.gnu.base.1041665815=cdt.managedbuild.tool.gnu.assembler.base.1348452331\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.linker.base.1192112347\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.compiler.base.1531494838\=rebuildState\\\=true\\n\ncdt.managedbuild.toolchain.gnu.base.1041665815\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.cpp.compiler.base.1291142895\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.cpp.linker.base.1412678202\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.archiver.base.603789897\=rebuildState\\\=true\\n\ncdt.managedbuild.toolchain.gnu.base.1681593307\=rebuildState\\\=true\\n\n
@@ -893,7 +898,7 @@ file_export_version=3.0
 /instance/com.coverity.desktop/filter.TO_FIX/filter.statuses=Triaged
 /instance/org.eclipse.ui.editors/additionIndicationInOverviewRuler=true
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_space_after_comma_in_array_initializer=insert
-/instance/org.eclipse.rse.core/activeuserprofiles=Fedora14;Team
+/instance/org.eclipse.rse.core/activeuserprofiles=Fedora14;Team;eselnts1325
 /instance/org.eclipse.e4.ui.workbench.renderers.swt/enableMRU=true
 /instance/com.coverity.desktop/filter.NEW_TODAY/filter.actions.all=true
 /instance/com.coverity.desktop/filter.TO_FIX/filter.type.LAST_DETECTED/date.filter.state=0
@@ -903,7 +908,7 @@ file_export_version=3.0
 /instance/org.eclipse.cdt.ui/semanticHighlighting.localVariable.color=30,144,255
 /instance/org.eclipse.cdt.cmake/builddirPreference=${env_var\:BUILD_DIR_CMAKE}/${ConfigName}
 /instance/com.coverity.desktop/filter.TO_FIX/filter.all.checkers=true
-@org.eclipse.mylyn.context.ui=3.18.0.v20151014-2324
+@org.eclipse.mylyn.context.ui=3.14.2.v20150218-0125
 /instance/org.eclipse.debug.core/prefWatchExpressions=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\n<watchExpressions>\n<expression enabled\="true" text\="timer_fw_mask-timerInterval"/>\n</watchExpressions>\n
 /instance/com.coverity.desktop/filter.TO_FIX/filter.type.LAST_FIXED/date.filter.state=0
 /instance/com.coverity.desktop/filter.TO_FIX/filter.all.components=true
@@ -911,7 +916,7 @@ file_export_version=3.0
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_new_line_in_empty_block=insert
 /instance/org.eclipse.team.ui/teamContentDescriptors/org.eclipse.team.ui.patchModelProvider/enabled=true
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_space_before_opening_brace_in_namespace_declaration=insert
-@org.eclipse.team.ui=3.7.200.v20150203-1452
+@org.eclipse.team.ui=3.7.100.v20130710-1213
 /instance/org.eclipse.cdt.managedbuilder.core/properties/PiaoyimqGeneralCppCode.null.2042701489/cdt.managedbuild.toolchain.gnu.base.988924337=cdt.managedbuild.tool.gnu.cpp.linker.base.936558383\=rebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.linker.base.1517671916\=rebuildState\\\=false\\n\ncdt.managedbuild.toolchain.gnu.base.533655425\=rebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.archiver.base.1343195313\=rebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.c.compiler.base.1628441339\=rebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.cpp.compiler.base.48926247\=rebuildState\\\=false\\n\ncdt.managedbuild.toolchain.gnu.base.988924337\=rcState\\\=0\\nrebuildState\\\=false\\n\ncdt.managedbuild.tool.gnu.assembler.base.698176190\=rebuildState\\\=false\\n\n
 /instance/org.eclipse.cdt.ui/semanticHighlighting.parameterVariable.bold=true
 /instance/org.eclipse.dltk.tcl.formatter/indent.script=true
@@ -929,6 +934,7 @@ file_export_version=3.0
 /instance/com.coverity.desktop/filter.OUTSTANDING_DEFECTS/filter.all.checkers=true
 /instance/org.eclipse.cdt.ui/c_single_line_comment=255,255,255
 /instance/org.eclipse.cdt.ui/semanticHighlighting.macroDefinition.color=0,0,128
+/instance/org.eclipse.cdt.ui.prj-CppSpace/buildConsole/keepLog=true
 /instance/org.eclipse.core.variables/org.eclipse.core.variables.valueVariables=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\n<valueVariables>\n<valueVariable description\="payload" name\="payload" readOnly\="false" value\="&quot;&quot;"/>\n<valueVariable description\="DESTDIR for install target of cmake build" name\="CMake_DESTDIR" readOnly\="false" value\=""/>\n<valueVariable description\="payload_args" name\="payload_args" readOnly\="false" value\="&quot;&quot;"/>\n<valueVariable description\="Dummy variable to have a variable that holds the current project's name." name\="CMake_ProjectPath" readOnly\="false" value\="/workspace/git/ezhweib/epg-3"/>\n<valueVariable description\="Dummy variable to have a variable that holds the current configururation for use in build working dir." name\="ConfigName" readOnly\="false" value\="Linux_x86_64"/>\n</valueVariables>\n
 /instance/org.eclipse.cdt.ui/scalability.reconciler=false
 /instance/com.coverity.desktop/analysis.settings/INTER_DIR_PATH=${env_var\:RHP_GEN_DIR}/coverity
@@ -940,7 +946,6 @@ file_export_version=3.0
 /instance/org.eclipse.cdt.managedbuilder.core/properties/classic.null.1849442715/cdt.managedbuild.toolchain.gnu.base.577151412=cdt.managedbuild.tool.gnu.c.linker.base.1582142449\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.cpp.linker.base.124859853\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.archiver.base.331636390\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.assembler.base.1004840724\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.cpp.compiler.base.1681810418\=rebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.compiler.base.1271967072\=rebuildState\\\=true\\n\ncdt.managedbuild.toolchain.gnu.base.577151412\=rebuildState\\\=true\\n\ncdt.managedbuild.toolchain.gnu.base.743574316\=rebuildState\\\=true\\n\n
 /instance/org.eclipse.dltk.tcl.ui/formatter.indentation.size=4
 /instance/org.eclipse.cdt.managedbuilder.core/properties/gcdrd.cdt.managedbuild.target.gnu.exe.1199119286/cdt.managedbuild.config.gnu.exe.release.466844093=\#\n\#Mon Apr 22 13\:28\:54 CEST 2013\ncdt.managedbuild.tool.gnu.assembler.exe.release.2028788201\=\\\#\\n\\\#Mon Apr 22 13\\\:28\\\:54 CEST 2013\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.linker.exe.release.299725122\=\\\#\\n\\\#Mon Apr 22 13\\\:28\\\:54 CEST 2013\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.c.compiler.exe.release.657718003\=\\\#\\n\\\#Mon Apr 22 13\\\:28\\\:54 CEST 2013\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.archiver.base.938668612\=\\\#\\n\\\#Mon Apr 22 13\\\:28\\\:54 CEST 2013\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.cpp.compiler.exe.release.1279173594\=\\\#\\n\\\#Mon Apr 22 13\\\:28\\\:54 CEST 2013\\nrebuildState\\\=true\\n\ncdt.managedbuild.tool.gnu.cpp.linker.exe.release.1401836782\=\\\#\\n\\\#Mon Apr 22 13\\\:28\\\:54 CEST 2013\\nrebuildState\\\=true\\n\ncdt.managedbuild.toolchain.gnu.exe.release.768597020\=\\\#\\n\\\#Mon Apr 22 13\\\:28\\\:54 CEST 2013\\nrebuildState\\\=true\\n\n
-@org.eclipse.epp.logging.aeri.ide=1.100.0.v20160217-0435
 /instance/org.eclipse.dltk.tcl.ui/org.eclipse.tcl.Templates=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><templates/>
 /instance/com.ericsson.titan.log.viewer/com.ericsson.titan.log.viewer.version=1.2
 /instance/com.coverity.desktop/conf.-1/PASSWORD=
@@ -952,12 +957,12 @@ file_export_version=3.0
 /instance/org.eclipse.titan.designer/org.eclipse.titan.designer.reportGOTO=error
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_space_after_opening_paren_in_method_invocation=do not insert
 /instance/org.eclipse.cdt.managedbuilder.core/properties/mpg.cdt.managedbuild.target.gnu.exe.585684263/cdt.managedbuild.config.gnu.exe.debug.653144161.55497514=\#\n\#Wed Sep 21 09\:51\:26 CEST 2011\ncdt.managedbuild.config.gnu.exe.debug.653144161.55497514.mbms/ggsn_mbms_stats.h\=\\\#\\n\\\#Wed Sep 21 09\\\:51\\\:26 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.config.gnu.exe.debug.653144161.55497514.mbms/ggsn_mbms_controller.h\=\\\#\\n\\\#Wed Sep 21 09\\\:51\\\:26 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.config.gnu.exe.debug.653144161.55497514.mbms/ggsn_mbms_path.h\=\\\#\\n\\\#Wed Sep 21 09\\\:51\\\:26 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.config.gnu.exe.debug.653144161.55497514.mbms/ggsn_mbms_endpoint.h\=\\\#\\n\\\#Wed Sep 21 09\\\:51\\\:26 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.config.gnu.exe.debug.653144161.55497514.mbms/ggsn_mbms_gtp.h\=\\\#\\n\\\#Wed Sep 21 09\\\:51\\\:26 CEST 2011\\nrebuildState\\\=true\\n\ncdt.managedbuild.config.gnu.exe.debug.653144161.55497514.mbms/ggsn_mbms_multicastgroup.h\=\\\#\\n\\\#Wed Sep 21 09\\\:51\\\:26 CEST 2011\\nrebuildState\\\=true\\n\n
-@org.eclipse.debug.ui=3.11.101.v20160203-1230
+@org.eclipse.debug.ui=3.10.2.v20141014-1039
 /instance/org.eclipse.cdt.managedbuilder.core/properties/epg.null.406224348/org.eclipse.cdt.cmake.toolChain.debug.2119573025.1379437426.1578283546.1070582906=org.eclipse.cdt.cmake.cmake.1178093009\=rebuildState\\\=true\\n\norg.eclipse.cdt.cmake.compiler.c.1763429667\=rebuildState\\\=true\\n\norg.eclipse.cdt.cmake.toolChain.debug.1052006146\=rebuildState\\\=true\\n\norg.eclipse.cdt.cmake.compiler.c++.1297655715\=rebuildState\\\=true\\n\n
 /instance/se.ericsson.cade.eclipse.tools.common_prefs///workspace/git/ezhweib/epg-2/tools/App/toside_ws/common_prefs_toside070.epf=1319189594000
 /instance/org.eclipse.jdt.ui/org.eclipse.jface.textfont=1|Monospace|16.0|0|GTK|1|;
 /instance/org.eclipse.ui.editors/printMargin=true
-@org.eclipse.mylyn.team.ui=3.18.0.v20151120-2228
+@org.eclipse.mylyn.team.ui=3.14.2.v20150218-0125
 /instance/com.coverity.desktop/analysis.settings/PREF_DEV_PROJECT=Developer Streams
 /instance/org.eclipse.dltk.ui/sourceHoverBackgroundColor=238,238,239
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_space_after_opening_angle_bracket_in_template_arguments=do not insert
@@ -970,17 +975,18 @@ file_export_version=3.0
 /instance/com.coverity.desktop/analysis.settings/PREF_CMD_LINE_SETTINGS_CPP/EXTRA_BUILD_OPTIONS=
 /instance/org.eclipse.epp.logging.aeri.ide/resetSendMode=KEEP
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_space_before_opening_paren_in_if=insert
-@org.eclipse.ui.browser=3.4.300.v20150429-0602
+@org.eclipse.ui.browser=3.4.200.v20131003-1453
 /instance/org.eclipse.cdt.ui/editor_folding_preprocessor_enabled=true
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_space_before_colon_in_base_clause=do not insert
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_space_after_opening_paren_in_exception_specification=do not insert
 /instance/org.eclipse.debug.ui/org.eclipse.debug.ui.switch_perspective_on_suspend=always
 /instance/com.coverity.desktop/filter.NEW_THIS_WEEK/filter.checkers=
+/instance/org.eclipse.cdt.ui/content_assist_autoactivation_delay=200
 /instance/org.eclipse.ui/SHOW_MEMORY_MONITOR=true
 /instance/se.ericsson.cade.eclipse.tools.common_prefs///app/epg/toside/0.8.0/RHEL64/11B/common_preferences_init_ndoepg_linux_1.1.epf=1321390064000
 /instance/com.coverity.desktop/analysis.settings/PREF_CMD_LINE_SETTINGS_JAVA/POST_BUILD_HOOK=
 /instance/org.eclipse.ui.editors/spacesForTabs=true
-@org.eclipse.mylyn.wikitext.ui=2.7.0.v20151009-1723
+@org.eclipse.mylyn.wikitext.ui=2.3.2.v20150217-2315
 /instance/com.coverity.desktop/filter.TO_FIX/filter.enabled=false
 /instance/com.coverity.desktop/analysis.settings/PREF_CMD_LINE_SETTINGS_CPP/FORWARD_NULL.options=
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.brace_position_for_type_declaration=next_line
@@ -993,7 +999,7 @@ file_export_version=3.0
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.alignment_for_base_clause_in_type_declaration=80
 /instance/com.coverity.desktop/filter.TO_FIX/aggregation=ALL
 /instance/org.eclipse.cdt.core/org.eclipse.cdt.core.formatter.insert_space_after_opening_paren_in_switch=do not insert
-/instance/org.eclipse.ui.workbench/org.eclipse.cdt.ui.editors.textfont=1|Waree|12.0|0|GTK|1|;
+/instance/org.eclipse.ui.workbench/org.eclipse.cdt.ui.editors.textfont=1|Waree|16.0|0|GTK|1|;
 /instance/com.coverity.desktop/filter.OUTSTANDING_DEFECTS/filter.statuses.all=false
 /instance/org.eclipse.ui.editors/deletionIndicationInOverviewRuler=true
 /instance/com.coverity.desktop/filter.NEW_THIS_WEEK/filter.actions.all=true
