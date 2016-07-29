@@ -138,11 +138,64 @@ public:
 	}
 };
 
+void testParameter(unique_ptr<Animal> pt)
+{
+	pt->print("pt");
+}
+
+unique_ptr<Animal> testParameter2(unique_ptr<Animal> pt)
+{
+	return pt;
+}
+
+unique_ptr<Animal> testParameter22()
+{
+	unique_ptr<Animal> te = make_unique<Animal>(L"aa", L"bb", 2, 1);
+	return te;
+}
+
+unique_ptr<Animal> testParameter23()
+{
+	unique_ptr<Animal> te(new Animal(L"aa", L"bb", 2, 1));
+	return te;
+}
+
+//unique_ptr<Animal> pGlobal = make_unique<Animal>(L"a", L"b", 2, 1);
+//unique_ptr<Animal> testParameter3()
+//{
+//	pGlobal->print("pt");
+//	return pGlobal;
+//}
+
 void MakeAnimals()
 {
 	// Use the Animal default constructor.
-	unique_ptr<Animal> p1 = make_unique<Animal>();
+	unique_ptr<Animal> p1 = make_unique<Animal>(L"F", L"C", 2, 1);
 	p1->print("p1");
+
+
+
+	/******Do not use unique_ptr as a function's paramater or return type, use shared_ptr instead***?????*************/
+//http://blog.csdn.net/booirror/article/details/44455293
+//http://blog.csdn.net/jofranks/article/details/17438955
+
+//	ptt = p1;//error
+//	testParameter(p1);  //compile error, unique_ptr(const unique_ptr&) = delete
+
+	unique_ptr<Animal> p0 = make_unique<Animal>(L"F", L"C", 2, 1);
+	testParameter(move(p0));
+
+	unique_ptr<Animal> p00 = make_unique<Animal>(L"F", L"C", 2, 1);
+	auto ptt = testParameter2(move(p00));//it will not call  unique_ptr(const unique_ptr&)
+	ptt->print("ptt");
+
+	auto ptt2=testParameter22();
+	ptt2->print("ptt2");
+
+	auto ptt23= testParameter23();
+	ptt23->print("ptt23");
+
+//	testParameter3(); //error, it will call unique_ptr(const unique_ptr&)
 
 	// Use the constructor that matches these arguments
 	auto p2 = make_unique < Animal > (L"Felis", L"Catus", 12, 16.5);
@@ -156,8 +209,7 @@ void MakeAnimals()
 	p3[1] = Animal(L"Corynorhinus", L"townsendii", 4, 1.08);
 	p3[1].print("p3[1]");
 
-	// auto p4 = p2; //C2280
-	//当你看到带unique_ptr的连接错误C2280，几乎可以肯定，因为你正试图调用它的拷贝构造函数，这是一个已删除的功能。
+//	 auto p4 = p2; //compile error, copy constructor was delete.
 
 	// unique_ptr overloads operator bool
 	wcout << boolalpha << (p2 == nullptr) << endl;	// Prints "true"
@@ -171,7 +223,7 @@ void MakeAnimals()
 
 	vector < unique_ptr < Animal >> vec;
 	// vec.push_back(p2); //C2280
-	// vector<unique_ptr<Animal>> vec2 = vec; // C2280
+//	 vector<unique_ptr<Animal>> vec2 = vec; // C2280
 
 	// OK. p2 no longer points to anything
 	vec.push_back(std::move(p1));
@@ -194,7 +246,7 @@ struct Vec3
 			x(x), y(y), z(z)
 	{
 	}
-	friend std::ostream& operator<<(std::ostream& os, Vec3& v)
+	friend std::wostream& operator<<(std::wostream& os, Vec3& v)
 	{
 		return os << '{' << "x:" << v.x << " y:" << v.y << " z:" << v.z << '}';
 	}
@@ -208,13 +260,16 @@ void testVec3()
 	std::unique_ptr<Vec3> v2 = make_unique < Vec3 > (0, 1, 2);
 	// Create a unique_ptr to an array of 5 elements
 	std::unique_ptr<Vec3[]> v3 = make_unique<Vec3[]>(5);
-
-	wcout << L"make_unique<Vec3>():      " << *v1 << L'\n' << L"make_unique<Vec3>(0,1,2): " << *v2 << L'\n' << L"make_unique<Vec3[]>(5):   " << L'\n';
+	wcout << "make_unique<Vec3>():      " << *v1 << endl << "make_unique<Vec3>(0,1,2): " << *v2 << endl << "make_unique<Vec3[]>(5):   " << endl;
 	for (int i = 0; i < 5; i++)
 	{
-		wcout << L"     " << v3[i] << L'\n';
+		wcout << "     " << v3[i] << endl;
 	}
 }
+
+
+
+
 int main()
 {
 	MakeSongs();

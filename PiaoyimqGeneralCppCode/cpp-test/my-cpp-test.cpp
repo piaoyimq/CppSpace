@@ -1127,6 +1127,65 @@ void returnReferenceSharePointerTest()
 
 }
 
+class St
+{
+public:
+	St(){}  // if declare the copy constructor, must declare the default constructor
+
+#if 0
+private:
+	St(const St& s);
+	St& operator= (const St& s);
+#else
+public:
+	St(const St& s) = delete;
+	St& operator= (const St& s) = delete;
+#endif
+};
+
+void testCallcopyConstructorWhenTransferParameter_1(St s) // it will called the  St(const St& s);
+{
+	return ;
+}
+
+void testCallcopyConstructorWhenTransferParameter_2(St& s) // it will not called the  St(const St& s);
+{
+	return ;
+}
+
+
+//St testCallcopyConstructorWhenReturn_1()
+//{
+//	St s;
+//	return s;
+//}
+
+St aa;
+St& testCallcopyConstructorWhenReturn_2()
+{
+	return aa;
+}
+
+St testCallcopyConstructorWhenReturn_3(St& s)
+{
+	return s;
+}
+
+void testCopyConstructor()
+{
+	St a;
+	St b;
+
+//	St c(b);//compile error, St(const St& s) is private
+//	a = b;//compile error, St& operator= (const St& s) is private
+
+//	testCallcopyConstructorWhenTransferParameter_1(a);
+	testCallcopyConstructorWhenTransferParameter_2(a);
+//	testCallcopyConstructorWhenReturn_1();
+	testCallcopyConstructorWhenReturn_2();
+	testCallcopyConstructorWhenReturn_3(b);//compiler error
+}
+
 int main() {
     PRINT_COLOR(RED, "===> Enter main\n\n");
 //    int_pointer();
@@ -1191,8 +1250,9 @@ int main() {
     // App_Log(3, 4, "Test=%d", 3);
     
 //    stringTest();
-    returnReferenceTest();
-    returnReferenceSharePointerTest();
+//    returnReferenceTest();
+//    returnReferenceSharePointerTest();
+    testCopyConstructor();
     PRINT_COLOR(RED, "\n\nExit main ===>||\n");
 }
 
