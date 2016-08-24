@@ -1,5 +1,5 @@
 /*
- * pointer.cc
+ * my-cpp-test.cc
  *
  *  Created on: 08-Aug-2015
  *      Author: ezhweib
@@ -1166,10 +1166,10 @@ St& testCallcopyConstructorWhenReturn_2()
 	return aa;
 }
 
-St testCallcopyConstructorWhenReturn_3(St& s)
-{
-	return s;
-}
+//St testCallcopyConstructorWhenReturn_3(St& s)
+//{
+//	return s;
+//}
 
 void testCopyConstructor()
 {
@@ -1183,7 +1183,7 @@ void testCopyConstructor()
 	testCallcopyConstructorWhenTransferParameter_2(a);
 //	testCallcopyConstructorWhenReturn_1();
 	testCallcopyConstructorWhenReturn_2();
-	testCallcopyConstructorWhenReturn_3(b);//compiler error
+//	testCallcopyConstructorWhenReturn_3(b);//compiler error
 }
 
 int main() {
@@ -1252,7 +1252,13 @@ int main() {
 //    stringTest();
 //    returnReferenceTest();
 //    returnReferenceSharePointerTest();
-    testCopyConstructor();
+//    testCopyConstructor();
+
+    int64_t read = 0;
+    uint32_t old=0;
+    uint32_t new_1=1;
+
+    printf("result=%ld", read-(old- (int32_t)new_1));
     PRINT_COLOR(RED, "\n\nExit main ===>||\n");
 }
 
