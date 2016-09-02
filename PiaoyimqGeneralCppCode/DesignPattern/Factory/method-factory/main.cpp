@@ -5,9 +5,10 @@
  *      Author: ezhweib
  */
 
-#include "factory.h"
-#include "product.h"
 #include <iostream>
+
+#include "../method-factory/factory.h"
+#include "../method-factory/product.h"
 using namespace std;
 
 int main1(int argc, char * argv[]) {
