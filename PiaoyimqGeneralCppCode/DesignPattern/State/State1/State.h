@@ -2,7 +2,7 @@
  * State.h
  *
  *  Created on: Apr 21, 2016
- *      Author: ezhweib
+ *      Author: piaoyimq
  */
 
 #ifndef PIAOYIMQGENERALCPPCODE_DESIGNPATTERN_STATE_STATE_H_

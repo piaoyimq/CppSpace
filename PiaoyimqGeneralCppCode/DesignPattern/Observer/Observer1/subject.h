@@ -2,7 +2,7 @@
  * subject.h
  *
  *  Created on: 23-Apr-2015
- *      Author: ezhweib
+ *      Author: piaoyimq
  */
 #ifndef _SUBJECT_H_
 #define _SUBJECT_H_

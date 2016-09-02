@@ -2,7 +2,7 @@
  * test3.cpp
  *
  *  Created on: Jul 13, 2016
- *      Author: ezhweib
+ *      Author: piaoyimq
  */
 
 #include <boost/filesystem.hpp>   // 包含所有需要的 Boost.Filesystem 声明

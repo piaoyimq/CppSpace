@@ -2,7 +2,7 @@
  * factory.cpp
  *
  *  Created on: 21-Apr-2015
- *      Author: ezhweib
+ *      Author: piaoyimq
  */
 
 #include "factory.h"

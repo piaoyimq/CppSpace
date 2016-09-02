@@ -2,7 +2,7 @@
  * test1.cpp
  *
  *  Created on: Jul 13, 2016
- *      Author: ezhweib
+ *      Author: piaoyimq
  */
 
 /*

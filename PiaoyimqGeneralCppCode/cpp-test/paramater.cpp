@@ -2,7 +2,7 @@
  * paramater.cpp
  *
  *  Created on: 06-May-2015
- *      Author: ezhweib
+ *      Author: piaoyimq
  */
 
 #include <iostream>

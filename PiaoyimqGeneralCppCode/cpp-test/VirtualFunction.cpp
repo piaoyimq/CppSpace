@@ -2,7 +2,7 @@
  * VirtualFunction.cpp
  *
  *  Created on: 09-May-2015
- *      Author: ezhweib
+ *      Author: piaoyimq
  */
 
 #include <iostream>

@@ -2,7 +2,7 @@
  * template.cpp
  *
  *  Created on: 22-Apr-2015
- *      Author: ezhweib
+ *      Author: piaoyimq
  */
 
 #include "template.h"

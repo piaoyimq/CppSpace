@@ -2,7 +2,7 @@
  * Protected.cpp
  *
  *  Created on: 08-May-2015
- *      Author: ezhweib
+ *      Author: piaoyimq
  */
 
 #include <iostream>

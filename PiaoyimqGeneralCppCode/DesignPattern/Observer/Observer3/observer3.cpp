@@ -2,7 +2,7 @@
  * observer3.cpp
  *
  *  Created on: 23-Apr-2015
- *      Author: ezhweib
+ *      Author: piaoyimq
  */
 
 #include <string>

@@ -2,7 +2,7 @@
  * my-cpp-test.cc
  *
  *  Created on: 08-Aug-2015
- *      Author: ezhweib
+ *      Author: piaoyimq
  */
 #include <iostream>
 #include <stdio.h>

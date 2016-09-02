@@ -2,7 +2,7 @@
  * product.h
  *
  *  Created on: 21-Apr-2015
- *      Author: ezhweib
+ *      Author: piaoyimq
  */
 #ifndef _PRODUCT_H_
 #define _PRODUCT_H_

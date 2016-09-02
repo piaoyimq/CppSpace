@@ -2,7 +2,7 @@
  * Facotry.h
  *
  *  Created on: Sep 2, 2016
- *      Author: ezhweib
+ *      Author: piaoyimq
  */
 
 #ifndef PIAOYIMQGENERALCPPCODE_DESIGNPATTERN_FACTORY_SIMPLE_FACTORY_SIMPLEFACOTRY_H_

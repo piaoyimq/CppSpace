@@ -2,7 +2,7 @@
  * aggregate.h
  *
  *  Created on: 23-Apr-2015
- *      Author: ezhweib
+ *      Author: piaoyimq
  */
 
 #ifndef _AGGREGATE_H_

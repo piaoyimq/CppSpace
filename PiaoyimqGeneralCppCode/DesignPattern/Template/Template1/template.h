@@ -2,7 +2,7 @@
  * template.h
  *
  *  Created on: 22-Apr-2015
- *      Author: ezhweib
+ *      Author: piaoyimq
  */
 #ifndef _TEMPLATE_H_
 #define _TEMPLATE_H_

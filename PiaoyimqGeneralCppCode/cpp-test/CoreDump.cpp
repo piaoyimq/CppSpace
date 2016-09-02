@@ -2,7 +2,7 @@
  * CoreDump.cpp
  *
  *  Created on: Nov 18, 2015
- *      Author: ezhweib
+ *      Author: piaoyimq
  */
 
 #include <iostream>

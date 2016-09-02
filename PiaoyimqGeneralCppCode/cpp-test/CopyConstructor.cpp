@@ -2,7 +2,7 @@
  * CopyConstructor.cpp
  *
  *  Created on: 07-May-2015
- *      Author: ezhweib
+ *      Author: piaoyimq
  */
 
 #include <iostream>

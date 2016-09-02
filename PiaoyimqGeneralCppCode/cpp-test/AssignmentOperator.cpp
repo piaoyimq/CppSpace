@@ -2,7 +2,7 @@
  * AssignmentOperator.cpp
  *
  *  Created on: Nov 15, 2015
- *      Author: ezhweib
+ *      Author: piaoyimq
  */
 
 #include <iostream>

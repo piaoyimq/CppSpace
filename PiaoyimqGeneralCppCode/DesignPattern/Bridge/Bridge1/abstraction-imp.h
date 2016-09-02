@@ -2,7 +2,7 @@
  * abstraction-imp.h
  *
  *  Created on: 22-Apr-2015
- *      Author: ezhweib
+ *      Author: piaoyimq
  */
 
 #ifndef _ABSTRACTIONIMP_H_

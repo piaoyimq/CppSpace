@@ -2,7 +2,7 @@
  * singleton.h
  *
  *  Created on: 21-Apr-2015
- *      Author: ezhweib
+ *      Author: piaoyimq
  */
 #ifndef _SINGLETON_H_
 #define  _SINGLETON _H_
