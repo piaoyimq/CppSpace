@@ -1,20 +1,26 @@
 /*
  * main.cpp
  *
- *  Created on: 21-Apr-2015
- *      Author: piaoyimq
+ *  Created on: Sep 6, 2016
+ *      Author: ezhweib
  */
 
 
-#include "builder.h"
-#include "product.h"
-#include "director.h"
+#include "Builder.h"
 #include <iostream>
+
 using namespace std;
 
+int main()
+{
+    Director* pDirector = new Director(new ConcreteBuilder1());
+    pDirector->Construct();
+    pDirector->m_pBuilder->GetProduct();
 
-int main_builder1(int argc, char * argv[]) {
-	Director* d = new Director(new ConcreteBuilder());
-	d->Construct();
-	return 0;
+    Director* pDirector1 = new Director(new ConcreteBuilder2());
+    pDirector1->Construct();
+    pDirector1->m_pBuilder->GetProduct();
+
+    return 0;
 }
+
