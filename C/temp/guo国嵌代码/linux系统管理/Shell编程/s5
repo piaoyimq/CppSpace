@@ -1,0 +1,4 @@
+#!/bin/sh 
+folder=/home 
+[ -r "$folder" ] && echo "Can read $folder" 
+[ -f "$folder" ] || echo "this is not file" 

@@ -1,0 +1,217 @@
+[media_set]
+load_count="0x0002"
+
+#LUH配置文件
+
+
+[load_001]
+protocol_version="A4"  
+
+
+root_dir="aa"
+
+load_path="\load001\"
+head_file_name="load001_header.luh"
+
+luh_file_version="0x8004"
+luh_part_flags="0x0001"
+luh_p_PN_length="0x00000001"  #length
+luh_p_target_ID="0x00000001"
+luh_p_number_data_file="0x00000001"
+luh_p_number_support_file="0x00000001"
+luh_p_user_defined_data="0x00000001"
+luh_p_type_description_length="0x00000001"     #length
+luh_p_number_target_positions="0x00000001"
+luh_p_check_value_length="0x00000001"          #length
+
+
+luh_load_PN="LOAD_01"
+luh_type_description="Software"
+luh_type_ID="0x0001"
+
+luh_number_target_ID="0x0002"         #此处支持10个target
+#循环
+luh_target_ID_001="THW_1"
+luh_target_ID_002="THW_2"
+#循环end
+
+luh_number_target_with_position="0x0002"    #此处支持10个ID with position
+#循环0
+luh_target_with_position_001="THW_1"
+luh_target_with_position_002="THW_2"
+
+luh_number_target_position_001="0x0002"       #此处支持5个position
+luh_number_target_position_002="0x0002"
+#循环0_1
+luh_position_001_001="LEFT"
+luh_position_001_002="RIGHT"
+luh_position_002_001="MIDDLE"
+luh_position_002_002="TOP"
+#循环0和循环0_1 end
+
+
+
+
+
+
+
+
+luh_number_data_file="0x0001"        #最多支持10个data file
+#循环
+
+luh_data_file_name_001="load001_data001.lup"
+luh_data_file_name_002="load001_data002.lup"
+luh_data_file_name_003="load001_data003.lup"
+luh_data_file_name_004="load001_data004.lup"
+luh_data_file_name_005="load001_data005.lup"
+luh_data_file_name_006="load001_data006.lup"
+
+
+luh_data_file_PN_001="DataFilePN_001"
+luh_data_file_PN_002="DataFilePN_002"
+luh_data_file_PN_003="DataFilePN_003"
+luh_data_file_PN_004="DataFilePN_004"
+luh_data_file_PN_005="DataFilePN_005"
+luh_data_file_PN_006="DataFilePN_006"
+
+
+
+#check value have four kinds :
+#0x0000 = no check value for this load is used
+#0x0001 = CRC8
+#0x0002 = CRC16
+#0x0003 = CRC32
+
+
+luh_data_file_check_value_type_001="0x0001"
+luh_data_file_check_value_type_002="0x0002"
+luh_data_file_check_value_type_003="0x0002"
+luh_data_file_check_value_type_004="0x0002"
+luh_data_file_check_value_type_005="0x0002"
+luh_data_file_check_value_type_006="0x0002"
+
+
+#循环end
+
+
+
+luh_number_support_file="0x0001"  #最多支持10个support files
+#循环
+
+luh_support_file_name_001="load001_support001.txt"
+luh_support_file_name_002="load001_support002.txt"
+luh_support_file_name_003="load001_support003.txt"
+luh_support_file_name_004="load001_support004.txt"
+luh_support_file_name_005="load001_support005.txt"
+luh_support_file_name_006="load001_support006.txt"
+
+
+luh_support_file_PN_001="SupportFilePN_001"
+luh_support_file_PN_002="SupportFilePN_002"
+luh_support_file_PN_003="SupportFilePN_003"
+luh_support_file_PN_004="SupportFilePN_004"
+luh_support_file_PN_005="SupportFilePN_005"
+luh_support_file_PN_006="SupportFilePN_006"
+
+
+
+
+luh_support_file_check_value_type_001="0x0002"
+luh_support_file_check_value_type_002="0x0002"
+luh_support_file_check_value_type_003="0x0003"
+luh_support_file_check_value_type_004="0x0002"
+luh_support_file_check_value_type_005="0x0002"
+luh_support_file_check_value_type_006="0x0002"
+
+       
+#end
+
+
+luh_user_defined_data=""          #必须是偶数个字节
+
+luh_load_check_value_type="0x0003"   
+
+
+[load_002]
+
+protocol_version="A4"  
+load_path="\load002\"
+head_file_name="load002_header.luh"
+
+luh_file_version="0x8004"
+luh_part_flags="0x0001"
+luh_p_PN_length="0x00000001"  #length
+luh_p_target_ID="0x00000001"
+luh_p_number_data_file="0x00000001"
+luh_p_number_support_file="0x00000001"
+luh_p_user_defined_data="0x00000001"
+luh_p_type_description_length="0x00000001"     #length
+luh_p_number_target_positions="0x00000001"
+luh_p_check_value_length="0x00000001"          #length
+
+
+luh_load_PN="LOAD_01"
+luh_type_description="Software"
+luh_type_ID="0x0001"
+
+luh_number_target_ID="0x0002"         #此处支持10个target
+#循环
+luh_target_ID_001="THW_3"
+luh_target_ID_002="THW_4"
+#循环end
+
+luh_number_target_with_position="0x0002"    #此处支持10个ID with position
+#循环0
+luh_target_with_position_001="THW_3"
+luh_target_with_position_002="THW_4"
+
+luh_number_target_position_001="0x0002"       #此处支持5个position
+luh_number_target_position_002="0x0002"
+#循环0_1
+luh_position_001_001="LEFT"
+luh_position_001_002="RIGHT"
+luh_position_002_001="MIDDLE"
+luh_position_002_002="TOP"
+#循环0和循环0_1 end
+
+
+luh_number_data_file="0x0001"        #最多支持10个data file
+#循环
+
+luh_data_file_name_001="load2_data1.lup"
+
+
+luh_data_file_PN_001="DataFilePN_003"
+
+
+
+
+#check value have four kinds :
+#0x0000 = no check value for this load is used
+#0x0001 = CRC8
+#0x0002 = CRC16
+#0x0003 = CRC32
+
+
+luh_data_file_check_value_type_001="0x0001"
+
+
+
+#循环end
+
+
+
+luh_number_support_file="0x0001"  #最多支持10个support files
+#循环
+
+luh_support_file_name_001="load002_support001.txt"
+
+luh_support_file_PN_001="SupportFilePN_003"
+
+luh_support_file_check_value_type_001="0x0002"
+
+       
+#end
+luh_user_defined_data=""          #必须是偶数个字节
+
+luh_load_check_value_type="0x0003"   

@@ -1,0 +1,1 @@
+cmd_/home/Linux_Sharing/Session1/module/Symbol/calculate.ko := ld -m elf_i386 -m elf_i386 -r -o /home/Linux_Sharing/Session1/module/Symbol/calculate.ko /home/Linux_Sharing/Session1/module/Symbol/calculate.o /home/Linux_Sharing/Session1/module/Symbol/calculate.mod.o

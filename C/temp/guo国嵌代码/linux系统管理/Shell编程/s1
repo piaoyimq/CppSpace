@@ -1,0 +1,6 @@
+#!/bin/sh
+#set varible a
+a="hello world"
+#print a
+echo "A is:"
+echo $a

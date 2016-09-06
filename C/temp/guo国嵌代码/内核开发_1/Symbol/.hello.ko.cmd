@@ -1,0 +1,1 @@
+cmd_/home/Linux_Sharing/Session1/module/Symbol/hello.ko := ld -m elf_i386 -m elf_i386 -r -o /home/Linux_Sharing/Session1/module/Symbol/hello.ko /home/Linux_Sharing/Session1/module/Symbol/hello.o /home/Linux_Sharing/Session1/module/Symbol/hello.mod.o

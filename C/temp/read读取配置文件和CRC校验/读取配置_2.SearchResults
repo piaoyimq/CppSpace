@@ -1,0 +1,4 @@
+---- crc_file_pos_32 Matches (3 in 3 files) ----
+Config_file.c:		load_crc=crc_file_pos_32(luh_name,luh_fpos);
+Crc_32.c:unsigned int crc_file_pos_32(char *file_name,int file_pos)
+Crc_32.h:unsigned int crc_file_pos_32(char *file_name,int file_pos);

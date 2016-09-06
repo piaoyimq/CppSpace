@@ -1,0 +1,1 @@
+cmd_/home/Linux_Sharing/Session1/module/Param/param.ko := ld -m elf_i386 -m elf_i386 -r -o /home/Linux_Sharing/Session1/module/Param/param.ko /home/Linux_Sharing/Session1/module/Param/param.o /home/Linux_Sharing/Session1/module/Param/param.mod.o
