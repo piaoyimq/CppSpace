@@ -2,7 +2,7 @@
  * main.cpp
  *
  *  Created on: Sep 6, 2016
- *      Author: ezhweib
+ *      Author: piaoyimq
  */
 
 
