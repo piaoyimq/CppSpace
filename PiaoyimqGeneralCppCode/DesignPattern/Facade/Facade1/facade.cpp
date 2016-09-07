@@ -31,8 +31,8 @@ void Subsystem2::Operation() {
 }
 
 Facade::Facade() {
-	this->_subs1 = new Subsystem1();
-	this->_subs2 = new Subsystem2();
+	_subs1 = new Subsystem1();
+	_subs2 = new Subsystem2();
 }
 
 Facade::~Facade() {
@@ -41,7 +41,7 @@ Facade::~Facade() {
 }
 
 void Facade::OperationWrapper() {
-	this->_subs1->Operation();
-	this->_subs2->Operation();
+	_subs1->Operation();
+	_subs2->Operation();
 }
 
