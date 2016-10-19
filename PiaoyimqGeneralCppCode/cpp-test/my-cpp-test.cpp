@@ -1186,6 +1186,12 @@ void testCopyConstructor()
 //	testCallcopyConstructorWhenReturn_3(b);//compiler error
 }
 
+struct A
+{
+    int te[5];
+    A() {te= 9}
+}
+
 int main() {
     PRINT_COLOR(RED, "===> Enter main\n\n");
 //    int_pointer();
@@ -1257,6 +1263,9 @@ int main() {
     int64_t read = 0;
     uint32_t old=0;
     uint32_t new_1=1;
+
+    A a;
+    std::cout << a.te[2] << std::endl;
 
     printf("result=%ld", read-(old- (int32_t)new_1));
     PRINT_COLOR(RED, "\n\nExit main ===>||\n");
