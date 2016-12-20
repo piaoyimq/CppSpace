@@ -18,7 +18,9 @@
 #include <stdint.h>
 #include <errno.h>
 #include <dirent.h>
-
+#include<utmp.h>  //getuid()
+#include <pwd.h>
+#include <unistd.h>
 
 #define C_PLUS_PLUS_ELEVEN 0
 
@@ -1186,11 +1188,37 @@ void testCopyConstructor()
 //	testCallcopyConstructorWhenReturn_3(b);//compiler error
 }
 
-struct A
+
+void testGetuserName()
 {
-    int te[5];
-    A() {te= 9}
+	   struct utmp ut, *u;
+	    ut.ut_type = RUN_LVL;
+		while ((u = getutid(&ut)))
+		{
+	        printf("%d %s %s %s\n", u->ut_type, u->ut_user, u->ut_line, u->ut_host);
+		}
+		struct passwd *pwd;
+		pwd = getpwuid(getuid());
+		printf("当前登陆的用户名为：%s\n", pwd->pw_name);
 }
+
+
+int testUserExist(std::string userName)
+{
+	int result = -1;
+	if (std::system(NULL))
+	{
+		std::string command = "id "  + userName;
+		result = std::system(command.c_str()); // execute the command
+	}
+	else
+	{
+		// some system environment error, not expected to end up here
+		std::cout << "no command handler available" << std::endl;
+	}
+	  return WEXITSTATUS(result);
+}
+
 
 int main() {
     PRINT_COLOR(RED, "===> Enter main\n\n");
@@ -1260,14 +1288,10 @@ int main() {
 //    returnReferenceSharePointerTest();
 //    testCopyConstructor();
 
-    int64_t read = 0;
-    uint32_t old=0;
-    uint32_t new_1=1;
+//
 
-    A a;
-    std::cout << a.te[2] << std::endl;
-
-    printf("result=%ld", read-(old- (int32_t)new_1));
+	int ret = testUserExist("ezhweibb");
+	std::cout << "ret=" << ret << std::endl;
     PRINT_COLOR(RED, "\n\nExit main ===>||\n");
 }
 
