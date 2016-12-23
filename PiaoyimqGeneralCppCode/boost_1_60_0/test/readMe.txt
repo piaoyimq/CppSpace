@@ -4,6 +4,21 @@ Custom command:
 ./a.out -x -t length_test -l all -p
 
 
+boost_runtime_list_content.run-fail.cpp
+decorator_07.run-fail.cpp
+decorator_12.run.cpp
+example18.run-fail.cpp
+example24.run.cpp
+example28.run-fail.cpp
+example29.run-fail.cpp
+example31.run-fail.cpp
+example50.run-fail.cpp
+example52.run-fail.cpp
+example82_contexts.run-fail.cpp
+exception_api.run-fail.cpp
+exception_check_predicate.run-fail.cpp
+
+
 
 
 
