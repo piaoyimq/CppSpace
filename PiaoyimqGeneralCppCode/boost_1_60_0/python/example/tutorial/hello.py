@@ -3,5 +3,7 @@
 #  or copy at http://www.boost.org/LICENSE_1_0.txt)
 #  Hello World Example from the tutorial
 
+import sys
+sys.path.append('./')
 import hello_ext
 print hello_ext.greet()
