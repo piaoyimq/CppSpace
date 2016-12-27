@@ -250,7 +250,7 @@ main ()
 
 	# Grab parameters and check environment
 	COMPONENTS="$@"
-	echo "$WS_ROOT"
+	#echo "$WS_ROOT"
 	[ -d "$WS_ROOT" ] || err_exit 66 "Please setup your CppSpace git workspace"
 	[ -n "$BUILD_DIR_CMAKE" ] || err_exit 66 "Not a valid CMake build directory"
 
