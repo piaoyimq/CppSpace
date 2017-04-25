@@ -19,7 +19,7 @@ then
     g++ -O0 -g -std=c++0x -shared -fpic  $1 -o ${file%.*}.so $INC_PATH $DEFINE_OPTIONS $LIB_PATH $LIB $LIB_SO_PATH
 else
     set -x
-    g++ -O0 -g -std=c++0x "$@" $INC_PATH $DEFINE_OPTIONS $LIB_PATH $LIB $LIB_SO_PATH
+    g++  -g -std=c++0x "$@" $INC_PATH $DEFINE_OPTIONS $LIB_PATH $LIB $LIB_SO_PATH
 fi
 
 

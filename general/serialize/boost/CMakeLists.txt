@@ -8,7 +8,7 @@ cpp_add_executable("demo"
     SRC
         demo.cpp
     PUBLIC
-	boost_serialization
+	    boost_serialization
 )
 
 

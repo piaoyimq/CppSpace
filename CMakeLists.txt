@@ -56,15 +56,21 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--build-id")
 
 set(BOOST_PATH "$ENV{WS_ROOT}/../boost_1_60_0")
 set(DEFAULT_PATH "/usr")
+
+set(CMAKE_SKIP_BUILD_RPATH FALSE)
+set(CMAKE_INSTALL_RPATH "${BOOST_PATH/lib}")
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+
 # Handle kconfig
 #include(tools/build/cmake/kconfig.cmake)
-find_library(LIB_BOOST_SYSTEM NAMES libboost_system.a PATHS ${BOOST_PATH}/lib ${DEFAULT_PATH}/lib/)
-find_library(LIB_BOOST_FILESYSTEM NAMES libboost_filesystem.a PATHS ${BOOST_PATH}/lib ${DEFAULT_PATH}/lib)
-find_library(LIB_BOOST_REGEX NAMES libboost_regex.a PATHS ${BOOST_}/lib ${DEFAULT_PATH}/lib)
-find_library(LIB_BOOST_LOG NAMES libboost_log.a PATHS ${BOOST_PATH}/lib ${DEFAULT_PATH}/lib)
-find_library(LIB_BOOST_SERIALIZATION NAMES libboost_serialization.a PATHS ${BOOST_PATH}/lib ${DEFAULT_PATH}/lib)
-find_library(LIB_BOOST_SIGNALS NAMES libboost_signals.a PATHS ${BOOST_PATH}/lib ${DEFAULT_PATH}/lib)
-find_library(LIB_BOOST_UNIT_TEST_FRAMEWORK NAMES libboost_unit_test_framework.a PATHS ${BOOST_PATH}/lib ${DEFAULT_PATH}/lib)
+find_library(LIB_BOOST_SYSTEM NAMES libboost_system.a PATHS ${BOOST_PATH}/lib NO_DEFAULT_PATH)
+find_library(LIB_BOOST_FILESYSTEM NAMES libboost_filesystem.a PATHS ${BOOST_PATH}/lib NO_DEFAULT_PATH)
+find_library(LIB_BOOST_REGEX NAMES libboost_regex.a PATHS ${BOOST_PATH}/lib NO_DEFAULT_PATH)
+find_library(LIB_BOOST_LOG NAMES libboost_log.a PATHS ${BOOST_PATH}/lib NO_DEFAULT_PATH)
+find_library(LIB_BOOST_SERIALIZATION NAMES libboost_serialization.a PATHS ${BOOST_PATH}/lib NO_DEFAULT_PATH)
+find_library(LIB_BOOST_SIGNALS NAMES libboost_signals.a PATHS ${BOOST_PATH}/lib NO_DEFAULT_PATH)
+find_library(LIB_BOOST_UNIT_TEST_FRAMEWORK NAMES libboost_unit_test_framework.a PATHS ${BOOST_PATH}/lib NO_DEFAULT_PATH)
 
 
 message(STATUS "Boost library ${LIB_BOOST_SYSTEM}")
@@ -74,6 +80,7 @@ message(STATUS "Boost library ${LIB_BOOST_LOG}")
 message(STATUS "Boost library ${LIB_BOOST_SERIALIZATION}")
 message(STATUS "Boost library ${LIB_BOOST_SIGNALS}")
 message(STATUS "Boost library ${LIB_BOOST_UNIT_TEST_FRAMEWORK}")
+set(CMAKE_LIBRARY_PATH "${LIB_BOOST_SERIALIZATION}")
 
 # General warning flags
 add_compile_options(
@@ -84,7 +91,7 @@ add_compile_options(
     -Wcast-align
     -Winvalid-pch
     -std=c++0x
-
+    #    -Wl,-rpath, ${BOOST_PATH}/lib
     #The flags below are flags that we would like to introduce, but can't enable yet because there are still warnings left that need to be fixed first
     #DO NOT remove this list, we'll step by step uncomment these lines:
     #-Wcast-qual
