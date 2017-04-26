@@ -12,6 +12,14 @@
 #include <boost/make_unique.hpp>
 using namespace std;
 using boost::make_unique;
+
+//unique_ptr function:
+//1. as function return value.
+
+
+
+
+
 //make_unique was imported in c++14, if upgrade to c++14, you can instead of std::make_unique.
 
 //template<typename T, typename... Ts>
@@ -19,6 +27,9 @@ using boost::make_unique;
 //{
 //    return std::unique_ptr<T>(new T(std::forward<Ts>(params)...));
 //}
+
+
+
 
 class Song
 {
@@ -36,7 +47,7 @@ public:
 	wstring artist;
 	wstring title;
 };
-unique_ptr<Song> SongFactory(const std::wstring& artist, const std::wstring& title)
+unique_ptr<Song> SongFactory(const std::wstring& artist, const std::wstring& title)   //unique_ptr as function return value.
 {
 	// Implicit move operation into the variable that stores the result.
 	return make_unique < Song > (artist, title);
@@ -56,12 +67,14 @@ void MakeSongs()
 		wcout << "__1__null" << endl;
 	}
 	// Move raw pointer from one unique_ptr to another.
-	unique_ptr<Song> song2 = std::move(song);
+	unique_ptr<Song> song2 = std::move(song);//will call move constructor in unique_ptr, and can't use song variable, it assigen to  nullptr.
 	song2->print("song2");
 	if (song == nullptr)
 	{
 		wcout << "__2__null" << endl;
 	}
+	unique_ptr<Song> song4(std::move(song2));
+	song4->print("song4");
 
 	// Obtain unique_ptr from function that returns by value.
 	auto song3 = SongFactory(L"Michael Jackson", L"Beat It");
@@ -74,7 +87,7 @@ void SongVector()
 
 	// Create a few new unique_ptr<Song> instances
 	// and add them to vector using implicit move semantics.
-	songs.push_back(make_unique < Song > (L"B'z", L"Juice"));
+	songs.push_back(make_unique < Song > (L"B'z", L"Juice"));// make_unique return a rvalue, so no need to use std::move().
 	songs.push_back(make_unique < Song > (L"Namie Amuro", L"Funky Town"));
 	songs.push_back(make_unique < Song > (L"Kome Kome Club", L"Kimi ga Iru Dake de"));
 	songs.push_back(make_unique < Song > (L"Ayumi Hamasaki", L"Poker Face"));
@@ -138,9 +151,15 @@ public:
 	}
 };
 
-void testParameter(unique_ptr<Animal> pt)
+void testParameter(unique_ptr<Animal> pt)//will call move constructor.
 {
 	pt->print("pt");
+}
+
+void testParameterReference(unique_ptr<Animal>& pt)//will not call move constructor
+{
+	pt->print("Reference...");
+	pt= make_unique<Animal>(L"r2", L"b2", 2, 1);
 }
 
 unique_ptr<Animal> testParameter2(unique_ptr<Animal> pt)
@@ -160,13 +179,13 @@ unique_ptr<Animal> testParameter23()
 	return te;
 }
 
-//unique_ptr<Animal> pGlobal = make_unique<Animal>(L"a", L"b", 2, 1);
+unique_ptr<Animal> pGlobal = make_unique<Animal>(L"a", L"b", 20, 11);
 //unique_ptr<Animal> testParameter3()
 //{
 //	pGlobal->print("pt");
 //	return pGlobal;
 //}
-
+int c=9999;
 void MakeAnimals()
 {
 	// Use the Animal default constructor.
@@ -174,16 +193,13 @@ void MakeAnimals()
 	p1->print("p1");
 
 
-
-	/******Do not use unique_ptr as a function's paramater or return type, use shared_ptr instead***?????*************/
-//http://blog.csdn.net/booirror/article/details/44455293
-//http://blog.csdn.net/jofranks/article/details/17438955
-
 //	ptt = p1;//error
 //	testParameter(p1);  //compile error, unique_ptr(const unique_ptr&) = delete
 
 	unique_ptr<Animal> p0 = make_unique<Animal>(L"F", L"C", 2, 1);
-	testParameter(move(p0));
+	testParameterReference(p0);// use unique_ptr reference, no need to std::move.
+	testParameter(move(p0));//will call move constructor
+
 
 	unique_ptr<Animal> p00 = make_unique<Animal>(L"F", L"C", 2, 1);
 	auto ptt = testParameter2(move(p00));//it will not call  unique_ptr(const unique_ptr&)
@@ -192,8 +208,9 @@ void MakeAnimals()
 	auto ptt2=testParameter22();
 	ptt2->print("ptt2");
 
-	auto ptt23= testParameter23();
+	unique_ptr<Animal> ptt23= testParameter23();
 	ptt23->print("ptt23");
+
 
 //	testParameter3(); //error, it will call unique_ptr(const unique_ptr&)
 
@@ -212,27 +229,27 @@ void MakeAnimals()
 //	 auto p4 = p2; //compile error, copy constructor was delete.
 
 	// unique_ptr overloads operator bool
-	wcout << boolalpha << (p2 == nullptr) << endl;	// Prints "true"
+	wcout <<L"p2==="<< boolalpha << (p2 == nullptr) << endl;
 
 	// OK but now you have two pointers to the same memory location
 	Animal* pAnimal = p2.get();
 	pAnimal->print("Animal");
 	// OK. p2 no longer points to anything
 	Animal* p5 = p2.release();
-	wcout << boolalpha << (p2 == nullptr) << endl;	// Prints "true"
+	wcout << boolalpha << (p2 == nullptr) << endl;
 
 	vector < unique_ptr < Animal >> vec;
 	// vec.push_back(p2); //C2280
 //	 vector<unique_ptr<Animal>> vec2 = vec; // C2280
 
 	// OK. p2 no longer points to anything
-	vec.push_back(std::move(p1));
+	vec.push_back(std::move(p1)); // could not use vec.push_back(p1);
+
 	p3[1].print("p3[1]");
 	for (const auto& v : vec)
 	{
 		v->print("v");
 	}
-
 }
 
 struct Vec3
