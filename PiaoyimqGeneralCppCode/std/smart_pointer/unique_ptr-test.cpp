@@ -131,7 +131,7 @@ public:
 
 class Animal
 {
-private:
+public:
 	std::wstring genus;
 	std::wstring species;
 	int age;
@@ -144,6 +144,17 @@ public:
 	Animal() :
 			genus(L"Default")
 	{
+	}
+	Animal& operator=(const Animal&)
+	{
+		std::wcout <<__PRETTY_FUNCTION__ << std::endl;
+	}
+
+	Animal(Animal&& a)
+	{
+	genus = a.genus;
+	a.genus=L"";
+		std::wcout <<__PRETTY_FUNCTION__ << std::endl;
 	}
 	void print(const char* objectName)
 	{
@@ -179,6 +190,36 @@ unique_ptr<Animal> testParameter23()
 	return te;
 }
 
+unique_ptr<Animal> testParameter233()
+{
+	Animal* a = new Animal(L"aa", L"bb", 2, 1);
+	int c = 3, *d = &c;
+	std::string s("hello");
+	Animal i = Animal(L"ii", L"ee", 2, 1);
+
+	std::wcout << __func__ << "ii=" << i.genus << std::endl;
+	std::wcout << __func__ << a << std::endl;
+	std::wcout << __func__ << L"c=" << c << std::endl;
+	std::wcout << __func__ << L"s=" << s.c_str() << std::endl;
+
+	unique_ptr<Animal> te(a);
+	a = nullptr;	// have to assign nullptr to a;
+
+	int bb = std::move(c);// due to int type no move copy constuctor, so c will not becaome null;
+	std::string s2 = std::move(s);
+
+	Animal e = std::move(i);
+
+	std::wcout << __func__ << "ii=" << i.genus << std::endl;
+	std::wcout << __func__ << L"c=" << c << std::endl;
+	std::wcout << __func__ << L"s=" << s.c_str() << std::endl;
+	std::wcout << __func__ << te.get() << std::endl;
+	std::wcout << __func__ << te.get() << std::endl;
+	std::wcout << __func__ << a << std::endl;
+	return te;
+}
+
+
 unique_ptr<Animal> pGlobal = make_unique<Animal>(L"a", L"b", 20, 11);
 //unique_ptr<Animal> testParameter3()
 //{
@@ -211,6 +252,7 @@ void MakeAnimals()
 	unique_ptr<Animal> ptt23= testParameter23();
 	ptt23->print("ptt23");
 
+	testParameter233();
 
 //	testParameter3(); //error, it will call unique_ptr(const unique_ptr&)
 
@@ -285,7 +327,31 @@ void testVec3()
 }
 
 
+struct Foo {
+    Foo() { std::cout << "Foo...\n"; }
+    ~Foo() { std::cout << "~Foo...\n"; }
+};
 
+struct D {
+    void operator() (Foo* p) {
+        std::cout << "Calling delete for Foo object... \n";
+        delete p;
+    }
+};
+
+void test_reset()
+{
+    std::cout << "Creating new Foo...\n";
+    std::unique_ptr<Foo, D> up(new Foo(), D());  // up owns the Foo pointer (deleter D)
+
+    std::cout << "Replace owned Foo with a new Foo...\n";
+    up.reset(new Foo());  // calls deleter for the old one
+
+    std::cout << "Release and delete the owned Foo...\n";
+    up.reset(nullptr);// also can use up.reset()
+}
+
+std::unique_ptr<std::vector<PcscfAddrNode> > pcscfAddrNodeVec(new std::vector<PcscfAddrNode>());
 
 int main()
 {
@@ -295,5 +361,6 @@ int main()
 	wcout << endl << wstring(50, '*') << endl << endl;
 	MakeAnimals();
 	testVec3();
+	test_reset();
 }
 
