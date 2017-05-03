@@ -1,6 +1,4 @@
 
-
-
 void shared_ptr_test_1()
 {
 	std::shared_ptr<int> pInt1;
@@ -117,7 +115,45 @@ void shared_ptr_test_3()
 #endif
 }
 
+class Animal
+{
+public:
+	Animal(string name) :
+			pName(new string(name))
+	{
+	}
+	Animal(const Animal& a)	//can do not implment it, use the default.
+	{
+		pName = a.pName;
+		cout << __PRETTY_FUNCTION__ << endl;
+	}
+	~Animal()
+	{
+	}
+	void printName()
+	{
+		cout << *pName << endl;
+	}
 
+// 	unique_ptr<string> pName;
+	shared_ptr<string> pName;
+};
+
+void test_Animal()
+{
+	vector<Animal> animals;
+	Animal a("monkey");
+	animals.push_back(a);
+	animals.front().printName();
+	Animal a2(a);	//shared_ptr, 可以拷贝和赋值, shoud know a2 and a has the same pointer pName;
+
+	*a2.pName="goodbye";
+	animals.push_back(a2);
+	for (auto& a : animals)
+	{
+		a.printName();
+	}
+}
 
 int main()
 {
@@ -126,4 +162,5 @@ int main()
 //    shared_ptr_test_3();
 //    weak_ptr_test_1();
 //    weak_ptr_test_2();
+	test_Animal();
 }
