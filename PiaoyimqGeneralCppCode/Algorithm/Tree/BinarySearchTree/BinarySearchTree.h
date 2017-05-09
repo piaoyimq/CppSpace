@@ -46,7 +46,6 @@ public:
 	explicit BinarySearchTree(const Comparable & notFound);
 	BinarySearchTree(const BinarySearchTree & rhs);
 	~BinarySearchTree();
-
 	const Comparable & findMin() const;
 	const Comparable & findMax() const;
 	const Comparable & find(const Comparable & x) const;
@@ -58,6 +57,13 @@ public:
 	void remove(const Comparable & x);
 
 	const BinarySearchTree & operator=(const BinarySearchTree & rhs);
+
+	int hight_tree(const BinarySearchTree<Comparable>* t); // get the height of the tree.
+	bool is_equal(const BinarySearchTree<Comparable>* t1, const BinarySearchTree<Comparable>* t2); //compare 2 tree if equral.
+	int count_tree(bintree t);
+	//layer traversal  ??
+
+	// how to judge a tree is a BST ?
 
 private:
 	BinaryNode<Comparable> *root;
@@ -91,6 +97,48 @@ template<class Comparable>
 BinarySearchTree<Comparable>::BinarySearchTree(const Comparable & notFound) :
 		ITEM_NOT_FOUND(notFound), root(NULL)
 {
+}
+
+template<class Comparable>
+int BinarySearchTree<Comparable>::hight_tree(const BinarySearchTree<Comparable>* t)
+{
+	int h, left, right;
+	if (!t)
+	{
+		return 0;
+	}
+	left = hight_tree(t->left);
+	right = hight_tree(t->right);
+	h = (left > right ? left : right) + 1;
+	return h;
+}
+
+template<class Comparable>
+bool BinarySearchTree<Comparable>::is_equal(const BinarySearchTree<Comparable>* t1, const BinarySearchTree<Comparable>* t2)
+{
+	if (!t1 && !t2)
+	{      //都为空就相等
+		return true;
+	}
+	if (t1 && t2 && t1->data == t2->data)
+	{      //有一个为空或数据不同就不判断了
+		if (is_equal(t1->lchild, t2->lchild))
+			if (is_equal(t1->rchild, t2->rchild))
+			{
+				return true;
+			}
+	}
+	return false;
+}
+
+template<class Comparable>
+int BinarySearchTree<Comparable>::count_tree(bintree t)
+{		//cacluate the number of the node.
+	if (t)
+	{
+		return (count_tree(t->lchild) + count_tree(t->rchild) + 1);
+	}
+	return 0;
 }
 
 /**
