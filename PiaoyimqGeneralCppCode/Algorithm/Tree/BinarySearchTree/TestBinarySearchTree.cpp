@@ -3,8 +3,7 @@
 
 using namespace std;
 
-// Test program
-int main()
+void test_tree_1()
 {
 	const int ITEM_NOT_FOUND = -9999;
 	BinarySearchTree<int> t(ITEM_NOT_FOUND);
@@ -47,6 +46,68 @@ int main()
 		if (t2.find(i) != ITEM_NOT_FOUND)
 			cout << "Find error2!" << endl;
 	}
+}
+
+void test_tree()
+{
+	/*
+	 * 							50
+	 *                 30                        80
+	 *          20          40	                            90
+	 *                     35                          85
+	 *                  32                                      88
+	 *
+	 * */
+
+	const int ITEM_NOT_FOUND = -9999;
+	BinarySearchTree<int> t(ITEM_NOT_FOUND);
+	t.insert(50);
+	t.insert(40);
+	t.insert(30);
+	t.insert(20);
+	t.insert(35);
+	t.insert(32);
+	t.insert(80);
+	t.insert(90);
+	t.insert(85);
+	t.insert(88);
+
+	std::cout << std::string(50, '*') << std::endl;
+	t.printTree();
+
+	t.remove(88);
+	std::cout << std::string(50, '*') << std::endl;
+	t.printTree();
+	t.insert(88);
+
+	t.remove(90);
+	std::cout << std::string(50, '*') << std::endl;
+	t.printTree();
+	t.insert(90);
+
+	t.remove(50);
+	std::cout << std::string(50, '*') << std::endl;
+	t.printTree();
+	t.insert(50);
+
+
+	std::cout << std::string(50, '*') << std::endl;
+	t.printTree();
+
+	std::cout << "max=" << t.findMax() << std::endl;
+
+	std::cout << "min=" << t.findMin() << std::endl;
+
+	t.makeEmpty();
+	std::cout << std::string(50, '*') << std::endl;
+	t.printTree();
+}
+
+// Test program
+int main()
+{
+//	test_tree_1();
+	test_tree();
 
 	return 0;
 }

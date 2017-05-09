@@ -87,11 +87,19 @@ public:
 	Animal(const wstring& g, const wstring& s, int a, double w) :
 			genus(g), species(s), age(a), weight(w)
 	{
+		cout << __PRETTY_FUNCTION__ <<endl;
 	}
 	Animal() :
 			genus(L"Default")
 	{
+		cout << __PRETTY_FUNCTION__ <<endl;
 	}
+
+	~Animal()
+	{
+		cout << __PRETTY_FUNCTION__ <<endl;
+	}
+
 	Animal& operator=(const Animal&)
 	{
 		std::wcout << __PRETTY_FUNCTION__ << std::endl;
@@ -106,6 +114,11 @@ public:
 	void print(const char* objectName)
 	{
 		wcout << objectName << ": " << genus << ", " << species << endl;
+	}
+
+	void print()
+	{
+		wcout << ": " << genus << ", " << species << endl;
 	}
 };
 
@@ -166,7 +179,7 @@ unique_ptr<Animal> testParameter233()
 	return te;
 }
 
-unique_ptr<Animal> pGlobal = make_unique<Animal>(L"a", L"b", 20, 11);
+//unique_ptr<Animal> pGlobal = make_unique<Animal>(L"a", L"b", 20, 11);
 //unique_ptr<Animal> testParameter3()
 //{
 //	pGlobal->print("pt");
@@ -306,8 +319,15 @@ void test_reset()
 class Person
 {
 public:
-	Person(string name) : pName(new string(name)){}
-	~Person(){}
+	Person(string name) : pName(new string(name))
+	{
+		cout << __PRETTY_FUNCTION__ <<endl;
+	}
+
+	~Person()
+	{
+		cout << __PRETTY_FUNCTION__ <<endl;
+	}
 
 	Person(Person&& p)
 	{
@@ -330,15 +350,32 @@ void test_Person()
     // Person p2(p);//compile error, 如果类里的拷贝构造函数和拷贝赋值函数都被delete了（如unique_ptr），那这个类也不能进行拷贝构造和拷贝赋值
 }
 
+void temp_1(Animal& a)
+{
+	a.print();
+}
+
+void test_point_to_reference()
+{
+	std::cout << __LINE__ << std::endl;
+	std::unique_ptr<Animal> pe=make_unique<Animal>();
+	std::cout << __LINE__ << std::endl;
+	temp_1(*pe);
+	std::cout << __LINE__ << std::endl;
+}
+
 int main()
 {
-	MakeSongs();
-	wcout << endl << wstring(50, '*') << endl << endl;
-	SongVector();
-	wcout << endl << wstring(50, '*') << endl << endl;
-	MakeAnimals();
-	testVec3();
-	test_reset();
-	test_Person();
+//	MakeSongs();
+//	wcout << endl << wstring(50, '*') << endl << endl;
+//	SongVector();
+//	wcout << endl << wstring(50, '*') << endl << endl;
+//	MakeAnimals();
+//	testVec3();
+//	test_reset();
+//	test_Person();
+	test_point_to_reference();
+	int a;
+	std::cin>>a;
 }
 

@@ -66,7 +66,7 @@ private:
 	const Comparable & elementAt(BinaryNode<Comparable> *t) const;
 
 	void insert(const Comparable & x, BinaryNode<Comparable> * & t) const;
-	void remove(const Comparable & x, BinaryNode<Comparable> * & t) const;
+	void remove(const Comparable & x, BinaryNode<Comparable> * & t) const; //?
 	BinaryNode<Comparable> * findMin(BinaryNode<Comparable> *t) const;
 	BinaryNode<Comparable> * findMax(BinaryNode<Comparable> *t) const;
 	BinaryNode<Comparable> * find(const Comparable & x, BinaryNode<Comparable> *t) const;
@@ -359,12 +359,28 @@ void BinarySearchTree<Comparable>::makeEmpty(BinaryNode<Comparable> * & t) const
 template<class Comparable>
 void BinarySearchTree<Comparable>::printTree(BinaryNode<Comparable> *t) const
 {
+#if 1//inorder traversal
 	if (t != NULL)
 	{
 		printTree(t->left);
 		cout << t->element << endl;
 		printTree(t->right);
 	}
+#elif 1 //preorder traversal
+	if (t != NULL)
+	{
+		cout << t->element << endl;
+		printTree(t->left);
+		printTree(t->right);
+	}
+#elif 1 //postorder traversal
+	if (t != NULL)
+	{
+		printTree(t->left);
+		printTree(t->right);
+		cout << t->element << endl;
+	}
+#endif
 }
 
 /**
