@@ -5,7 +5,6 @@
  *      Author: piaoyimq
  */
 
-#include "singleton.h "
 #include <iostream>
 using namespace std;
 /*
@@ -32,7 +31,7 @@ public:
 
 	~Singleton()
 	{
-		cout << "~Singleton" << endl;
+		cout <<__PRETTY_FUNCTION__ << endl;
 	}
 
 	class Garbo //资源回收机制
@@ -47,6 +46,7 @@ public:
 		{
 			delete instance_;
 			instance_ = nullptr;
+			cout <<__PRETTY_FUNCTION__ << endl;
 		}
 	};
 
@@ -55,7 +55,7 @@ private:
 	Singleton & operator=(const Singleton & other);	// no assign
 	Singleton()
 	{
-		cout << "Singleton" << endl;
+		cout <<__PRETTY_FUNCTION__ << endl;
 	}
 
 	static Singleton *instance_; //引用性声明

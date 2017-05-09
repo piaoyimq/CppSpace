@@ -41,13 +41,20 @@ void test_vector_has_unique_ptr_element()
 	routesList.insert(it, std::move(route));// have to transfer to rvalue.
 	routesList.push_back(std::move(route));
 
-	DbpRouteList routesListCopy(routesList); //could not like this, unique_ptr not support copy constructor,
+//	DbpRouteList routesListCopy(routesList); //could not like this, unique_ptr not support copy constructor,
 		//but can like this:  DbpRouteList routesListCopy(std::move(routesList)); , but we should implment the move constructor.
 
 	for (const auto& listRoute : routesList)
 	{
-		it = routesList.erase(it);
+		routesList.erase(listRoute);
 	}
+
+	  for (auto it = routesList.begin(); it != routesList.end(); )
+	    {
+	        const auto&        listRoute    = (*it);
+	        const std::string& listDestHost = listRoute->getDestinationHost();
+	        const DbpPeerInfo* listPi       = listRoute->getPeerInfo();
+	    }
 }
 
 

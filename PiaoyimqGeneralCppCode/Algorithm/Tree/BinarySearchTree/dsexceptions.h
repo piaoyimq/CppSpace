@@ -1,9 +1,17 @@
-        #ifndef DSEXCEPTIONS_H_
-        #define DSEXCEPTIONS_H_
+#ifndef DSEXCEPTIONS_H_
+#define DSEXCEPTIONS_H_
 
-        class Underflow { };
-        class Overflow  { };
-        class OutOfMemory { };
-        class BadIterator { };
+class Underflow
+{
+};
+class Overflow
+{
+};
+class OutOfMemory
+{
+};
+class BadIterator
+{
+};
 
-        #endif
+#endif

@@ -10,28 +10,29 @@
 #include <vector>
 using namespace std;
 
-
 class Singleton
 {
- public:
-    static Singleton& GetInstance()
-    {
-        static Singleton instance_;                   return instance_;
-    }
+public:
+	static Singleton& GetInstance()
+	{
+		static Singleton instance_;
+		return instance_;
+	}
 
-    ~Singleton()
-    {
-        cout << "~Singleton"<<endl;
-    }
+	~Singleton()
+	{
+		cout << "~Singleton" << endl;
+	}
 private:
-
-    Singleton()
-    {
-        cout << "Singleton "<<endl;
-    }
-    Singleton(const Singleton &other);
-    Singleton & operator=(const Singleton &other);
+	Singleton()
+	{
+		cout << "Singleton " << endl;
+		cout << "this=" << this <<  endl;
+	}
+	Singleton(const Singleton &other);
+	Singleton & operator=(const Singleton &other);
 };
+
 
 /*
  * 这种实现方式利用了static修改函数内部的变量，当第一次调用GetInstance函数时，系统将构造一个Singleton对象，在后续再次调用这个函数时，
@@ -43,8 +44,8 @@ private:
 int main()
 {
 	//Singleton s1 = Singleton::GetInstance(); //it will call copy constructor, compile error.
-    Singleton &s1 = Singleton::GetInstance();
-    Singleton &s2 = Singleton::GetInstance(); //s1与s2是同一对象的引用
+	Singleton &s1 = Singleton::GetInstance();
+	Singleton &s2 = Singleton::GetInstance(); //s1与s2是同一对象的引用
 
-    return 0;
+	return 0;
 }
