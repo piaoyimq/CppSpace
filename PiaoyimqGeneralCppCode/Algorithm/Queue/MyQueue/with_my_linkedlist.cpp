@@ -6,17 +6,6 @@ template<class T>
 class MyQueue
 {
 public:
-
-	struct LinkedList
-	{
-		LinkedList(T element) :
-				value(element), next(nullptr)
-		{
-		}
-		T value;
-		LinkedList* next;
-	};
-
 	MyQueue() :
 			qHead(nullptr), qTail(nullptr), qSize(0)
 	{
@@ -34,6 +23,22 @@ public:
 	T pop();
 
 private:
+	struct LinkedList
+	{
+		LinkedList(T element) :
+				value(element), next(nullptr)
+		{
+		}
+
+		~LinkedList()
+		{
+			next=nullptr;
+		}
+
+		T value;
+		LinkedList* next;
+	};
+
 	LinkedList* qHead;
 	LinkedList* qTail;
 	size_t qSize;
@@ -94,7 +99,7 @@ int main()
 	std::cout << "pop=" << qe.pop() << std::endl;
 	std::cout << "pop=" << qe.pop() << std::endl;
 	std::cout << "pop=" << qe.pop() << std::endl;
-	std::cout << "pop=" << qe.pop() << std::endl;
+//	std::cout << "pop=" << qe.pop() << std::endl;
 
 	std::cout << "qSize=" << qe.size() << std::endl;
 
