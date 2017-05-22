@@ -1,30 +1,32 @@
 #include <iostream>
-#include <stdint.h>
 #include <stdexcept>
-#define max_size 10
-
-
-#ifndef max_size
-#define max_size 3
-#endif
-
+#include <typeinfo>
+#include <cassert>
 template<class T>
 class MyQueue
 {
 public:
+
+	struct LinkedList
+	{
+		LinkedList(T element) :
+				value(element), next(nullptr)
+		{
+		}
+		T value;
+		LinkedList* next;
+	};
+
 	MyQueue() :
-			head(0), tail(0), qSize(0)
+			qHead(nullptr), qTail(nullptr), qSize(0)
 	{
 	}
+
+	~MyQueue();
 
 	size_t size()
 	{
 		return qSize;
-	}
-
-	bool isFull()
-	{
-		return qSize == max_size;
 	}
 
 	void push(const T& t);
@@ -32,45 +34,49 @@ public:
 	T pop();
 
 private:
-	size_t head;
-	size_t tail;
+	LinkedList* qHead;
+	LinkedList* qTail;
 	size_t qSize;
-	T theQueue[max_size];
 };
+
+template<class T>
+MyQueue<T>::~MyQueue()
+{
+	while (qSize)
+	{
+		pop();
+	}
+}
 
 template<class T>
 void MyQueue<T>::push(const T& t)
 {
-	if (isFull())
-	{
-		throw std::overflow_error("queue is full, can't push.");
-	}
-
-	if (max_size == tail)
-	{
-		tail = 0;
-	}
-
-	theQueue[tail] = t;
-	++tail;
 	++qSize;
+	if (nullptr == qHead)
+	{
+		qHead = new LinkedList(t);
+		qTail = qHead;
+		return;
+	}
+
+	qTail->next = new LinkedList(t);
+	qTail = qTail->next;
 }
 
 template<class T>
 T MyQueue<T>::pop()
 {
-	if (qSize == 0)
+	if (0 == qSize)
 	{
 		throw std::underflow_error("queue is empty, can't pop.");
 	}
 
-	T t = theQueue[head];
-	++head;
-	if (max_size == head)
-	{
-		head = 0;
-	}
 	--qSize;
+	T t = qHead->value;
+	LinkedList* temp = qHead->next;
+	delete qHead;
+	qHead = temp;
+
 	return t;
 }
 
@@ -88,6 +94,7 @@ int main()
 	std::cout << "pop=" << qe.pop() << std::endl;
 	std::cout << "pop=" << qe.pop() << std::endl;
 	std::cout << "pop=" << qe.pop() << std::endl;
+	std::cout << "pop=" << qe.pop() << std::endl;
 
 	std::cout << "qSize=" << qe.size() << std::endl;
 
@@ -98,6 +105,8 @@ int main()
 	std::cout << "pop=" << qe.pop() << std::endl;
 	std::cout << "pop=" << qe.pop() << std::endl;
 	std::cout << "pop=" << qe.pop() << std::endl;
+
+
 	std::cout << "qSize=" << qe.size() << std::endl;
 
 	MyQueue<int> q;
@@ -105,11 +114,8 @@ int main()
 	{
 		for (int i = 0; i < 10; i++)
 		{
-			if (!q.isFull())
-			{
-				std::cout <<"push=" <<i << std::endl;
-				q.push(i);
-			}
+			std::cout << "push=" << i << std::endl;
+			q.push(i);
 		}
 
 		while (q.size())
@@ -120,4 +126,3 @@ int main()
 
 	return 0;
 }
-
