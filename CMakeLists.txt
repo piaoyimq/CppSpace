@@ -32,7 +32,7 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
 include(${CppSapce_SOURCE_DIR}/tools/build/cmake/common.cmake)
 if(NOT PLATFORM STREQUAL "Linux_i586")
-    include(${CppSapce_SOURCE_DIR}/tools/build/cmake/xxx.cmake) 
+    include(${CppSapce_SOURCE_DIR}/tools/build/cmake/xxx.cmake)
     include(${CppSapce_SOURCE_DIR}/tools/build/cmake/libs.cmake)
 endif()
 
@@ -52,15 +52,26 @@ endif()
 
 # General linker flags
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--build-id")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--fatal-warnings")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--fatal-warnings")
 
 set(BOOST_PATH "$ENV{WS_ROOT}/../boost_1_60_0")
 set(DEFAULT_PATH "/usr")
 
 set(CMAKE_SKIP_BUILD_RPATH FALSE)
-set(CMAKE_INSTALL_RPATH "${BOOST_PATH/lib}")
+#set(CMAKE_INSTALL_RPATH "${BOOST_PATH/lib}")
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L ${BOOST_PATH}/lib")
+message("CMAKE_EXE_LINKER_FLAGS: ${CMAKE_EXE_LINKER_FLAGS}")
+
+# Set dynamic library search path during linking.
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath-link -Wl,${BOOST_PATH}/lib")
+
+# Set dynamic library search path during runtime.
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath -Wl,${BOOST_PATH}/lib")
+
+
 
 # Handle kconfig
 #include(tools/build/cmake/kconfig.cmake)
