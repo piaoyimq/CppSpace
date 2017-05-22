@@ -2,6 +2,7 @@
 # xxx overlays.
 #include_directories(SYSTEM $ENV{MOBILEGW_STAGING}/${PLATFORM}/${CMAKE_INSTALL_PREFIX}/include)#piaoyimq
 # Set static library search path.
+set(BOOST_PATH "/home/ezhweib/workspace/boost_1_60_0/")#why could not export BOOST_PATH to here
 set(CMAKE_EXE_LINKER_FLAGS
   "${CMAKE_EXE_LINKER_FLAGS} -L ${BOOST_PATH}/lib")
 # Set dynamic library search path during linking.
