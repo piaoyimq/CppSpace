@@ -13,6 +13,12 @@
 #include <unistd.h>	//syscall
 #include <dirent.h>	//opendir
 #include "../src/PrintOut.h"
+#include <sstream>
+#include <iomanip>
+#include <map>
+#include <vector>
+#include <list>
+
 
 #define ABORT() \
     std::cerr << "################################################" << std::endl \
@@ -26,6 +32,56 @@
     { \
         (Assert::fail(__FILE__, __LINE__, __PRETTY_FUNCTION__, #CONDITION)); \
     }
+
+template<typename T>
+std::ostream& operator<<(std::ostream& s, const std::vector<T>& v)
+{
+	s.put('[');
+	char comma[3] = { '\0', ' ', '\0' };
+	for (const auto& e : v)
+	{
+		s << comma << e;
+		comma[0] = ',';
+	}
+	return s << ']';
+}
+
+template<typename T>
+std::ostream& operator<<(std::ostream& s, const std::list<T>& v)
+{
+	s.put('[');
+	char comma[3] = { '\0', ' ', '\0' };
+	for (const auto& e : v)
+	{
+		s << comma << e;
+		comma[0] = ',';
+		// std::cout << s <<std::endl;
+	}
+	return s << ']';
+}
+
+template<typename TK, typename TV>
+std::ostream& operator<<(std::ostream& s, const std::map<TK, TV>& m)
+{
+	s.put('{');
+	char comma[3] = { '\0', ' ', '\0' };
+	for (const auto& e : m)
+	{
+		s << comma << e.first << ':' << e.second;
+		comma[0] = ',';
+	}
+	return s << '}';
+}
+
+template<class out_type, class in_value>
+out_type convert(const in_value &t)
+{
+	out_type ans;
+	std::stringstream a;
+	a << t;
+	a >> ans;
+	return ans;
+}
 
 template<class T>
 inline size_t getArrayLen(T& array)
