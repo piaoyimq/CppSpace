@@ -12,7 +12,7 @@
 #include <sys/syscall.h>	//SYS_gettid
 #include <unistd.h>	//syscall
 #include <dirent.h>	//opendir
-#include "../src/PrintOut.h"
+#include "PrintOut.h"
 #include <sstream>
 #include <iomanip>
 #include <map>

@@ -1,0 +1,13 @@
+Function:
+
+    Store some general cpp code
+    Named Rules:
+    1. Generally, files and directories use Lower case and middle line (include c files);
+    2. If a cpp only has one class, use the class name fs the file name(iles use upper case);
+    3. If a cpp file has no class or has serveral class, name the file as 1st rule;
+    4. The others, like CMakeLists.txt do not require.
+
+    cpp rules:
+    1. a function(not in a class), use lower case and middle line name;
+    2. a method(a function in a class), use lower case and upper case name;
+     

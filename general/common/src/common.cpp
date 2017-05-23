@@ -4,7 +4,8 @@
  *  Created on: 2016-05-21
  *      Author: piaoyimq
  */
-#include "common/include/Common.h"
+#include "common/include/common.h"
+
 #include <stdio.h>
 #include <string.h>
 #include <cstdio>

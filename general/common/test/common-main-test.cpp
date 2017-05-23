@@ -5,12 +5,12 @@
  *      Author: piaoyimq
  */
 
-#include "common/include/Common.h"
 #include "ut/googletest/include/gtest/gtest.h"
 #include <sys/types.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "common/include/common.h"
 
 TEST(getNameByPidTest, functionility)
 {

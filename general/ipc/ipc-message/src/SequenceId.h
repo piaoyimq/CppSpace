@@ -6,7 +6,8 @@
  */
 #include <boost/archive/binary_oarchive.hpp> //serialization
 #include <boost/archive/binary_iarchive.hpp> //deserialization
-#include "common/include/Common.h"
+
+#include "../../../common/include/common.h"
 
 class SequenceId : public PrintOut
 {

@@ -13,8 +13,9 @@
 #include <sys/types.h>
 #include <stdint.h>
 #include <dirent.h>
+
+#include "../../../common/include/common.h"
 #include "BlockQueue.h"
-#include "common/include/Common.h"
 
 #define DIR_LENGTH 						200
 
