@@ -1,7 +1,11 @@
 // Example program
 #include <iostream>
 #include <list>
+#include <stdexcept>
 
+
+namespace StdListOrDeque
+{
 template<class T>
 class MyQueue
 {
@@ -31,7 +35,7 @@ T MyQueue<T>::pop()
 {
     if(qSize<=0)
     {
-        throw "QueueEmpty";
+    	throw std::underflow_error("queue is empty, can't pop.");
     }
 
     --qSize;
@@ -46,21 +50,4 @@ void MyQueue<T>::push(const T& t)
     ++qSize;
     theList.push_back(t);
 }
-
-int main()
-{
-    MyQueue<int> qe;
-    std::cout <<"qSize=" <<qe.size()<< std::endl;
-    qe.push(3);
-
-    qe.push(4);
-
-    std::cout <<"qSize=" <<qe.size()<< std::endl;
-    int a1=qe.pop();
-    int a2=qe.pop();
-    // int a3=qe.pop();
-    std::cout <<"pop="<<a1 << std::endl;
-    std::cout <<"pop="<<a2 << std::endl;
-    std::cout <<"qSize=" <<qe.size()<< std::endl;
-    return 0;
 }

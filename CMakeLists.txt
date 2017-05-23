@@ -75,23 +75,15 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath -Wl,${BOOST_PAT
 
 # Handle kconfig
 #include(tools/build/cmake/kconfig.cmake)
-find_library(LIB_BOOST_SYSTEM NAMES libboost_system.a PATHS ${BOOST_PATH}/lib NO_DEFAULT_PATH)
-find_library(LIB_BOOST_FILESYSTEM NAMES libboost_filesystem.a PATHS ${BOOST_PATH}/lib NO_DEFAULT_PATH)
-find_library(LIB_BOOST_REGEX NAMES libboost_regex.a PATHS ${BOOST_PATH}/lib NO_DEFAULT_PATH)
-find_library(LIB_BOOST_LOG NAMES libboost_log.a PATHS ${BOOST_PATH}/lib NO_DEFAULT_PATH)
-find_library(LIB_BOOST_SERIALIZATION NAMES libboost_serialization.a PATHS ${BOOST_PATH}/lib NO_DEFAULT_PATH)
-find_library(LIB_BOOST_SIGNALS NAMES libboost_signals.a PATHS ${BOOST_PATH}/lib NO_DEFAULT_PATH)
-find_library(LIB_BOOST_UNIT_TEST_FRAMEWORK NAMES libboost_unit_test_framework.a PATHS ${BOOST_PATH}/lib NO_DEFAULT_PATH)
 
 
-message(STATUS "Boost library ${LIB_BOOST_SYSTEM}")
-message(STATUS "Boost library ${LIB_BOOST_FILESYSTEM}")
-message(STATUS "Boost library ${LIB_BOOST_REGEX}")
-message(STATUS "Boost library ${LIB_BOOST_LOG}")
-message(STATUS "Boost library ${LIB_BOOST_SERIALIZATION}")
-message(STATUS "Boost library ${LIB_BOOST_SIGNALS}")
-message(STATUS "Boost library ${LIB_BOOST_UNIT_TEST_FRAMEWORK}")
-set(CMAKE_LIBRARY_PATH "${LIB_BOOST_SERIALIZATION}")
+
+# find library
+#find_library(LIB_BOOST_SERIALIZATION NAMES libboost_serialization.a PATHS ${BOOST_PATH}/lib NO_DEFAULT_PATH)
+#message(STATUS "Boost library ${LIB_BOOST_SERIALIZATION}")
+#set(CMAKE_LIBRARY_PATH "${LIB_BOOST_SERIALIZATION}")
+
+
 
 # General warning flags
 add_compile_options(

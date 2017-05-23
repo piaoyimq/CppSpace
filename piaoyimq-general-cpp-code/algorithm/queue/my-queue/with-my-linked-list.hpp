@@ -1,7 +1,10 @@
 #include <iostream>
 #include <stdexcept>
-#include <typeinfo>
 #include <cassert>
+
+
+namespace MyLinkedList
+{
 template<class T>
 class MyQueue
 {
@@ -84,50 +87,4 @@ T MyQueue<T>::pop()
 
 	return t;
 }
-
-int main()
-{
-	MyQueue<int> qe;
-	std::cout << "qSize=" << qe.size() << std::endl;
-	qe.push(1);
-	qe.push(2);
-	qe.push(3);
-	std::cout << "qSize=" << qe.size() << std::endl;
-	qe.push(4);
-	std::cout << "qSize=" << qe.size() << std::endl;
-
-	std::cout << "pop=" << qe.pop() << std::endl;
-	std::cout << "pop=" << qe.pop() << std::endl;
-	std::cout << "pop=" << qe.pop() << std::endl;
-//	std::cout << "pop=" << qe.pop() << std::endl;
-
-	std::cout << "qSize=" << qe.size() << std::endl;
-
-	qe.push(4);
-	qe.push(5);
-	qe.push(6);
-	std::cout << "pop=" << qe.pop() << std::endl;
-	std::cout << "pop=" << qe.pop() << std::endl;
-	std::cout << "pop=" << qe.pop() << std::endl;
-	std::cout << "pop=" << qe.pop() << std::endl;
-
-
-	std::cout << "qSize=" << qe.size() << std::endl;
-
-	MyQueue<int> q;
-	for (int j = 0; j < 5; j++)
-	{
-		for (int i = 0; i < 10; i++)
-		{
-			std::cout << "push=" << i << std::endl;
-			q.push(i);
-		}
-
-		while (q.size())
-		{
-			std::cout << q.pop() << std::endl;
-		}
-	}
-
-	return 0;
 }
