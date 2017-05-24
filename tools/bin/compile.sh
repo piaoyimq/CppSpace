@@ -11,9 +11,9 @@ LIB_PATH="-L $BASE_PATH/boost_1_60_0/lib"
 #libboost_graph is property_tree
 DEFINE_OPTIONS="-DBOOST_LOG_DYN_LINK -DBOOST_LOG_USE_NATIVE_SYSLOG"
 LIB_SO_PATH="-Wl,-rpath,$BASE_PATH/boost_1_60_0/lib/"
-set -x
+#set -x
 
-if [ $2 == "-so" ]
+if [ "$2" == "-so" ]
 then
     set -x
     file=$1
