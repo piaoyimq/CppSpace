@@ -11,3 +11,9 @@ Function:
     1. a function(not in a class), use lower case and middle line name;
     2. a method(a function in a class), use lower case and upper case name;
      
+
+    test case named rules:
+    generally, use lower case and underline, if used the program variable, use the same name in program variable.
+    test_suite_xxx_xxxx
+    test_xxx_xxx_xxx
+    Reference my-queue-test.cpp 

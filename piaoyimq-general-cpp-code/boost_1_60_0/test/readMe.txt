@@ -2,7 +2,8 @@ Custom command:
 ./a.out -x -l all
 ./a.out -x -t length_test -l all
 ./a.out -x -t length_test -l all -p
-
+./a.out --list_content   #list the test cases.
+./a.out --report_level=detailed  
 
 boost_runtime_list_content.run-fail.cpp
 decorator_07.run-fail.cpp
