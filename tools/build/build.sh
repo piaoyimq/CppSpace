@@ -6,7 +6,7 @@
 # A build wrapper calling CMake and ninja supporting standardized variant folders and start_job.
 
 set -e
-export WS_ROOT=$HOME/workspace/CppSpace
+#export WS_ROOT=$HOME/workspace/CppSpace
 
 # Setup shell
 trap 'echo -e "\nAborted due to unhandled error $? in $0 near line $LINENO on the following line:\n$BASH_COMMAND" 1>&2; exit 70' ERR

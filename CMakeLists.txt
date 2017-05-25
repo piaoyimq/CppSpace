@@ -74,7 +74,7 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath -Wl,${BOOST_PAT
 
 
 # Handle kconfig
-#include(tools/build/cmake/kconfig.cmake)
+include(tools/build/cmake/kconfig.cmake)
 
 
 
