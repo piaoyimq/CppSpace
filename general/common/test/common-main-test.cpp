@@ -11,7 +11,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "common/include/common.h"
-
 TEST(getNameByPidTest, functionility)
 {
 	char task_name[50];

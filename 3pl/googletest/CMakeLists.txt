@@ -1,20 +1,16 @@
-add_compile_options(
-    -Wcast-qual
-)
+cmake_minimum_required(VERSION 2.6.2)
 
+project( googletest-distribution )
 
-cpp_add_lib("googletest"
-    #TEST LINUX
-    SRC
-        src/
+enable_testing()
 
-    INCLUDE
-	include/
-	./
+option(BUILD_GTEST "Builds the googletest subproject" OFF)
 
-    PUBLIC
-        pthread
-)
+#Note that googlemock target already builds googletest
+option(BUILD_GMOCK "Builds the googlemock subproject" ON)
 
-
-
+if(BUILD_GMOCK)
+  add_subdirectory( googlemock )
+elseif(BUILD_GTEST)
+  add_subdirectory( googletest )
+endif()
