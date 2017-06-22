@@ -5,7 +5,7 @@
  *      Author: piaoyimq
  */
 #include "log/single-process-log/include/Log.h"
-#include "ut/googletest/include/gtest/gtest.h"
+#include <gtest/gtest.h>
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>

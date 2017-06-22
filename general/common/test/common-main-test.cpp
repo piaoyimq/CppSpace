@@ -5,7 +5,7 @@
  *      Author: piaoyimq
  */
 
-#include "ut/googletest/include/gtest/gtest.h"
+#include <gtest/gtest.h>
 #include <sys/types.h>
 #include <unistd.h>
 #include <stdio.h>

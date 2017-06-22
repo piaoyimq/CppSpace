@@ -5,7 +5,7 @@
  *      Author: root
  */
 #include "TestReq.h"
-#include "ut/googletest/include/gtest/gtest.h"
+#include <gtest/gtest.h>
 
 
 std::string str = "get sysinfo";

@@ -50,19 +50,20 @@ if(TARGET_OS STREQUAL "Linux")
    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--as-needed")
 endif()
 
+include(tools/build/cmake/3pp.cmake)
 # General linker flags
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--build-id")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--fatal-warnings")
 
 set(BOOST_PATH "$ENV{WS_ROOT}/../boost_1_60_0")
 set(DEFAULT_PATH "/usr")
-
-set(CMAKE_SKIP_BUILD_RPATH FALSE)
-#set(CMAKE_INSTALL_RPATH "${BOOST_PATH/lib}")
+set(CMAKE_SKIP_BUILD_RPATH FALSE) #set(CMAKE_INSTALL_RPATH "${BOOST_PATH/lib}")
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L ${BOOST_PATH}/lib")
+
+
 message("CMAKE_EXE_LINKER_FLAGS: ${CMAKE_EXE_LINKER_FLAGS}")
 
 # Set dynamic library search path during linking.
@@ -138,7 +139,7 @@ include_directories(BEFORE
     $ENV{WS_ROOT}/general
 )
 
-add_subdirectory(3pl/googletest/)
+#add_subdirectory(3pl/googletest/)
 #add_subdirectory(general/ut)
 add_subdirectory(general/serialize)
 add_subdirectory(general/common)

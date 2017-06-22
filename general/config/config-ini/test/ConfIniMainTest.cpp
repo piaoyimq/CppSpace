@@ -5,7 +5,7 @@
  *      Author: piaoyimq
  */
 #include "config/config-ini/include/ConfigIni.h"
-#include "ut/googletest/include/gtest/gtest.h"
+#include <gtest/gtest.h>
 #include <stdlib.h>
 #include <iostream>
 

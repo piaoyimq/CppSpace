@@ -23,6 +23,6 @@ cpp_add_executable(IpcMessageMainTest
       
     PUBLIC
         ipcmessage	   
-	googletest
+	gtest
 )
 
