@@ -1,4 +1,5 @@
 #!/bin/bash
+#This scprit called by build.sh
 set -e
 
 err_exit()                                                                                                                                                               
@@ -12,6 +13,11 @@ function install_log()
 {
     echo -e "Build 3pl: $1 ..."
     echo -e "install log: $WS_ROOT/3pl/output/log/install-$1.log "
+}
+
+function install_common_part()
+{
+
 }
 
 
