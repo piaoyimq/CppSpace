@@ -102,6 +102,7 @@ run_unit()
 
 }
 
+export  platform=""
 # Clean, generate and build for config $1
 build_config()
 {
@@ -196,6 +197,7 @@ build_config()
 	then
 		#echo "Building xxx.."
 		#make -C ${WS_ROOT}/tools/build xxx-${platform}
+		$WS_ROOT/3pl/build/install-all.sh
 
 		if [ "Ninja" == "$GENERATOR" ]
 		then
