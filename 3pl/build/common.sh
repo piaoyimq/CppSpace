@@ -1,27 +1,45 @@
 #!/bin/bash
+export PACKAGE_PATH=$WS_ROOT/staging/packages/${platform}/$1 
+export SRC_PATH=$WS_ROOT/3pl/sources/$1
+export OUTPUT_PATH=$WS_ROOT/3pl/output/$1
+export INCLUDE_PATH="usr/local/include"
+export LIB_PATH="usr/local/lib"
 
-function pre_cmake()
+
+mkdir_compile_time_path()
 {
+    mkdir -p $WS_ROOT/staging/${platform}/${INCLUDE_PATH}
+    mkdir -p $WS_ROOT/staging/${platform}/${LIB_PATH}
+}
 
-PACKAGE_PATH=$WS_ROOT/staging/packages/${platform}/$1 
-GOOGLETEST_SRC_PATH=$WS_ROOT/3pl/sources/googletest/googlemock
-GOOGLETEST_OUTPUT_PATH=$WS_ROOT/3pl/output/googlemock
-INCLUDE_PATH="usr/local/include"
-LIB_PATH="usr/local/lib"
 
-[ -d $WS_ROOT/staging/${platform}/${INCLUDE_PATH}/gtest ] && [ -f ${PACKAGE_PATH}*.tar.gz ] && echo -e "googletest library already exist."  && exit 0
+mkdir_runtime_path()
+{
+    mkdir -p $PACKAGE_PATH/${INCLUDE_PATH} 
+    mkdir -p $PACKAGE_PATH/${LIB_PATH}
+}
 
-mkdir -p  $GOOGLETEST_SRC_PATH
-mkdir -p $GOOGLETEST_OUTPUT_PATH
 
-cd $GOOGLETEST_OUTPUT_PATH
+pre_cmake()
+{
+    [ -f ${PACKAGE_PATH}*.tar.gz ] && echo -e "$1 library already exist."  && exit 0
 
-cmake $GOOGLETEST_SRC_PATH 
-make 
+   mkdir -p $OUTPUT_PATH
+
+   cd $OUTPUT_PATH
+
+   cmake $SRC_PATH 
+   make 
+   mkdir_compile_time_path
+   mkdir_runtime_path
 
 }
 
-function post_cmake()
+
+post_cmake()
 {
+    tar -Pzcvf ${PACKAGE_PATH}-`git head`.tar.gz $PACKAGE_PATH > /dev/null
+    rm -rf $OUTPUT_PATH
+    rm -rf $PACKAGE_PATH
 }
 
