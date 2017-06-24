@@ -16,7 +16,7 @@ endif()
 # in pieces, so response files must be used to deal with this
 set(CMAKE_NINJA_FORCE_RESPONSE_FILE 1)
 
-if(${PLATFORM} STREQUAL "Linux_x86")
+if(${PLATFORM} STREQUAL "Linux_x86_64")
 elseif(${PLATFORM} STREQUAL "Linux_mips")
 else()
     message(FATAL_ERROR "Unknown platform: ${PLATFORM}")
@@ -74,7 +74,7 @@ macro(cpp_add_sourcefiles)
 endmacro()
 
 macro(cpp_arg_parse)
-    cmake_parse_arguments(ARG "LINUX;TEST;NOTEST;NOTESTRUN;MIPS;NOMIPS" "BASE_DIR" "SRC;SRC_EXCLUDE;INCLUDE;INCLUDE_BEFORE;COMPILE_DEFS;PUBLIC;PRIVATE;LABEL;Linux_x86;Linux_mips" ${ARGN})
+    cmake_parse_arguments(ARG "LINUX;TEST;NOTEST;NOTESTRUN;MIPS;NOMIPS" "BASE_DIR" "SRC;SRC_EXCLUDE;INCLUDE;INCLUDE_BEFORE;COMPILE_DEFS;PUBLIC;PRIVATE;LABEL;Linux_x86_64;Linux_mips" ${ARGN})
 
     if(ARG_LINUX AND NOT TARGET_OS STREQUAL "Linux")
         return()

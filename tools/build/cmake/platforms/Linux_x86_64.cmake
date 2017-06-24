@@ -1,4 +1,4 @@
-set(PLATFORM "Linux_x86")
+set(PLATFORM "Linux_x86_64")
 set(CDPI_ARCH "x86")
 set(LI_PLATFORM "Linux_mips")
 set(BUILD_RP 1)

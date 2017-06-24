@@ -4,7 +4,6 @@
 # vim: set filetype=bash syntax=sh autoindent noexpandtab tabstop=4 shiftwidth=4 :
 
 # A build wrapper calling CMake and ninja supporting standardized variant folders and start_job.
-
 set -e
 #export WS_ROOT=$HOME/workspace/CppSpace
 
@@ -16,10 +15,10 @@ shopt -s extglob # Support fancy globbing
 [ -n "$BUILD_DIR_CMAKE" ] || export BUILD_DIR_CMAKE="$WS_ROOT/output"
 [ -n "$JOB_CORES" ] || export JOB_CORES=16
 [ "$BUILD_WITH_GCOV" == true ] || export BUILD_WITH_GCOV=false
-VALID_PLATFORMS="Linux_x86|Linux_mips"
-declare -A SHORT_PLATFORMS=( [lin]=Linux_x86 [mips]=Linux_mips)
+VALID_PLATFORMS="Linux_x86_64|Linux_mips"
+declare -A SHORT_PLATFORMS=( [lin]=Linux_x86_64 [mips]=Linux_mips)
 VALID_VARIANTS="debug|gcov|gprof|asan|sec|automock|"
-CONFIGS="Linux_x86"
+CONFIGS="Linux_x86_64"
 COMPONENTS=""
 CMAKEFLAGS=""
 NINJAFLAGS=""
@@ -35,13 +34,13 @@ usage()
 cat <<EOF
 ${0##*/} [<options>] [<components/targets>]
 
-Will generate CMake files and build specified <components/targets> for the specified configuration. The default is to generate CMake files for Linux_x86 if not already existing and then always call ninja to build.
+Will generate CMake files and build specified <components/targets> for the specified configuration. The default is to generate CMake files for Linux_x86_64 if not already existing and then always call ninja to build.
 
 Specifying a configuration with variant, for example, will pass the appropriate flags "-DUSE_x' flags to CMake and use the standard build folder for the configuration.
 
 Where <options> are:
  -c <configurations>
-    Build comma-separated configurations, using the <platform>[.<variant>] form. Default is Linux_x86.
+    Build comma-separated configurations, using the <platform>[.<variant>] form. Default is Linux_x86_64.
     Valid platforms: $VALID_PLATFORMS (${!SHORT_PLATFORMS[@]})
     Valid variants: $VALID_VARIANTS
  -g
@@ -64,10 +63,10 @@ Where <options> are:
     Show this help text.
 
 Examples:
-${0##*/} # Generate and build all of Linux_x86
-${0##*/} -c Linux_x86.debug # Build app for Linux_x86 keeping symbols without optimization (-DUSE_DEBUG=1)
-${0##*/} -c Linux_x86.gcov cpw_Linux_x86.elf # Build cpw for Linux_x86 with coverage support (-DUSE_COVERAGE=1)
-${0##*/} clean # Call ninja clean target for Linux_x86
+${0##*/} # Generate and build all of Linux_x86_64
+${0##*/} -c Linux_x86_64.debug # Build app for Linux_x86_64 keeping symbols without optimization (-DUSE_DEBUG=1)
+${0##*/} -c Linux_x86_64.gcov cpw_Linux_x86_64.elf # Build cpw for Linux_x86_64 with coverage support (-DUSE_COVERAGE=1)
+${0##*/} clean # Call ninja clean target for Linux_x86_64
 
 EOF
 }
@@ -132,8 +131,8 @@ build_config()
 		*automock*) cmakeflags+=" -DUSE_AUTOMOCK=1";;
 	esac
 
-	# Special case for build_all building with coverage in Linux_x86 folder
-	if $BUILD_WITH_GCOV && [ "$config" == "Linux_x86" ]
+	# Special case for build_all building with coverage in Linux_x86_64 folder
+	if $BUILD_WITH_GCOV && [ "$config" == "Linux_x86_64" ]
 	then
 		cmakeflags+=" -DUSE_COVERAGE=1"
 	fi
