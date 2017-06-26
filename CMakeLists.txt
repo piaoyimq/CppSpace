@@ -139,8 +139,7 @@ include_directories(BEFORE
     $ENV{WS_ROOT}/general
 )
 
-#add_subdirectory(3pl/googletest/)
-#add_subdirectory(general/ut)
+add_subdirectory(general/ut)
 add_subdirectory(general/serialize)
 add_subdirectory(general/common)
 add_subdirectory(general/log)
