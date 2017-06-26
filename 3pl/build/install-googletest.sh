@@ -18,4 +18,4 @@ cp googlemock/lib*.a $PACKAGE_PATH/${LIB_PATH}
 cp -r $SRC_PATH/googletest/include/* $PACKAGE_PATH/${INCLUDE_PATH}
 cp googlemock/gtest/lib*.a $PACKAGE_PATH/${LIB_PATH}
 
-post_cmake
+post_cmake $1

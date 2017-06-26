@@ -38,7 +38,9 @@ pre_cmake()
 
 post_cmake()
 {
-    tar -Pzcvf ${PACKAGE_PATH}-`git head`.tar.gz $PACKAGE_PATH > /dev/null
+    cd $PACKAGE_PATH
+    cd ..
+    tar zcf $1-`git head`.tar.gz  $1
     rm -rf $OUTPUT_PATH
     rm -rf $PACKAGE_PATH
 }
