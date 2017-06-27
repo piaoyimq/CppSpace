@@ -6,16 +6,16 @@ source $WS_ROOT/3pl/build/common.sh $1
 pre_cmake $1
 
 #install compile time resources
-cp googlemock/lib*.a $WS_ROOT/staging/${platform}/${LIB_PATH}
-cp -r $SRC_PATH/googlemock/include/* $WS_ROOT/staging/${platform}/${INCLUDE_PATH} 
-cp googlemock/gtest/lib*.a $WS_ROOT/staging/${platform}/${LIB_PATH}
-cp -r $SRC_PATH/googletest/include/* $WS_ROOT/staging/${platform}/${INCLUDE_PATH} 
+cp -rf $SRC_PATH/googlemock/include/* $COMPILE_TIME_INCLUDE_PATH 
+cp googlemock/lib*.a $COMPILE_TIME_LIB_PATH
+cp -rf $SRC_PATH/googletest/include/* $COMPILE_TIME_INCLUDE_PATH
+cp -rf googlemock/gtest/lib*.a $COMPILE_TIME_LIB_PATH
 
 
 #install run time resources
-cp -r $SRC_PATH/googlemock/include/* $PACKAGE_PATH/${INCLUDE_PATH}
-cp googlemock/lib*.a $PACKAGE_PATH/${LIB_PATH}
-cp -r $SRC_PATH/googletest/include/* $PACKAGE_PATH/${INCLUDE_PATH}
-cp googlemock/gtest/lib*.a $PACKAGE_PATH/${LIB_PATH}
+cp -rf $SRC_PATH/googlemock/include/* $RUN_TIME_INCLUDE_PATH
+cp googlemock/lib*.a $RUN_TIME_LIB_PATH
+cp -rf $SRC_PATH/googletest/include/* $RUN_TIME_INCLUDE_PATH
+cp -rf googlemock/gtest/lib*.a $RUN_TIME_LIB_PATH
 
 post_cmake $1
