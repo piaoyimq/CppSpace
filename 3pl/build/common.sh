@@ -1,7 +1,7 @@
 #!/bin/bash
 export PACKAGE_PATH=$WS_ROOT/staging/packages/${platform}/$1 
 export SRC_PATH=$WS_ROOT/3pl/sources/$1
-export OUTPUT_PATH=$WS_ROOT/3pl/output/$1
+export OUTPUT_PATH=$WS_ROOT/3pl/output/${platform}/$1
 export INCLUDE_PATH="usr/local/include"
 export LIB_PATH="usr/local/lib"
 export COMPILE_TIME_INCLUDE_PATH=$WS_ROOT/staging/${platform}/${INCLUDE_PATH}
