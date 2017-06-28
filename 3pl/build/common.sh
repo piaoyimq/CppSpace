@@ -1,11 +1,11 @@
 #!/bin/bash
-export PACKAGE_PATH=$WS_ROOT/staging/packages/${platform}/$1 
+export PACKAGE_PATH=$WS_ROOT/staging/packages/${PLATFORM}/$1 
 export SRC_PATH=$WS_ROOT/3pl/sources/$1
-export OUTPUT_PATH=$WS_ROOT/3pl/output/${platform}/$1
+export OUTPUT_PATH=$WS_ROOT/3pl/output/${PLATFORM}/$1
 export INCLUDE_PATH="usr/local/include"
 export LIB_PATH="usr/local/lib"
-export COMPILE_TIME_INCLUDE_PATH=$WS_ROOT/staging/${platform}/${INCLUDE_PATH}
-export COMPILE_TIME_LIB_PATH=$WS_ROOT/staging/${platform}/${LIB_PATH}
+export COMPILE_TIME_INCLUDE_PATH=$WS_ROOT/staging/${PLATFORM}/${INCLUDE_PATH}
+export COMPILE_TIME_LIB_PATH=$WS_ROOT/staging/${PLATFORM}/${LIB_PATH}
 export RUN_TIME_INCLUDE_PATH=$PACKAGE_PATH/${INCLUDE_PATH}
 export RUN_TIME_LIB_PATH=$PACKAGE_PATH/${LIB_PATH}
 
@@ -55,7 +55,7 @@ post_cmake()
     cd $PACKAGE_PATH
     cd ..
     tar zcf $1-`git head`.tar.gz  $1
-    rm -rf $OUTPUT_PATH
+#    rm -rf $OUTPUT_PATH
     rm -rf $PACKAGE_PATH
 }
 

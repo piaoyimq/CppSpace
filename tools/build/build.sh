@@ -3,9 +3,11 @@
 # -*- mode:sh; tab-width:4; indent-tabs-mode:t; -*-
 # vim: set filetype=bash syntax=sh autoindent noexpandtab tabstop=4 shiftwidth=4 :
 
+#Usage: ./build.sh -c Linux_x86_64,Linux_mips
+#Notice: If the 3pl/sources/boost_1_60_0/ not exist, only support build one platform at the same time, such as: ./build.sh -c Linux_x86_64
+
 # A build wrapper calling CMake and ninja supporting standardized variant folders and start_job.
 set -e
-#export WS_ROOT=$HOME/workspace/CppSpace
 
 # Setup shell
 trap 'echo -e "\nAborted due to unhandled error $? in $0 near line $LINENO on the following line:\n$BASH_COMMAND" 1>&2; exit 70' ERR
@@ -101,7 +103,6 @@ run_unit()
 
 }
 
-export  platform=""
 # Clean, generate and build for config $1
 build_config()
 {
@@ -196,7 +197,7 @@ build_config()
 	then
 		#echo "Building xxx.."
 		#make -C ${WS_ROOT}/tools/build xxx-${platform}
-		$WS_ROOT/3pl/build/install-all.sh
+		$WS_ROOT/3pl/build/install-all.sh $platform
 
 		if [ "Ninja" == "$GENERATOR" ]
 		then
@@ -258,8 +259,9 @@ main ()
 	# Loop through specified configurations and build
 	for config in $CONFIGS
 	do
-		build_config $config
+		build_config $config &
 	done
+	wait
 }
 
 # Call main function with all parameters quoted. Last with NO newline after to make live updates of running script work better. Watch out for editors adding it back.
