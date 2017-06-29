@@ -17,3 +17,32 @@ Function:
     test_suite_xxx_xxxx
     test_xxx_xxx_xxx
     Reference my-queue-test.cpp 
+
+
+
+std::cout instruction:
+
+http://blog.csdn.net/sergery/article/details/8043203
+
+
+instance pattern:
+
+http://blog.csdn.net/ab198604/article/details/19196315
+
+
+ninja:
+git://github.com/martine/ninja.git
+
+cpp files:
+http://blog.jobbole.com/78901/
+
+boost document:
+http://www.boost.org/doc/libs/1_60_0/more/getting_started/unix-variants.html#boost-root-directory
+
+
+boost asio
+http://blog.163.com/modingfa_002/blog/static/110925466201322110541108/
+
+
+boost multi_index
+http://blog.csdn.net/gongxinheng/article/details/5421914

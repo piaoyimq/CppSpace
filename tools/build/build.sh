@@ -4,7 +4,6 @@
 # vim: set filetype=bash syntax=sh autoindent noexpandtab tabstop=4 shiftwidth=4 :
 
 #Usage: ./build.sh -c Linux_x86_64,Linux_mips
-#Notice: If the 3pl/sources/boost_1_60_0/ not exist, only support build one platform at the same time, such as: ./build.sh -c Linux_x86_64
 
 # A build wrapper calling CMake and ninja supporting standardized variant folders and start_job.
 set -e
