@@ -2,6 +2,12 @@
 #This scprit called by build.sh
 set -e
 export PLATFORM=$1
+export INCLUDE_PATH="usr/local/include"
+export LIB_PATH="usr/local/lib"
+export COMPILE_TIME_PATH=$WS_ROOT/staging/${PLATFORM}
+export COMPILE_TIME_INCLUDE_PATH=$WS_ROOT/staging/${PLATFORM}/${INCLUDE_PATH}
+export COMPILE_TIME_LIB_PATH=$WS_ROOT/staging/${PLATFORM}/${LIB_PATH}
+
 LOG_PATH_PREFIX=$WS_ROOT/3pl/output/log/install-$PLATFORM
 
 
@@ -11,6 +17,13 @@ err_exit()
     exit $1
 }
  
+
+mkdir_compile_time_path()
+{
+    mkdir -p $COMPILE_TIME_INCLUDE_PATH
+    mkdir -p $COMPILE_TIME_LIB_PATH
+}
+
 
 install_log()
 {
@@ -37,6 +50,7 @@ install()
 }
 
 
+mkdir_compile_time_path
 install "googletest"&
 install "boost"&
 wait

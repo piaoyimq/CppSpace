@@ -7,7 +7,7 @@ endif()
 ###
 # 3pp overlays.
 include_directories(SYSTEM $ENV{WS_ROOT}/staging/${PLATFORM}${AUTOMOCK_EXT}/${CMAKE_INSTALL_PREFIX}/include)
-#message("3pl include: $ENV{WS_ROOT}/staging/${PLATFORM}${AUTOMOCK_EXT}/${CMAKE_INSTALL_PREFIX}/include")
+message("3pl include: $ENV{WS_ROOT}/staging/${PLATFORM}${AUTOMOCK_EXT}/${CMAKE_INSTALL_PREFIX}/include")
 
 set(TPP_GLOBAL_LINK_FLAGS)
 
@@ -17,7 +17,7 @@ set(TPP_STAGING_PREFIX_DIR "$ENV{WS_ROOT}/staging/${PLATFORM}${AUTOMOCK_EXT}/${C
 
 # Set static library search path.
 list(APPEND TPP_GLOBAL_LINK_FLAGS "-L${TPP_STAGING_PREFIX_DIR}/lib")
-#message("TPP_STAGING_PREFIX_DIR: ${TPP_STAGING_PREFIX_DIR}/lib")
+message("TPP_STAGING_PREFIX_DIR: ${TPP_STAGING_PREFIX_DIR}/lib")
 
 # Set dynamic library search path during linking.
 list(APPEND TPP_GLOBAL_LINK_FLAGS "-Wl,-rpath-link,${TPP_STAGING_PREFIX_DIR}/lib")
