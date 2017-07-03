@@ -12,4 +12,4 @@ cp googlemock/lib*.a $RUN_TIME_LIB_PATH
 cp -rf $SRC_PATH/googletest/include/* $RUN_TIME_INCLUDE_PATH
 cp -rf googlemock/gtest/lib*.a $RUN_TIME_LIB_PATH
 
-post_cmake
+post_handle

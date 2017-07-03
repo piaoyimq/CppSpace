@@ -11,9 +11,9 @@ install()
 {
     cd `basename ${BOOST_VERSION} .tar.gz`
     ./bootstrap.sh
- #   ./b2 install --prefix=$PACKAGE_PATH/usr/local --build-dir=$OUTPUT_PATH #build the entire boost libraries
+    ./b2 install --prefix=$PACKAGE_PATH/usr/local --build-dir=$OUTPUT_PATH #build the entire boost libraries
 
-     ./b2 install --debug-configuration -j32  --build-dir=$OUTPUT_PATH --prefix=$PACKAGE_PATH/usr/local --layout=system --with-system --with-filesystem --with-regex --with-timer --with-chrono toolset=gcc link=static 
+#     ./b2 install --debug-configuration -j32  --build-dir=$OUTPUT_PATH --prefix=$PACKAGE_PATH/usr/local --layout=system --with-system --with-filesystem --with-regex --with-timer --with-chrono toolset=gcc link=static 
 }
 
 cd $WS_ROOT/3pl/sources/
@@ -30,5 +30,5 @@ then
 fi
 
 install
-post_cmake 
+post_handle 
 

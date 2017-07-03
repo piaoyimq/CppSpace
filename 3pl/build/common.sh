@@ -47,9 +47,15 @@ mkdir_runtime_path()
 
 check_library_exist()
 {
-    if [ -f ${PACKAGE_PATH}*.tar.gz ]
+    if [ -d ${PACKAGE_PATH} ]
     then
         echo -e "$1 library already exist."
+        exit 0
+    elif [ -f ${PACKAGE_PATH}*.tar.gz ] 
+    then 
+        mkdir -p ${PACKAGE_PATH}
+        tar zxvf ${PACKAGE_PATH}*.tar.gz -C ${PACKAGE_PATH}
+        flock -w 300 $COMPILE_TIME_PATH -c "cp -fLrs $PACKAGE_PATH/* $COMPILE_TIME_PATH"
         exit 0
     fi
 }
@@ -70,13 +76,12 @@ pre_cmake()
 }
 
 
-post_cmake()
+post_handle()
 {
     #install compile time resources
     flock -w 300 $COMPILE_TIME_PATH -c "cp -fLrs $PACKAGE_PATH/* $COMPILE_TIME_PATH"
 
-    tar -zcvf ${PACKAGE_PATH}-`git head`.tar.gz -C $PACKAGE_PATH .
+    tar -zcf ${PACKAGE_PATH}-`git head`.tar.gz -C $PACKAGE_PATH .
 #    rm -rf $OUTPUT_PATH
-    rm -rf $PACKAGE_PATH
 }
 
