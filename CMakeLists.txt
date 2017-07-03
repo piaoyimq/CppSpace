@@ -55,22 +55,22 @@ include(tools/build/cmake/3pl.cmake)
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--build-id")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--fatal-warnings")
 
-set(BOOST_PATH "$ENV{WS_ROOT}/../boost_1_60_0")
+#set(BOOST_PATH "$ENV{WS_ROOT}/../boost_1_60_0")
 set(DEFAULT_PATH "/usr")
 set(CMAKE_SKIP_BUILD_RPATH FALSE) #set(CMAKE_INSTALL_RPATH "${BOOST_PATH/lib}")
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L ${BOOST_PATH}/lib")
+#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L ${BOOST_PATH}/lib")
 
 
 message("CMAKE_EXE_LINKER_FLAGS: ${CMAKE_EXE_LINKER_FLAGS}")
 
 # Set dynamic library search path during linking.
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath-link -Wl,${BOOST_PATH}/lib")
+#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath-link -Wl,${BOOST_PATH}/lib")
 
 # Set dynamic library search path during runtime.
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath -Wl,${BOOST_PATH}/lib")
+#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath -Wl,${BOOST_PATH}/lib")
 
 
 
@@ -129,10 +129,10 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ")
 #  -Wzero-as-null-pointer-constant (GCC 4.7.0)
 
 # General includes
-include_directories(SYSTEM
-    ${BOOST_PATH}/include
-    #tools/test
-)
+#include_directories(SYSTEM
+#    ${BOOST_PATH}/include
+#    #tools/test
+#)
 
 
 include_directories(BEFORE
