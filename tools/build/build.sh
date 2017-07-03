@@ -96,7 +96,7 @@ run_unit()
     	    echo -en "\033[33m**********  Perform ["$((i + 1))"] ${array[$i]}  **********\033[0m"
     	    echo
 				cd $WS_ROOT
-                ./output/$config/bin/${array[$i]}
+                ./output/$config/bin/${array[$i]} -x
             done
     fi
 
