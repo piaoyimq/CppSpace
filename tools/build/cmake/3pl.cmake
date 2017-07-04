@@ -23,6 +23,7 @@ list(APPEND TPP_GLOBAL_LINK_FLAGS "-L${TPP_STAGING_PREFIX_DIR}/lib")
 list(APPEND TPP_GLOBAL_LINK_FLAGS "-Wl,-rpath-link,${TPP_STAGING_PREFIX_DIR}/lib")
 # Set dynamic library search path during runtime.
 list(APPEND TPP_GLOBAL_LINK_FLAGS "-Wl,-rpath,${CMAKE_INSTALL_PREFIX}/lib")
+list(APPEND TPP_GLOBAL_LINK_FLAGS "-Wl,-rpath,${TPP_STAGING_PREFIX_DIR}/lib")
 
 string(REPLACE ";" " "
     TPP_GLOBAL_LINK_FLAGS "${TPP_GLOBAL_LINK_FLAGS}")

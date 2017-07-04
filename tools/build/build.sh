@@ -81,7 +81,7 @@ err_exit()
 
 run_unit()
 {
-    set +e 
+   # set +e 
     file_list=$(ls $BUILD_DIR_CMAKE/$config/bin|grep Test)
 	echo $file_list
 	echo "$BUILD_DIR_CMAKE/$config/bin"
