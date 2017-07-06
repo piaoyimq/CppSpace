@@ -222,7 +222,7 @@ BOOST_AUTO_TEST_SUITE( test_suite_implimented_by_std_container )
 
 	BOOST_AUTO_TEST_CASE( test_MyQueue_by_StdListOrDeque)
 	{
-		StdListOrDeque::MyQueue<int> myQueue;
+		StdListOrDeque::MyQueue<int, std::list<int>> myQueue;
 
 		BOOST_TEST(0==myQueue.size());
 

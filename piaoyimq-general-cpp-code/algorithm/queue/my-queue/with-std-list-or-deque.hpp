@@ -2,22 +2,23 @@
 #include <iostream>
 #include <list>
 #include <stdexcept>
-
+#include <deque>
 
 namespace StdListOrDeque
 {
-template<class T>
+template<class T,  class Container = std::deque<T>>
 class MyQueue
 {
 public:
 
-    MyQueue():qSize(0)
-    {
-    }
+    MyQueue():qSize(0){}
 
+    ~MyQueue(){}
 
     void push(const T& t);
+
     T pop();
+
     size_t size()
     {
         return qSize;
@@ -25,13 +26,14 @@ public:
 
 private:
 
-    std::list<T> theList;//also can use std::deque<T> theList;
+    Container theList;
+
     size_t qSize;
 
 };
 
-template<class T>
-T MyQueue<T>::pop()
+template<class T, class  Container>
+T MyQueue<T, Container>::pop()
 {
     if(qSize<=0)
     {
@@ -44,8 +46,8 @@ T MyQueue<T>::pop()
     return t;
 }
 
-template<class T>
-void MyQueue<T>::push(const T& t)
+template<class T, class  Container>
+void MyQueue<T, Container>::push(const T& t)
 {
     ++qSize;
     theList.push_back(t);
