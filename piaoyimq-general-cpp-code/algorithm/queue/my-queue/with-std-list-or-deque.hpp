@@ -32,7 +32,7 @@ private:
 
 };
 
-template<class T, class  Container>
+template<class T, class  Container> //the container type:  std::deque, std::list
 T MyQueue<T, Container>::pop()
 {
     if(qSize<=0)
