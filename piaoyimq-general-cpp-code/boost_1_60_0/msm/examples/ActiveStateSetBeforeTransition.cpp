@@ -104,10 +104,13 @@ namespace  // Concrete FSM implementation
         Connection connection;
         // needed to start the highest-level SM. This will call on_entry and mark the start of the SM
         connection.start(); 
+        std::cout <<"____line=" << __LINE__ <<std::endl;
         // signal a connection
         connection.process_event(connect());
+        std::cout <<"____line=" << __LINE__ <<std::endl;
         // signal a disconnection
         connection.process_event(disconnect());
+        std::cout <<"____line=" << __LINE__ <<std::endl;
         connection.stop();
     }
 }

@@ -17,11 +17,11 @@ if [ "$2" == "-so" ]
 then
     set -x
     file=$1
-    g++ -O0 -g -std=c++0x -shared -fpic  $1 -o ${file%.*}.so $INC_PATH $DEFINE_OPTIONS $LIB_PATH $LIB_SO_PATH
+    /proj/epg-tools/compilers/gcc6.3.0-rhel6.6-binutils2.28.gold/bin/g++ -O0 -g -std=c++0x -shared -fpic  $1 -o ${file%.*}.so $INC_PATH $DEFINE_OPTIONS $LIB_PATH $LIB_SO_PATH
 else
     set -x
     #g++  -g -std=c++0x "$@" $INC_PATH $DEFINE_OPTIONS $LIB_PATH $LIB $LIB_SO_PATH
-    g++  -g -std=c++0x "$@" $INC_PATH $DEFINE_OPTIONS $LIB_PATH  $LIB_SO_PATH
+    /proj/epg-tools/compilers/gcc6.3.0-rhel6.6-binutils2.28.gold/bin/g++  -g -std=c++0x "$@" $INC_PATH $DEFINE_OPTIONS $LIB_PATH  $LIB_SO_PATH
 fi
 
 
