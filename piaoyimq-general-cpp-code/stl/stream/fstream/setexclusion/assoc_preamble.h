@@ -39,5 +39,6 @@ using std::pair; using std::string;
 using std::find; using std::cin; using std::cout; using std::endl;
 using std::make_pair; using std::ifstream;
 
-ifstream& open_file(ifstream&, const string&);
-string make_plural(size_t, const string &, const string &);
+//ifstream& open_file(ifstream&, const string&);
+//string make_plural(size_t, const string &, const string &);
+

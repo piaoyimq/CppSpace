@@ -49,7 +49,15 @@ using std::endl;
 using std::pair;
 using std::make_pair;
 
-ifstream& open_file(ifstream&, const string&);
+//ifstream& open_file(ifstream&, const string&);
+using namespace std;
+ifstream& open_file(ifstream &in,const string &file)
+{
+    in.close();
+    in.clear();
+    in.open(file.c_str());
+    return in;
+}
 int main(int argc, char **argv)
 {
 

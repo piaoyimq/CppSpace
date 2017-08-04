@@ -56,8 +56,19 @@ using std::cin;
 using std::ifstream;
 using std::endl;
 
-string make_plural(size_t, const string&, const string&);
-ifstream& open_file(ifstream&, const string&);
+//string make_plural(size_t, const string&, const string&);
+string make_plural (size_t ctr , const string &word , const string &ending)
+{
+    return ( ctr == 1 ) ? word : word + ending;
+}
+//ifstream& open_file(ifstream&, const string&);
+ifstream& open_file(ifstream &in,const string &file)
+{
+    in.close();
+    in.clear();
+    in.open(file.c_str());
+    return in;
+}
 void print_results(const set<TextQuery::line_no>& locs, 
                    const string& sought, const TextQuery &file)
 {
