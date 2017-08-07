@@ -10,8 +10,7 @@
 #include <time.h>
 #include <sys/time.h>
 #include <stdlib.h> //abs()
-#include <sstream> //stringstream
-#include <typeinfo> //typeid()
+
 #include <memory> //unique_ptr
 #include <assert.h>  //assert
 #include <stdarg.h>
@@ -429,56 +428,6 @@ void time_adjusted() {
 #endif
 }
 
-void printAlarm(const int &id, const std::string &alarmType, std::stringstream& os) {
-    os << "    Fault Id: " << id << std::endl;
-    os << "    Alarm Major Type: " << alarmType << std::endl;
-    os << "    Alarm Minor Type:  Unknown" << std::endl;
-}
-
-template<class out_type, class in_value>
-out_type convert(const in_value & t) {
-    std::stringstream stream;
-    stream << t;         //向流中传值
-    out_type result;         //这里存储转换结果
-    stream >> result;         //向result中写入值
-    return result;
-}
-
-void stringstream_test() {
-    std::stringstream stringBuffer;
-    printAlarm(10, "ActiveAlarm", stringBuffer);
-    std::cout << "stringBuffer size:" << stringBuffer.str().size() << std::endl;
-    std::cout << stringBuffer.str() << std::endl;         //stringBuffer.str().c_str(), is c language charaters.
-
-    //stringstream is  used to data type convertsion.
-    std::stringstream stream;
-    std::string first, second;
-    int i = 1000;
-    stream << i;
-    stream >> first;         //从stream中抽取前面插入的int值
-    std::cout << "first: " << first << std::endl;         // print the string "1000"
-
-    stream.clear();         //在进行多次转换前，必须清除stream  , stream.str（“”） ???
-    std::cout << "first: " << first << std::endl;         // print the string "1000"
-    stream << true;         //插入bool值
-    stream >> second;         //提取出int
-    std::cout << "second: " << second << std::endl;
-
-    double d, d2;
-    std::string salary, salary2;
-    std::string s = "12.56";
-    d = convert<double>(s);         //d等于12.56
-    d2 = d;
-    printf("d2=%f\n", d2);
-    std::cout << "d2: " << d2 << std::endl;
-
-    salary = convert<std::string>(9000.0);         //salary等于”9000”
-    salary2 = salary;
-    printf("salary2: %s\n", salary2.c_str());
-    std::cout << "typeid(d): " << typeid(d2).name() << std::endl;
-    std::cout << "typeid(salary2): " << typeid(salary2).name() << std::endl;
-    std::cout << "stringstream: " << typeid(std::stringstream).name() << std::endl;
-}
 
 struct Foo {
     Foo() {
@@ -1013,8 +962,6 @@ int main() {
 //    run_string_replace();
 
 //    time_adjusted();
-
-//    stringstream_test();
 
 //    cpp11_smart_pointer_test();
 
