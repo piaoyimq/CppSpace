@@ -7,6 +7,8 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <functional>
+
 
 int g_num = 0;  // protected by g_num_mutex
 std::mutex g_num_mutex;
@@ -393,6 +395,137 @@ void test_shared_mutex()
 	thread2.join();
 }
 
+int g_i = 0;
+std::mutex g_i_mutex;  // protects g_i
+
+void safe_increment()
+{
+    std::scoped_lock lock{g_i_mutex};
+    ++g_i;
+
+    std::cout << std::this_thread::get_id() << ": " << g_i << '\n';
+
+    // g_i_mutex is automatically released when lock
+    // goes out of scope
+}
+
+void test_scope_lock()
+{
+    std::cout << __func__ << ": " << g_i << '\n';
+
+    std::thread t1(safe_increment);
+    std::thread t2(safe_increment);
+
+    t1.join();
+    t2.join();
+
+    std::cout << __func__ << ": " << g_i << '\n';
+}
+
+std::once_flag flag1, flag2;
+
+void simple_do_once()
+{
+    std::call_once(flag1, [](){ std::cout << "Simple example: called once\n"; });
+}
+
+void may_throw_function(bool do_throw)
+{
+  if (do_throw) {
+    std::cout << "throw: call_once will retry\n"; // this may appear more than once
+    throw std::exception();//throw exception, means called failed.
+  }
+  std::cout << "Didn't throw, call_once will not attempt again\n"; // guaranteed once
+}
+
+void do_once(bool do_throw)
+{
+  try {
+    std::call_once(flag2, may_throw_function, do_throw);
+  }
+  catch (...) {
+  }
+}
+
+void test_call_once()
+{
+    std::thread st1(simple_do_once);
+    std::thread st2(simple_do_once);
+    std::thread st3(simple_do_once);
+    std::thread st4(simple_do_once);
+    st1.join();
+    st2.join();
+    st3.join();
+    st4.join();//only call once, in all thread.
+
+    std::thread t1(do_once, true);
+    std::thread t2(do_once, true);
+    std::thread t3(do_once, false);//only call once, it called failed, it will retry, until this funcion called successfully.
+    std::thread t4(do_once, true);
+    t1.join();
+    t2.join();
+    t3.join();
+    t4.join();
+}
+
+
+void test_std_try_lock()
+{
+    int foo_count = 0;
+    std::mutex foo_count_mutex;
+    int bar_count = 0;
+    std::mutex bar_count_mutex;
+    int overall_count = 0;
+    bool done = false;
+    std::mutex done_mutex;
+
+    auto increment = [](int &counter, std::mutex &m,  const char *desc) {
+        for (int i = 0; i < 10; ++i) {
+            std::unique_lock<std::mutex> lock(m);
+            ++counter;
+            std::cout << desc << ": " << counter << '\n';
+            lock.unlock();
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+        }
+    };
+
+    std::thread increment_foo(increment, std::ref(foo_count),
+        std::ref(foo_count_mutex), "foo");
+    std::thread increment_bar(increment, std::ref(bar_count),
+        std::ref(bar_count_mutex), "bar");
+
+    std::thread update_overall([&]() {
+        done_mutex.lock();
+        while (!done) {
+            done_mutex.unlock();
+            int result = std::try_lock(foo_count_mutex, bar_count_mutex);
+            if (result == -1) {
+                overall_count += foo_count + bar_count;
+                foo_count = 0;
+                bar_count = 0;
+                std::cout << "overall: " << overall_count << '\n';
+                foo_count_mutex.unlock();
+                bar_count_mutex.unlock();
+            }
+            std::this_thread::sleep_for(std::chrono::seconds(2));
+            done_mutex.lock();
+        }
+        done_mutex.unlock();
+    });
+
+    increment_foo.join();
+    increment_bar.join();
+    done_mutex.lock();
+    done = true;
+    done_mutex.unlock();
+    update_overall.join();
+
+    std::cout << "Done processing\n"
+              << "foo: " << foo_count << '\n'
+              << "bar: " << bar_count << '\n'
+              << "overall: " << overall_count << '\n';
+}
+
 int main()
 {
 //	test_lock_and_unlock();
@@ -403,7 +536,9 @@ int main()
 	test_timed_mutex();
 	test_try_lock_until();
 	test_std_lock();
+	test_std_try_lock();
 	test_shared_lock();
 	test_shared_mutex();
+	test_scope_lock();
 
 }
