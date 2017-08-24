@@ -1,5 +1,5 @@
 /*
- * common.h
+ * pq-common.h
  *
  *  Created on: Apr 6, 2016
  *      Author: piaoyimq
@@ -9,15 +9,16 @@
 #define COMMON_COMMON_H_
 #include <stddef.h>
 #include <sys/types.h>
-#include <sys/syscall.h>	//SYS_gettid
-#include <unistd.h>	//syscall
-#include <dirent.h>	//opendir
-#include "PrintOut.h"
 #include <sstream>
 #include <iomanip>
 #include <map>
 #include <vector>
 #include <list>
+#include "PrintOut.h"
+#include "Range.h"
+
+
+extern std::string getNameByPid(pid_t pid);
 
 
 #define ABORT() \
@@ -33,6 +34,7 @@
         (Assert::fail(__FILE__, __LINE__, __PRETTY_FUNCTION__, #CONDITION)); \
     }
 
+//vector
 template<typename T>
 std::ostream& operator<<(std::ostream& s, const std::vector<T>& v)
 {
@@ -46,6 +48,7 @@ std::ostream& operator<<(std::ostream& s, const std::vector<T>& v)
 	return s << ']';
 }
 
+//list
 template<typename T>
 std::ostream& operator<<(std::ostream& s, const std::list<T>& v)
 {
@@ -60,6 +63,7 @@ std::ostream& operator<<(std::ostream& s, const std::list<T>& v)
 	return s << ']';
 }
 
+//map
 template<typename TK, typename TV>
 std::ostream& operator<<(std::ostream& s, const std::map<TK, TV>& m)
 {
@@ -89,26 +93,5 @@ inline size_t getArrayLen(T& array)
 	return (sizeof(array) / sizeof(array[0]));
 }
 
-inline pid_t getTid()
-{   // Must a static function, it called by a static funcion flushLogThread().
-	return syscall(SYS_gettid);
-}
 
-inline bool isDirPathExist(const char* dirpPath)
-{
-	DIR *dirPtr = opendir(dirpPath);
-	if (NULL == dirpPath || NULL == dirPtr)
-	{
-		return false;
-	}
-	else
-	{
-		closedir(dirPtr);
-		dirPtr = NULL;
-		return true;
-	}
-}
-
-extern void getPidByName(char* task_name);
-extern void getNameByPid(pid_t pid, char *processName);
 #endif /* COMMON_COMMON_H_ */

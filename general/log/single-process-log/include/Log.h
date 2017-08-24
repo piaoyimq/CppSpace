@@ -14,7 +14,7 @@
 #include <stdint.h>
 #include <dirent.h>
 
-#include "../../../common/include/common.h"
+#include "../../../common/include/pq-common.h"
 #include "BlockQueue.h"
 
 #define DIR_LENGTH 						200
