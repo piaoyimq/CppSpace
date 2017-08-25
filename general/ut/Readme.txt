@@ -1,3 +1,0 @@
-Function:
-    
-    Some ut procedure.
