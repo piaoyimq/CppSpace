@@ -139,5 +139,5 @@ include_directories(BEFORE
     $ENV{WS_ROOT}/general
 )
 
-add_subdirectory(general/common)
+add_subdirectory(general/pq-common)
 

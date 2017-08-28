@@ -4,7 +4,8 @@ Custom command:
 ./a.out -x -t length_test -l all -p
 ./a.out --list_content   #list the test cases.
 ./a.out --report_level=detailed
-./a.out  -x -l all -t test_suite_common/test_getNameByPidTest  
+./a.out  -x -l all -t test_suite_common/test_getNameBy*
+./a.out -x -l message   --random
 
 boost_runtime_list_content.run-fail.cpp
 decorator_07.run-fail.cpp

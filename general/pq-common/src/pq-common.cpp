@@ -1,10 +1,10 @@
-#include "common/include/pq-common.h"
+#include "pq-common/include/pq-common.h"
 
 #define BUF_SIZE 1024
 #define DIR_LENGTH 200
 
 
-extern std::string getNameByPid(pid_t pid)
+std::string get_name_by_pid(pid_t pid)
 {    //should become a un inline function after move to common.
     char procPidPath[DIR_LENGTH + 1] = { '\0' };
     char buf[BUF_SIZE] = { '\0' };

@@ -1,3 +1,13 @@
+/*
+ * RangeImpl.h
+ *
+ *  Created on: Aug 25, 2017
+ *      Author: piaoyimq
+ */
+
+#ifndef GENERAL_INCLUDE_RANGEIMPL_H_
+#define GENERAL_INCLUDE_RANGEIMPL_H_
+
 #include <stdexcept>
 
 
@@ -107,3 +117,5 @@ namespace pq
         return RangeImpl<T>(T(), end, 1);
     }
 }
+
+#endif /* GENERAL_INCLUDE_RANGEIMPL_H_ */

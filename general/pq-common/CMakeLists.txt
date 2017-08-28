@@ -5,7 +5,7 @@ add_compile_options(
 
 
 
-cpp_add_lib("common"
+cpp_add_lib("pqcommon"
     #TEST LINUX
     SRC
         src/
@@ -17,12 +17,12 @@ cpp_add_lib("common"
 
 cpp_add_executable(CommonTest
     #TEST LINUX
-    BASE_DIR "general/common/test"
+    BASE_DIR "general/pq-common/test"
     SRC
         test/
       
     PUBLIC
-        common	   
+        pqcommon	   
 	gtest
 )
 
