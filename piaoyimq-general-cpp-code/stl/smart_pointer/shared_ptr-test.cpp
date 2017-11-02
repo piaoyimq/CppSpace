@@ -1,3 +1,10 @@
+#include <iostream>
+#include <memory>
+#include <cassert>
+#include <string>
+#include <vector>
+
+using namespace std;
 
 void shared_ptr_test_1()
 {
@@ -59,7 +66,7 @@ void shared_ptr_test_3()
 	assert(temp2.use_count() == 2);
 	std::cout << "temp2.use_count: " << temp2.use_count() << std::endl; //2
 	// temp1和temp2都离开作用域，引用次数变为0，指针被销毁
-#elif 1
+#elif 0
 	/*使用shared_ptr来包装this时，也会产生与上面类似的问题*/
 
 	class A
@@ -115,6 +122,7 @@ void shared_ptr_test_3()
 #endif
 }
 
+#if 1
 class Animal
 {
 public:
@@ -154,6 +162,7 @@ void test_Animal()
 		a.printName();
 	}
 }
+#endif
 
 int main()
 {
@@ -163,4 +172,5 @@ int main()
 //    weak_ptr_test_1();
 //    weak_ptr_test_2();
 	test_Animal();
+
 }

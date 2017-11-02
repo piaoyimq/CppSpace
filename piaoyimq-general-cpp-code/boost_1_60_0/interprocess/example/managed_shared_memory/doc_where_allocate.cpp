@@ -15,9 +15,9 @@
 #include <boost/interprocess/containers/string.hpp>
 #include <boost/interprocess/allocators/allocator.hpp>
 //<-
-#include "../test/get_process_id_name.hpp"
+#include "../get_process_id_name.hpp"
 //->
-
+//gcc -lrt
 int main ()
 {
    using namespace boost::interprocess;

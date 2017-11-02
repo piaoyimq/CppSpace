@@ -90,9 +90,22 @@ void test_detach()
 	std::cout << "Exit end\n";
 }
 
+class ThreadClass{
+    int myThread(int arg){
+     // do something
+    }
+
+    void createThread(){
+        thread t = thread(myThread,10);
+    }
+
+} ;
+
+
 int main()
 {
 	test_join();
 	test_detach();
+	thread t(&ThreadClass::myThread, this, 10);
 
 }

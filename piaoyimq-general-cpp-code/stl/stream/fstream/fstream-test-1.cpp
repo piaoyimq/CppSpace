@@ -1,6 +1,9 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <thread>
+#include <chrono>
+#include <unistd.h>
 /*
  good 等价于!eof()&&!fail()&&!bad(): y
 operator bool等价于!fail()&&!bad()
@@ -120,6 +123,61 @@ void test_3()
 	fs.close();
 }
 
+bool writeFile()
+{
+    std::fstream fs;
+    fs.open("./disk-test", std::ios::ate | std::ios::in|std::ios::out);
+    if(!fs.is_open())
+    {
+        std::cout << "____open failed";
+        return false;
+    }
+
+    if(fs.good())
+    {
+        fs << "1";
+        fs.close();
+        std::cout <<"____write sucessfully.";
+        return true;
+    }
+    else
+    {
+        std::cout <<"____write failed.";
+        fs.close();
+        return false;
+    }
+}
+
+void diskMoniter()
+{
+    std::cout <<"____start diskMoniterThread.";
+    bool isRaised = false;
+
+    std::fstream fs("./disk-test", std::ios::trunc|std::ios::in|std::ios::out);
+    if(!fs.is_open())
+    {
+        std::cout <<"____open failed.";
+    }
+    fs.close();
+
+    int i=0;
+    while(1)
+    {
+        std::this_thread::sleep_for(std::chrono::seconds(2));
+        std::cout << i++<< std::endl;
+        writeFile();
+    }
+
+    std::cout << "____diskMoniterThread exit.";
+}
+
+void test_4()
+{
+    std::thread diskMoniterThread(diskMoniter);
+    diskMoniterThread.detach();
+}
+
+
 int main()
 {
 	test_clear_read_write();
@@ -127,4 +185,7 @@ int main()
 	test_2();
 	std::cout << std::endl;
 	test_3();
+
+    test_4();
+    sleep(1000);
 }
