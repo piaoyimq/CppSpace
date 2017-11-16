@@ -21,7 +21,8 @@ enum Level
 
 
 #define CHANGE(a) #a,
-const char logLevelString[][20] = {ELEMENTS };
+//const char logLevelString[][20] = {ELEMENTS };
+const char *logLevelString[] = {ELEMENTS };
 #undef CHANGE
 
 template <class T>
@@ -35,8 +36,14 @@ inline const char* getLogLevelString(Level logLevel)
     return logLevel < (static_cast<Level>(getArrayLen(logLevelString))) ? logLevelString[logLevel] : "Undefined";
 }
 
+std::ostream& operator<<(std::ostream& os, Level logLevel)
+{
+    os << (logLevel < (static_cast<Level>(getArrayLen(logLevelString))) ? logLevelString[logLevel] : "Undefined");
+    return os;
+}
+
 int main()
 {
-    std::cout << getLogLevelString(Emergency) << std::endl;
-    std::cout << getLogLevelString(LastLevel) << std::endl;
+    std::cout << Emergency << std::endl;
+    std::cout << LastLevel << std::endl;
 }
