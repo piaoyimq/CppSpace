@@ -1,8 +1,8 @@
 #ifndef _GLOBAL_H_
 #define _GLOBAL_H_
 
-#include "Reactor.h"
-#include "Singleton.h"
+#include "reactor.h"
+#include "singleton.h"
 
 class reactor::Reactor;
 

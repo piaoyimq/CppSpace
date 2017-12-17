@@ -10,6 +10,8 @@ Function:
     cpp rules:
     1. a function(not in a class), use lower case and middle line name;
     2. a method(a function in a class), use lower case and upper case name;
+    3. in *.h, the "include" should keep 2 white lines before it and keep 4 white lines after it; 
+    4. keeping 2 white lines after the head comment in *.cpp or *.h;
      
 
     test case named rules:
