@@ -27,7 +27,7 @@ public:
 
     ~ReactorImplementation();
 
-    int RegisterHandler(IEventHandler * handler, event_t evt);
+    int RegisterHandler(IEventHandler * handler, reactor::event_t evt);
 
     int RemoveHandler(IEventHandler * handler);
 

@@ -9,6 +9,7 @@
 #define PIAOYIMQ_GENERAL_CPP_CODE_DESIGN_PATTERN_REACTOR_REACTOR1_IEVENTDEMULTIPLEXER_H_
 
 #include "Reactor.h"
+#include "TimeHeap.h"
 #include <map>
 
 namespace reactor
@@ -20,9 +21,9 @@ public:
 
     virtual ~IEventDemultiplexer(){}
 
-    virtual int WaitEvents(std::map<reactor::handle_t, EventHandler *> * handlers, int timeout = 0, time_heap* event_timer = nullptr) = 0;
+    virtual int WaitEvents(std::map<reactor::handle_t, IEventHandler*>* handlers, int timeout = 0, TimeHeap* event_timer = nullptr) = 0;
 
-    virtual int RequestEvent(reactor::handle_t handle, event_t evt) = 0;
+    virtual int RequestEvent(reactor::handle_t handle, reactor::event_t evt) = 0;
 
     virtual int UnrequestEvent(reactor::handle_t handle) = 0;
 };

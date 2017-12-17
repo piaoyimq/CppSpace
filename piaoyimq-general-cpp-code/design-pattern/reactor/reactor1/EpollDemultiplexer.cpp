@@ -27,7 +27,7 @@ EpollDemultiplexer::~EpollDemultiplexer()
     ::close(m_epoll_fd);
 }
 
-int EpollDemultiplexer::WaitEvents(std::map<reactor::handle_t, EventHandler *> * handlers, int timeout, time_heap* event_timer)
+int EpollDemultiplexer::WaitEvents(std::map<reactor::handle_t, EventHandler *> * handlers, int timeout, time_heap* reactor::event_timer)
 {
     std::vector<epoll_event> ep_evts(m_fd_num);
     int num = epoll_wait(m_epoll_fd, &ep_evts[0], ep_evts.size(), timeout);
@@ -54,15 +54,15 @@ int EpollDemultiplexer::WaitEvents(std::map<reactor::handle_t, EventHandler *> *
             }
         }
     }
-    if (event_timer != NULL)
+    if (reactor::event_timer != NULL)
     {
-        event_timer->tick();
+        reactor::event_timer->tick();
     }
 
     return num;
 }
 
-int EpollDemultiplexer::RequestEvent(reactor::handle_t handle, event_t evt)
+int EpollDemultiplexer::RequestEvent(reactor::handle_t handle, reactor::event_t evt)
 {
     epoll_event ep_evt;
     ep_evt.data.fd = handle;

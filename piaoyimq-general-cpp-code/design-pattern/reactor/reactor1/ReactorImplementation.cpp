@@ -30,7 +30,7 @@ ReactorImplementation::~ReactorImplementation()
 }
 
 
-int ReactorImplementation::RegisterHandler(EventHandler * handler, event_t evt)
+int ReactorImplementation::RegisterHandler(EventHandler * handler, reactor::event_t evt)
 {
     reactor::handle_t handle = handler->GetHandle();
     std::map<reactor::handle_t, EventHandler *>::iterator it = m_handlers.find(handle);

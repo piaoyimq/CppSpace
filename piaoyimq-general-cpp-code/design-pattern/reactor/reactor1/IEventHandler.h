@@ -8,19 +8,23 @@
 #ifndef PIAOYIMQ_GENERAL_CPP_CODE_DESIGN_PATTERN_REACTOR_REACTOR1_IEVENTHANDLER_H_
 #define PIAOYIMQ_GENERAL_CPP_CODE_DESIGN_PATTERN_REACTOR_REACTOR1_IEVENTHANDLER_H_
 
-#include "Reactor.h"
 
+#include <cstdint>
 
 
 
 namespace reactor
 {
 
+typedef int32_t handle_t;
+typedef uint32_t event_t;
+
+
 class IEventHandler
 {
 public:
 
-    virtual reactor::handle_t GetHandle() const = 0;
+    virtual handle_t GetHandle() const = 0;
 
     virtual void HandleRead() {}
 

@@ -24,7 +24,7 @@ Reactor::~Reactor()
     delete m_reactor_impl;
 }
 
-int Reactor::RegisterHandler(EventHandler * handler, event_t evt)
+int Reactor::RegisterHandler(EventHandler * handler, reactor::event_t evt)
 {
     return m_reactor_impl->RegisterHandler(handler, evt);
 }

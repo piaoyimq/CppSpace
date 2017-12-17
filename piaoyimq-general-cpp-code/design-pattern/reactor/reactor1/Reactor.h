@@ -12,15 +12,12 @@
 
 #include "IEventHandler.h"
 #include "ReactorImplementation.h"
-#include <cstdint>
-
+#include "TimeHeap.h"
 
 
 
 namespace reactor
 {
-
-typedef uint32_t event_t;
 
 enum
 {
@@ -29,8 +26,6 @@ enum
     kErrorEvent   = 0x04,
     kEventMask    = 0xff
 };
-
-typedef int32_t reactor::handle_t;
 
 
 class Reactor
@@ -47,7 +42,7 @@ public:
 
     void HandleEvents();
 
-    int RegisterTimerTask(HeapTimer* timerevent);
+    int RegisterTimerTask(TimeHeap::HeapTimer* timerevent);
 
 private:
 

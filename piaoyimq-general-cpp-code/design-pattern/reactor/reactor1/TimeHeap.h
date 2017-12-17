@@ -10,7 +10,9 @@
 
 
 #include "ctime"
-#include <sys/socket.h>
+//#include <sys/socket.h>
+#include <exception>
+#include <netinet/in.h>
 //
 //#include <stdio.h>
 //#include <stdlib.h>
@@ -29,22 +31,10 @@
 namespace reactor
 {
 
-using std::exception;
-
 #define BUFFER_SIZE 64
 
-//class TimeHeap::HeapTimer
 
-struct ClientData
-{
-    sockaddr_in address;
-
-    int sockfd;
-
-    char buf[BUFFER_SIZE];
-
-    TimeHeap::HeapTimer* timer;
-};
+struct ClientData;
 
 
 class TimeHeap
@@ -101,6 +91,19 @@ private:
 
     int cur_size;
 };
+
+
+struct ClientData
+{
+    sockaddr_in address;
+
+    int sockfd;
+
+    char buf[BUFFER_SIZE];
+
+    TimeHeap::HeapTimer* timer;
+};
+
 
 }
 #endif /* PIAOYIMQ_GENERAL_CPP_CODE_DESIGN_PATTERN_REACTOR_REACTOR1_TIMEHEAP_H_ */

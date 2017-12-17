@@ -24,9 +24,9 @@ public:
 
     ~EpollDemultiplexer();
 
-    virtual int WaitEvents(std::map<reactor::handle_t, EventHandler *> * handlers, int timeout = 0, time_heap* event_timer = NULL);
+    virtual int WaitEvents(std::map<reactor::handle_t, EventHandler *> * handlers, int timeout = 0, time_heap* reactor::event_timer = NULL);
 
-    virtual int RequestEvent(reactor::handle_t handle, event_t evt);
+    virtual int RequestEvent(reactor::handle_t handle, reactor::event_t evt);
 
     virtual int UnrequestEvent(reactor::handle_t handle);
 
