@@ -13,8 +13,7 @@ namespace reactor
 
         virtual ~EventDemultiplexer() {}
 
-        virtual int WaitEvents(std::map<handle_t, EventHandler *> * handlers,
-                               int timeout = 0, time_heap* event_timer = NULL) = 0;
+        virtual int WaitEvents(std::map<handle_t, EventHandler *> * handlers, int timeout = 0, time_heap* event_timer = NULL) = 0;
                                
         virtual int RequestEvent(handle_t handle, event_t evt) = 0;
 
