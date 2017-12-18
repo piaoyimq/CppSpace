@@ -8,37 +8,35 @@
 #ifndef PIAOYIMQ_GENERAL_CPP_CODE_DESIGN_PATTERN_REACTOR_REACTOR1_TESTTIMESERVER_H_
 #define PIAOYIMQ_GENERAL_CPP_CODE_DESIGN_PATTERN_REACTOR_REACTOR1_TESTTIMESERVER_H_
 
-
 #include "Reactor.h"
+#include "global.h"
 #include "IEventHandler.h"
 #include <cstdint>
 #include <cstdio>
+#include <unistd.h>
+#include <string.h>
 
 
 
 
 #define g_reactor (*(sGlobal->g_reactor_ptr))
-const size_t kBufferSize = 1024;
-char g_read_buffer[kBufferSize];
-char g_write_buffer[kBufferSize];
-
 
 namespace reactor
 {
 
-class TimeServer: public reactor::IEventHandler
+class TestTimeServer: public IEventHandler
 {
 public:
-    class RequestHandler: public reactor::IEventHandler
+    class RequestHandler: public IEventHandler
     {
     public:
 
-        RequestHandler(reactor::handle_t handle) :
-                IEventHandler(), m_handle(handle)
+        RequestHandler(handle_t handle) :
+                m_handle(handle)
         {
         }
 
-        virtual reactor::handle_t GetHandle() const
+        virtual handle_t GetHandle() const
         {
             return m_handle;
         }
@@ -57,17 +55,17 @@ public:
 
     private:
 
-        reactor::handle_t m_handle;
+        handle_t m_handle;
     };
 
-    TimeServer(const char * ip, unsigned short port) :
-            IEventHandler(), m_ip(ip), m_port(port)
+    TestTimeServer(const char * ip, unsigned short port) :
+            m_ip(ip), m_port(port)
     {
     }
 
     bool Start();
 
-    virtual reactor::handle_t GetHandle() const
+    virtual handle_t GetHandle() const
     {
         return m_handle;
     }
@@ -76,7 +74,7 @@ public:
 
 private:
 
-    reactor::handle_t m_handle;
+    handle_t m_handle;
 
     std::string m_ip;
 

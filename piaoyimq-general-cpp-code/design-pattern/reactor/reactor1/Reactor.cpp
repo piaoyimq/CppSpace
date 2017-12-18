@@ -24,12 +24,12 @@ Reactor::~Reactor()
     delete m_reactor_impl;
 }
 
-int Reactor::RegisterHandler(EventHandler * handler, reactor::event_t evt)
+int Reactor::RegisterHandler(IEventHandler * handler, reactor::event_t evt)
 {
     return m_reactor_impl->RegisterHandler(handler, evt);
 }
 
-int Reactor::RemoveHandler(EventHandler * handler)
+int Reactor::RemoveHandler(IEventHandler * handler)
 {
     return m_reactor_impl->RemoveHandler(handler);
 }
@@ -39,7 +39,7 @@ void Reactor::HandleEvents()
     m_reactor_impl->HandleEvents();
 }
 
-int Reactor::RegisterTimerTask(heap_timer* timerevent)
+int Reactor::RegisterTimerTask(TimeHeap::HeapTimer* timerevent)
 {
     return m_reactor_impl->RegisterTimerTask(timerevent);
 }

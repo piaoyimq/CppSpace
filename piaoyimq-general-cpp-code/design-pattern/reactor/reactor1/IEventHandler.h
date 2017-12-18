@@ -1,5 +1,5 @@
 /*
- * IIEventHandler.h
+ * IEventHandler.h
  *
  *  Created on: Dec 17, 2017
  *      Author: ezhweib

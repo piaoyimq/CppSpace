@@ -17,7 +17,7 @@ namespace reactor
 TimeHeap::TimeHeap(int cap) throw (std::exception) :
         capacity(cap), cur_size(0)
 {
-    array = new HeapTimer*[capacity];
+    array = new TimeHeap::HeapTimer*[capacity];
     if (!array)
     {
         throw std::exception();
@@ -28,14 +28,14 @@ TimeHeap::TimeHeap(int cap) throw (std::exception) :
     }
 }
 
-TimeHeap::TimeHeap(HeapTimer** init_array, int size, int capacity) throw (std::exception) :
+TimeHeap::TimeHeap(TimeHeap::HeapTimer** init_array, int size, int capacity) throw (std::exception) :
         cur_size(size), capacity(capacity)
 {
     if (capacity < size)
     {
         throw std::exception();
     }
-    array = new HeapTimer*[capacity];
+    array = new TimeHeap::HeapTimer*[capacity];
     if (!array)
     {
         throw std::exception();
@@ -66,7 +66,7 @@ TimeHeap::~TimeHeap()
     delete[] array;
 }
 
-void TimeHeap::add_timer(HeapTimer* timer) throw (std::exception)
+void TimeHeap::add_timer(TimeHeap::HeapTimer* timer) throw (std::exception)
 {
     if (!timer)
     {
@@ -91,7 +91,7 @@ void TimeHeap::add_timer(HeapTimer* timer) throw (std::exception)
 }
 
 
-void TimeHeap::del_timer(HeapTimer* timer)
+void TimeHeap::del_timer(TimeHeap::HeapTimer* timer)
 {
     if (!timer)
     {
@@ -102,7 +102,7 @@ void TimeHeap::del_timer(HeapTimer* timer)
 }
 
 
-HeapTimer* TimeHeap::top() const
+TimeHeap::HeapTimer* TimeHeap::top() const
 {
     if (empty())
     {
@@ -130,7 +130,7 @@ void TimeHeap::pop_timer()
 
 void TimeHeap::tick()
 {
-    HeapTimer* tmp = array[0];
+    TimeHeap::HeapTimer* tmp = array[0];
     time_t cur = time(NULL);
     while (!empty())
     {
@@ -154,7 +154,7 @@ void TimeHeap::tick()
 
 void TimeHeap::percolate_down(int hole)
 {
-    HeapTimer* temp = array[hole];
+    TimeHeap::HeapTimer* temp = array[hole];
     int child = 0;
     for (; ((hole * 2 + 1) <= (cur_size - 1)); hole = child)
     {
@@ -178,7 +178,7 @@ void TimeHeap::percolate_down(int hole)
 
 void TimeHeap::resize() throw (std::exception)
 {
-    HeapTimer** temp = new HeapTimer*[2 * capacity];
+    TimeHeap::HeapTimer** temp = new TimeHeap::HeapTimer*[2 * capacity];
     for (int i = 0; i < 2 * capacity; ++i)
     {
         temp[i] = NULL;

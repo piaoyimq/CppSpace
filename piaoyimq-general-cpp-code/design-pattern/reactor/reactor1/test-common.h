@@ -2,6 +2,7 @@
 #define REACTOR_TEST_COMMON_H_
 
 #include "Reactor.h"
+#include <string.h>
 
 extern bool IsValidHandle(reactor::handle_t handle)
 {

@@ -19,7 +19,9 @@
 namespace reactor
 {
 
-enum
+class ReactorImplementation;
+
+enum Event
 {
     kReadEvent    = 0x01,
     kWriteEvent   = 0x02,

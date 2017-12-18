@@ -16,6 +16,9 @@
 namespace reactor
 {
 
+extern const size_t kBufferSize;
+extern char g_read_buffer;
+
 bool TestTimeClient::ConnectServer(const char * ip, unsigned short port)
 {
     struct sockaddr_in addr;
@@ -30,9 +33,9 @@ bool TestTimeClient::ConnectServer(const char * ip, unsigned short port)
     return true;
 }
 
-virtual void TestTimeClient::HandleRead()
+void TestTimeClient::HandleRead()
 {
-    memset(g_read_buffer, 0, kBufferSize);
+    memset((void*)g_read_buffer, 0, kBufferSize);
     int len = recv(m_handle, g_read_buffer, kBufferSize, 0);
     if (len > 0)
     {
@@ -45,7 +48,7 @@ virtual void TestTimeClient::HandleRead()
     }
 }
 
-virtual void TestTimeClient::HandleWrite()
+void TestTimeClient::HandleWrite()
 {
     memset(g_write_buffer, 0, kBufferSize);
     int len = sprintf(g_write_buffer, "time\r\n");

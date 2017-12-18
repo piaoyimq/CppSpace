@@ -1,14 +1,19 @@
 #include "global.h"
 
+namespace reactor
+{
+
 DECLARE_SINGLETON_MEMBER(Global);
 
 Global::Global(void)
 {
-    g_reactor_ptr = new reactor::Reactor();
+    g_reactor_ptr = new Reactor();
 }
 
 Global::~Global(void)
 {
     delete g_reactor_ptr;
     g_reactor_ptr = NULL;
+}
+
 }

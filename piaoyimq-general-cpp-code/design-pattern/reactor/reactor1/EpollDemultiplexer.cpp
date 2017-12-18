@@ -9,8 +9,9 @@
 #include <errno.h>
 #include <assert.h>
 #include <vector>
+#include <sys/epoll.h>
 #include "EpollDemultiplexer.h"
-
+#include <unistd.h>
 
 namespace reactor
 {
@@ -27,7 +28,7 @@ EpollDemultiplexer::~EpollDemultiplexer()
     ::close(m_epoll_fd);
 }
 
-int EpollDemultiplexer::WaitEvents(std::map<reactor::handle_t, EventHandler *> * handlers, int timeout, time_heap* reactor::event_timer)
+int EpollDemultiplexer::WaitEvents(std::map<handle_t, IEventHandler*>* handlers, int timeout, TimeHeap* event_timer)
 {
     std::vector<epoll_event> ep_evts(m_fd_num);
     int num = epoll_wait(m_epoll_fd, &ep_evts[0], ep_evts.size(), timeout);
@@ -35,7 +36,7 @@ int EpollDemultiplexer::WaitEvents(std::map<reactor::handle_t, EventHandler *> *
     {
         for (int idx = 0; idx < num; ++idx)
         {
-            reactor::handle_t handle = ep_evts[idx].data.fd;
+            handle_t handle = ep_evts[idx].data.fd;
             assert(handlers->find(handle) != handlers->end());
             if ((ep_evts[idx].events & EPOLLERR) || (ep_evts[idx].events & EPOLLHUP))
             {
@@ -54,15 +55,15 @@ int EpollDemultiplexer::WaitEvents(std::map<reactor::handle_t, EventHandler *> *
             }
         }
     }
-    if (reactor::event_timer != NULL)
+    if (event_timer != NULL)
     {
-        reactor::event_timer->tick();
+        event_timer->tick();
     }
 
     return num;
 }
 
-int EpollDemultiplexer::RequestEvent(reactor::handle_t handle, reactor::event_t evt)
+int EpollDemultiplexer::RequestEvent(handle_t handle, event_t evt)
 {
     epoll_event ep_evt;
     ep_evt.data.fd = handle;
@@ -92,7 +93,7 @@ int EpollDemultiplexer::RequestEvent(reactor::handle_t handle, reactor::event_t 
     return 0;
 }
 
-int EpollDemultiplexer::UnrequestEvent(reactor::handle_t handle)
+int EpollDemultiplexer::UnrequestEvent(handle_t handle)
 {
     epoll_event ep_evt;
     if (epoll_ctl(m_epoll_fd, EPOLL_CTL_DEL, handle, &ep_evt) != 0)

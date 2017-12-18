@@ -6,12 +6,13 @@
  */
 
 
-#indlude ""
+#include "TestTimeServer.h"
+#include "TimeHeap.h"
 
 
 
 
-void printHelloworld(client_data* data)
+void printHelloworld(reactor::ClientData* data)
 {
     fprintf(stderr, "timertask : Hello world from timerTask!\n");
 }
@@ -24,7 +25,7 @@ int main(int argc, char ** argv)
         return EXIT_FAILURE;
     }
 
-    TimeServer server(argv[1], atoi(argv[2]));
+    reactor::TestTimeServer server(argv[1], atoi(argv[2]));
     if (!server.Start())
     {
         fprintf(stderr, "start server failed\n");
@@ -32,11 +33,11 @@ int main(int argc, char ** argv)
     }
     fprintf(stderr, "server started!\n");
 
-    heap_timer* printtask = new heap_timer(5);
-    printtask->cb_func = printHelloworld;
+    reactor::TimeHeap::HeapTimer* printTask = new reactor::TimeHeap::HeapTimer(5);
+    printTask->cb_func = printHelloworld;
 
     fprintf(stderr, "register a task which will be run is five seconds!\n");
-    g_reactor.RegisterTimerTask(printtask);
+    g_reactor.RegisterTimerTask(printTask);
 
     while (1)
     {

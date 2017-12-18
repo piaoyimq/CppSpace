@@ -11,6 +11,7 @@
 #include "Reactor.h"
 #include "IEventHandler.h"
 #include "test-common.h"
+#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -23,6 +24,8 @@
 
 
 
+namespace reactor
+{
 
 reactor::Reactor g_reactor;
 
@@ -64,5 +67,5 @@ private:
     reactor::handle_t  m_handle;
 };
 
-
+}
 #endif /* PIAOYIMQ_GENERAL_CPP_CODE_DESIGN_PATTERN_REACTOR_REACTOR1_TESTTIMECLIENT_H_ */

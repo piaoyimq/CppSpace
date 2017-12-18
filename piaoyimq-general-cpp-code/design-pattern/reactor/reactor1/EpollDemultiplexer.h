@@ -12,6 +12,7 @@
 #include <set>
 #include "IEventDemultiplexer.h"
 #include "Reactor.h"
+#include "TimeHeap.h"
 
 
 namespace reactor
@@ -22,13 +23,13 @@ class EpollDemultiplexer: public IEventDemultiplexer
 public:
     EpollDemultiplexer();
 
-    ~EpollDemultiplexer();
+    virtual ~EpollDemultiplexer();
 
-    virtual int WaitEvents(std::map<reactor::handle_t, EventHandler *> * handlers, int timeout = 0, time_heap* reactor::event_timer = NULL);
+    virtual int WaitEvents(std::map<handle_t, IEventHandler*> * handlers, int timeout = 0, TimeHeap* event_timer = nullptr);
 
-    virtual int RequestEvent(reactor::handle_t handle, reactor::event_t evt);
+    virtual int RequestEvent(handle_t handle, event_t evt);
 
-    virtual int UnrequestEvent(reactor::handle_t handle);
+    virtual int UnrequestEvent(handle_t handle);
 
 private:
 

@@ -8,12 +8,16 @@
 
 #include "TestTimeServer.h"
 #include "test-common.h"
-
-
-
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 
 namespace reactor
 {
+
+const size_t kBufferSize = 1024;
+char g_read_buffer[kBufferSize];
+char g_write_buffer[kBufferSize];
 
 void TestTimeServer::RequestHandler::HandleWrite()
 {
@@ -32,7 +36,7 @@ void TestTimeServer::RequestHandler::HandleWrite()
     if (len > 0)
     {
         fprintf(stderr, "send response to client, fd=%d\n", (int) m_handle);
-        g_reactor.RegisterHandler(this, reactor::kReadEvent);
+        g_reactor.RegisterHandler(this, kReadEvent);
     }
     else
     {
@@ -48,7 +52,7 @@ void TestTimeServer::RequestHandler::HandleRead()
     {
         if (strncasecmp("time", g_read_buffer, 4) == 0)
         {
-            g_reactor.RegisterHandler(this, reactor::kWriteEvent);
+            g_reactor.RegisterHandler(this, kWriteEvent);
         }
         else
             if (strncasecmp("exit", g_read_buffer, 4) == 0)
@@ -103,15 +107,15 @@ void TestTimeServer::HandleRead()
 {
     struct sockaddr addr;
     socklen_t addrlen = sizeof(addr);
-    reactor::handle_t handle = accept(m_handle, &addr, &addrlen);
+    handle_t handle = accept(m_handle, &addr, &addrlen);
     if (!IsValidHandle(handle))
     {
         ReportSocketError("accept");
     }
     else
     {
-        RequestHandler * handler = new RequestHandler(handle);
-        if (g_reactor.RegisterHandler(handler, reactor::kReadEvent) != 0)
+        RequestHandler* handler = new RequestHandler(handle);
+        if (g_reactor.RegisterHandler(handler, kReadEvent) != 0)
         {
             fprintf(stderr, "error: register handler failed\n");
             delete handler;

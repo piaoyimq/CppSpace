@@ -12,8 +12,7 @@
 
 #include "IEventDemultiplexer.h"
 #include "TimeHeap.h"
-#include "Reactor.h"
-
+#include <map>
 
 
 namespace reactor
@@ -27,7 +26,7 @@ public:
 
     ~ReactorImplementation();
 
-    int RegisterHandler(IEventHandler * handler, reactor::event_t evt);
+    int RegisterHandler(IEventHandler * handler, event_t evt);
 
     int RemoveHandler(IEventHandler * handler);
 
@@ -37,9 +36,9 @@ public:
 
 private:
 
-    IEventDemultiplexer * m_demultiplexer;
+    IEventDemultiplexer* m_demultiplexer;
 
-    std::map<reactor::handle_t, IEventHandler *> m_handlers;
+    std::map<handle_t, IEventHandler*> m_handlers;
 
     TimeHeap* m_eventtimer;
 };

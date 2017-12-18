@@ -7,7 +7,7 @@
 
 
 #include "ReactorImplementation.h"
-
+#include "EpollDemultiplexer.h"
 
 
 
@@ -20,7 +20,7 @@ namespace reactor
 ReactorImplementation::ReactorImplementation()
 {
     m_demultiplexer = new EpollDemultiplexer();
-    m_eventtimer = new time_heap(INITSIZE);
+    m_eventtimer = new TimeHeap(INITSIZE);
 }
 
 
@@ -30,10 +30,10 @@ ReactorImplementation::~ReactorImplementation()
 }
 
 
-int ReactorImplementation::RegisterHandler(EventHandler * handler, reactor::event_t evt)
+int ReactorImplementation::RegisterHandler(IEventHandler * handler, reactor::event_t evt)
 {
     reactor::handle_t handle = handler->GetHandle();
-    std::map<reactor::handle_t, EventHandler *>::iterator it = m_handlers.find(handle);
+    std::map<reactor::handle_t, IEventHandler *>::iterator it = m_handlers.find(handle);
     if (it == m_handlers.end())
     {
         m_handlers[handle] = handler;
@@ -42,7 +42,7 @@ int ReactorImplementation::RegisterHandler(EventHandler * handler, reactor::even
 }
 
 
-int ReactorImplementation::RemoveHandler(EventHandler * handler)
+int ReactorImplementation::RemoveHandler(IEventHandler * handler)
 {
     reactor::handle_t handle = handler->GetHandle();
     m_handlers.erase(handle);
@@ -66,7 +66,7 @@ void ReactorImplementation::HandleEvents()
 }
 
 
-int ReactorImplementation::RegisterTimerTask(heap_timer* timerevent)
+int ReactorImplementation::RegisterTimerTask(TimeHeap::HeapTimer* timerevent)
 {
     if (timerevent == NULL)
         return -1;
