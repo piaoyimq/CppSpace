@@ -22,9 +22,9 @@ public:
     Reactor* g_reactor_ptr;
 };
 
-#define sGlobal reactor::Global::instance()
 
 }
-
+#define sGlobal reactor::Global::instance()
+#define g_reactor (*((sGlobal)->g_reactor_ptr))
 
 #endif

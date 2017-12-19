@@ -4,8 +4,8 @@ This is a simple implementation of reactor which use epoll as the event multiple
 
 You can compile the code by using the following shell command:
 
->g++ -std=c++11 -o reactor-server EpollDemultiplexer.cpp TestTimeServer.cpp TimeHeap.cpp ReactorImplementation.cpp Reactor.cpp global.cpp server-main.cpp
->g++ -o reactor_client reactor_client_test.cc event_demultiplexer.cc reactor.cc global.cc
+>g++ -std=c++11 -o server-reactor EpollDemultiplexer.cpp TestTimeServer.cpp TimeHeap.cpp ReactorImplementation.cpp Reactor.cpp global.cpp server-main.cpp
+>g++ -std=c++11 -o client-reactor test-common.cpp EpollDemultiplexer.cpp TestTimeClient.cpp TimeHeap.cpp ReactorImplementation.cpp Reactor.cpp global.cpp client-main.cpp
 
 After that, two executable programs will be made.
 

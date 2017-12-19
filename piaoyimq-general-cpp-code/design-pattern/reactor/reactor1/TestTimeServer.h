@@ -19,7 +19,6 @@
 
 
 
-#define g_reactor (*(sGlobal->g_reactor_ptr))
 
 namespace reactor
 {

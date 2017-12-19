@@ -10,7 +10,6 @@
 
 #include "Reactor.h"
 #include "IEventHandler.h"
-#include "test-common.h"
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,15 +20,20 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
+#include "global.h"
+
+
+
+extern bool IsValidHandle(reactor::handle_t handle);
+extern void ReportSocketError(const char * msg);
+
 
 
 
 namespace reactor
 {
 
-reactor::Reactor g_reactor;
-
-class TestTimeClient : public reactor::IEventHandler
+class TestTimeClient : public IEventHandler
 {
 public:
 
@@ -46,7 +50,7 @@ public:
 
     bool ConnectServer(const char * ip, unsigned short port);
 
-    virtual reactor::handle_t GetHandle() const
+    virtual handle_t GetHandle() const
     {
         return m_handle;
     }
@@ -64,7 +68,7 @@ public:
 
 private:
 
-    reactor::handle_t  m_handle;
+    handle_t  m_handle;
 };
 
 }

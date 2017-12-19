@@ -6,18 +6,20 @@
  */
 
 
-
-
 #include "TestTimeClient.h"
 
 
 
 
+extern const size_t kBufferSize=1024;
+extern char g_read_buffer[];
+extern char g_write_buffer[];
+
+
 namespace reactor
 {
 
-extern const size_t kBufferSize;
-extern char g_read_buffer;
+
 
 bool TestTimeClient::ConnectServer(const char * ip, unsigned short port)
 {
@@ -40,7 +42,7 @@ void TestTimeClient::HandleRead()
     if (len > 0)
     {
         fprintf(stderr, "%s", g_read_buffer);
-        g_reactor.RegisterHandler(this, reactor::kWriteEvent);
+        g_reactor.RegisterHandler(this, kWriteEvent);
     }
     else
     {
@@ -56,7 +58,7 @@ void TestTimeClient::HandleWrite()
     if (len > 0)
     {
         fprintf(stderr, "%s", g_write_buffer);
-        g_reactor.RegisterHandler(this, reactor::kReadEvent);
+        g_reactor.RegisterHandler(this, kReadEvent);
     }
     else
     {

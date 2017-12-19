@@ -30,10 +30,10 @@ ReactorImplementation::~ReactorImplementation()
 }
 
 
-int ReactorImplementation::RegisterHandler(IEventHandler * handler, reactor::event_t evt)
+int ReactorImplementation::RegisterHandler(IEventHandler * handler, event_t evt)
 {
-    reactor::handle_t handle = handler->GetHandle();
-    std::map<reactor::handle_t, IEventHandler *>::iterator it = m_handlers.find(handle);
+    handle_t handle = handler->GetHandle();
+    std::map<handle_t, IEventHandler *>::iterator it = m_handlers.find(handle);
     if (it == m_handlers.end())
     {
         m_handlers[handle] = handler;
@@ -44,7 +44,7 @@ int ReactorImplementation::RegisterHandler(IEventHandler * handler, reactor::eve
 
 int ReactorImplementation::RemoveHandler(IEventHandler * handler)
 {
-    reactor::handle_t handle = handler->GetHandle();
+    handle_t handle = handler->GetHandle();
     m_handlers.erase(handle);
     return m_demultiplexer->UnrequestEvent(handle);
 }

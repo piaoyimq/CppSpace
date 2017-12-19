@@ -5,7 +5,7 @@
  *      Author: ezhweib
  */
 
-
+#include "global.h"
 #include "TestTimeServer.h"
 #include "TimeHeap.h"
 

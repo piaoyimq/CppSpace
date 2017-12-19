@@ -6,8 +6,7 @@
  */
 
 
-
-
+#include "global.h"
 #include "TestTimeClient.h"
 
 
@@ -21,7 +20,7 @@ int main(int argc, char ** argv)
         return EXIT_FAILURE;
     }
 
-    TestTimeClient client;
+    reactor::TestTimeClient client;
     if (!client.ConnectServer(argv[1], atoi(argv[2])))
     {
         fprintf(stderr, "connect remote server failed\n");

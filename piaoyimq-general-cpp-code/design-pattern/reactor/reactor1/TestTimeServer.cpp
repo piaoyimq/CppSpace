@@ -7,17 +7,25 @@
 
 
 #include "TestTimeServer.h"
-#include "test-common.h"
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include "test-common.cpp"
+
+
+
+
+
+extern bool IsValidHandle(reactor::handle_t handle);
+extern void ReportSocketError(const char * msg);
+
+extern const size_t kBufferSize;
+extern char g_read_buffer[];
+extern char g_write_buffer[];
+
 
 namespace reactor
 {
-
-const size_t kBufferSize = 1024;
-char g_read_buffer[kBufferSize];
-char g_write_buffer[kBufferSize];
 
 void TestTimeServer::RequestHandler::HandleWrite()
 {
