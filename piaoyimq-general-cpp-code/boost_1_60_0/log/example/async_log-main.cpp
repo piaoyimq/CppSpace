@@ -58,7 +58,7 @@ void thread_fun(boost::barrier& bar)
 
     // Here we go. First, identify the thread.
     BOOST_LOG_SCOPED_THREAD_TAG("ThreadID", boost::this_thread::get_id());
-
+    logging::core::get()->add_thread_attribute("ThreadRecordID", attrs::counter< unsigned int >());
     // Now, do some logging
     for (unsigned int i = 0; i < LOG_RECORDS_TO_WRITE; ++i)
     {
@@ -92,10 +92,11 @@ int main(int argc, char* argv[])
 
         sink->set_formatter
         (
-            expr::format("%1%: [%2%] [%3%] - %4%")
+            expr::format("%1%: [%2%] [%3%] [%4%] - %5%")
                 % expr::attr< unsigned int >("RecordID")
                 % expr::attr< boost::posix_time::ptime >("TimeStamp")
                 % expr::attr< boost::thread::id >("ThreadID")
+                % expr::attr< unsigned int >("ThreadRecordID")
                 % expr::smessage
         );
 
