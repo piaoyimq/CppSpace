@@ -54,18 +54,22 @@ int main ()
       shared_memory_log * data = new (addr) shared_memory_log;
 
       //Write some logs
-      for(int i = 0; i < shared_memory_log::NumItems; ++i){
+      for(int i = 0; i < 10; ++i){
+          std::cout << "____lock="<< __LINE__ << std::endl;
          //Lock the mutex
-         scoped_lock<interprocess_mutex> lock(data->mutex);
+//         scoped_lock<interprocess_mutex> lock(data->mutex);
          std::sprintf(data->items[(data->current_line++) % shared_memory_log::NumItems]
                   ,"%s_%d", "process_a", i);
-         if(i == (shared_memory_log::NumItems-1))
+         if(i == (10-1))
             data->end_a = true;
+         sleep(1);
          //Mutex is released here
       }
 
+      std::cout << "unlock" << std::endl;
       //Wait until the other process ends
       while(1){
+          std::cout << "____lock="<< __LINE__ << std::endl;
          scoped_lock<interprocess_mutex> lock(data->mutex);
          if(data->end_b)
             break;
@@ -75,6 +79,7 @@ int main ()
       std::cout << ex.what() << std::endl;
       return 1;
    }
+   std::cout << "unlock" << std::endl;
    return 0;
 }
 //]

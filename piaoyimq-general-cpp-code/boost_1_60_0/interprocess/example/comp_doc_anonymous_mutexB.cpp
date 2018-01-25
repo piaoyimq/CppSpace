@@ -49,22 +49,26 @@ int main ()
    shared_memory_log * data = static_cast<shared_memory_log*>(addr);
 
    //Write some logs
-   for(int i = 0; i < 100; ++i){
+   for(int i = 0; i < 10; ++i){
+       std::cout << "____before lock="<< __LINE__ << std::endl;
       //Lock the mutex
       scoped_lock<interprocess_mutex> lock(data->mutex);
+      std::cout << "____lock="<< __LINE__ << std::endl;
       std::sprintf(data->items[(data->current_line++) % shared_memory_log::NumItems]
                ,"%s_%d", "process_a", i);
-      if(i == (shared_memory_log::NumItems-1))
+      if(i == (10-1))
          data->end_b = true;
       //Mutex is released here
    }
-
+   std::cout << "unlock" << std::endl;
    //Wait until the other process ends
    while(1){
+       std::cout << "____lock="<< __LINE__ << std::endl;
       scoped_lock<interprocess_mutex> lock(data->mutex);
       if(data->end_a)
          break;
    }
+   std::cout << "unlock" << std::endl;
    return 0;
 }
 //]

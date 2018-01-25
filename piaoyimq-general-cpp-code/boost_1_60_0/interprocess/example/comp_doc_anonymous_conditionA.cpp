@@ -51,7 +51,7 @@ int main ()
       void * addr       = region.get_address();
 
       //Construct the shared structure in memory
-      trace_queue * data = new (addr) trace_queue;
+      trace_queue * data = new (addr) trace_queue;//construct a object in the specific address.
 
       const int NumMsg = 100;
 
