@@ -33,6 +33,8 @@
 #include <boost/log/sinks.hpp>
 #include <boost/log/sources/logger.hpp>
 #include <boost/log/utility/record_ordering.hpp>
+#include <unistd.h>
+#include <sys/types.h>
 
 namespace logging = boost::log;
 namespace attrs = boost::log::attributes;
@@ -90,14 +92,16 @@ int main(int argc, char* argv[])
             keywords::order = logging::make_attr_ordering("record-id", std::less< unsigned int >())));
 
         sink->locked_backend()->add_stream(strm);
-
+//        logging->add_global_attribute("process-id", attr::current_process_id());
         sink->set_formatter
         (
-            expr::format("[%1%] [%2%] [%3%] [%4%] - %5%")
-		% expr::format_date_time< boost::posix_time::ptime >("time-stamp", "%Y-%m-%d %H:%M:%S.%f")
-                % expr::attr< unsigned int >("record-id")
+            expr::format("[%1%] [%2%] [%3%] [%4%] [%5%] [%6%] [%7%]")
+		        % expr::format_date_time< boost::posix_time::ptime >("time-stamp", "%Y-%m-%d %H:%M:%S.%f")
+		        % expr::attr< std::string >("hostname")
+		        % expr::attr< std::string >("process-name")
+		        % expr::attr< pid_t >("process-id")
                 % expr::attr< boost::thread::id >("thread-id")
-                % expr::attr< unsigned int >("sequence-id")
+                % expr::attr< uint32_t >("sequence-id")
                 % expr::smessage
         );
 
@@ -107,7 +111,21 @@ int main(int argc, char* argv[])
         // Add some attributes too
         //% expr::attr< boost::posix_time::ptime >("time-stamp")
 	//% expr::format_date_time< boost::posix_time::ptime >("TimeStamp", "%Y-%m-%d, %H:%M:%S.%f")
+//        % expr::attr< attrs::current_process_id::value_type >("process-id")
+//        % expr::attr< boost::thread::id >("thread-id")
         logging::core::get()->add_global_attribute("time-stamp", attrs::local_clock());
+
+        char hostname[32];
+
+        if( gethostname(hostname,sizeof(hostname)) )
+        {
+         std::cout << "gethostname calling error" << std::endl;
+         return 1;
+        }
+
+        logging::core::get()->add_global_attribute("hostname", attrs::constant<std::string>(hostname));
+        logging::core::get()->add_global_attribute("process-name", attrs::current_process_name());
+        logging::core::get()->add_global_attribute("process-id", attrs::constant<pid_t>(getpid()));
         logging::core::get()->add_global_attribute("record-id", attrs::counter< unsigned int >());
 
         // Create logging threads
@@ -122,6 +140,7 @@ int main(int argc, char* argv[])
         // Flush all buffered records
         sink->stop();
         sink->flush();
+        sleep(5);
 
         return 0;
     }
