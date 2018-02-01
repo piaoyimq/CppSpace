@@ -86,20 +86,21 @@ int main(int argc, char* argv[])
     (
         "sample.log",
         keywords::filter = expr::attr< severity_level >("Severity") >= warning,
+#if 0
         keywords::format = expr::stream
             << expr::format_date_time< boost::posix_time::ptime >("TimeStamp", "%Y-%m-%d, %H:%M:%S.%f")
             << " [" << expr::format_date_time< attrs::timer::value_type >("Uptime", "%O:%M:%S")
             << "] [" << expr::format_named_scope("Scope", keywords::format = "%n (%f:%l)")
             << "] <" << expr::attr< severity_level >("Severity")
             << "> " << expr::message
-/*
+#else
         keywords::format = expr::format("%1% [%2%] [%3%] <%4%> %5%")
             % expr::format_date_time< boost::posix_time::ptime >("TimeStamp", "%Y-%m-%d, %H:%M:%S.%f")
             % expr::format_date_time< attrs::timer::value_type >("Uptime", "%O:%M:%S")
             % expr::format_named_scope("Scope", keywords::format = "%n (%f:%l)")
             % expr::attr< severity_level >("Severity")
             % expr::message
-*/
+#endif
     );
 
     // Also let's add some commonly used attributes, like timestamp and record counter.

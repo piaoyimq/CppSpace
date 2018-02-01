@@ -54,11 +54,11 @@ int main(int argc, char* argv[])
         shared_ptr< sinks::synchronous_sink< sinks::syslog_backend > > sink(
             new sinks::synchronous_sink< sinks::syslog_backend >(
                 keywords::use_impl = sinks::syslog::native,
-                keywords::facility = sinks::syslog::local7));
+                keywords::facility = sinks::syslog::local5));
 
         sink->set_formatter
         (
-            expr::format("native_syslog: %1%: %2%")
+            expr::format("piaoyimq: %1%: %2%")
                 % expr::attr< unsigned int >("RecordID")
                 % expr::smessage
         );

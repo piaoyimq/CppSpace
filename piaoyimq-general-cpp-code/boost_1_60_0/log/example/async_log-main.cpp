@@ -22,7 +22,8 @@
 #include <boost/ref.hpp>
 #include <boost/bind.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
-#include <boost/date_time/posix_time/posix_time.hpp>
+//#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/log/support/date_time.hpp>
 #include <boost/thread/thread.hpp>
 #include <boost/thread/barrier.hpp>
 
@@ -57,8 +58,8 @@ void thread_fun(boost::barrier& bar)
     bar.wait();
 
     // Here we go. First, identify the thread.
-    BOOST_LOG_SCOPED_THREAD_TAG("ThreadID", boost::this_thread::get_id());
-    logging::core::get()->add_thread_attribute("ThreadRecordID", attrs::counter< unsigned int >());
+    BOOST_LOG_SCOPED_THREAD_TAG("thread-id", boost::this_thread::get_id());
+    logging::core::get()->add_thread_attribute("sequence-id", attrs::counter< unsigned int >());
     // Now, do some logging
     for (unsigned int i = 0; i < LOG_RECORDS_TO_WRITE; ++i)
     {
@@ -86,17 +87,17 @@ int main(int argc, char* argv[])
         shared_ptr< sink_t > sink(new sink_t(
             boost::make_shared< backend_t >(),
             // We'll apply record ordering to ensure that records from different threads go sequentially in the file
-            keywords::order = logging::make_attr_ordering("RecordID", std::less< unsigned int >())));
+            keywords::order = logging::make_attr_ordering("record-id", std::less< unsigned int >())));
 
         sink->locked_backend()->add_stream(strm);
 
         sink->set_formatter
         (
-            expr::format("%1%: [%2%] [%3%] [%4%] - %5%")
-                % expr::attr< unsigned int >("RecordID")
-                % expr::attr< boost::posix_time::ptime >("TimeStamp")
-                % expr::attr< boost::thread::id >("ThreadID")
-                % expr::attr< unsigned int >("ThreadRecordID")
+            expr::format("[%1%] [%2%] [%3%] [%4%] - %5%")
+		% expr::format_date_time< boost::posix_time::ptime >("time-stamp", "%Y-%m-%d %H:%M:%S.%f")
+                % expr::attr< unsigned int >("record-id")
+                % expr::attr< boost::thread::id >("thread-id")
+                % expr::attr< unsigned int >("sequence-id")
                 % expr::smessage
         );
 
@@ -104,8 +105,10 @@ int main(int argc, char* argv[])
         logging::core::get()->add_sink(sink);
 
         // Add some attributes too
-        logging::core::get()->add_global_attribute("TimeStamp", attrs::local_clock());
-        logging::core::get()->add_global_attribute("RecordID", attrs::counter< unsigned int >());
+        //% expr::attr< boost::posix_time::ptime >("time-stamp")
+	//% expr::format_date_time< boost::posix_time::ptime >("TimeStamp", "%Y-%m-%d, %H:%M:%S.%f")
+        logging::core::get()->add_global_attribute("time-stamp", attrs::local_clock());
+        logging::core::get()->add_global_attribute("record-id", attrs::counter< unsigned int >());
 
         // Create logging threads
         boost::barrier bar(THREAD_COUNT);
