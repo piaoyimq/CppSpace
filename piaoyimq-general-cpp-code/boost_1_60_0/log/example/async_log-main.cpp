@@ -26,7 +26,7 @@
 #include <boost/log/support/date_time.hpp>
 #include <boost/thread/thread.hpp>
 #include <boost/thread/barrier.hpp>
-
+#include <boost/log/utility/setup/common_attributes.hpp>
 #include <boost/log/common.hpp>
 #include <boost/log/expressions.hpp>
 #include <boost/log/attributes.hpp>
@@ -35,6 +35,23 @@
 #include <boost/log/utility/record_ordering.hpp>
 #include <unistd.h>
 #include <sys/types.h>
+#include <sys/syscall.h>
+
+
+
+#include <boost/log/common.hpp>
+#include <boost/log/expressions.hpp>
+
+#include <boost/log/utility/setup/file.hpp>
+#include <boost/log/utility/setup/console.hpp>
+#include <boost/log/utility/setup/common_attributes.hpp>
+
+#include <boost/log/attributes/timer.hpp>
+#include <boost/log/attributes/named_scope.hpp>
+
+#include <boost/log/sources/logger.hpp>
+
+#include <boost/log/support/date_time.hpp>
 
 namespace logging = boost::log;
 namespace attrs = boost::log::attributes;
@@ -47,12 +64,50 @@ using boost::shared_ptr;
 
 enum
 {
-    LOG_RECORDS_TO_WRITE = 10000,
+    LOG_RECORDS_TO_WRITE = 10,
     THREAD_COUNT = 2
 };
 
-BOOST_LOG_INLINE_GLOBAL_LOGGER_DEFAULT(test_lg, src::logger_mt)
+pid_t gettid()
+{
+  return static_cast<pid_t>(::syscall(SYS_gettid));
+}
 
+//BOOST_LOG_INLINE_GLOBAL_LOGGER_DEFAULT(test_lg, src::logger_mt)
+//[ example_wide_char_severity_level_definition
+enum severity_level
+{
+    normal,
+    notification,
+    warning,
+    error,
+    critical
+};
+
+template< typename CharT, typename TraitsT >
+inline std::basic_ostream< CharT, TraitsT >& operator<< (
+    std::basic_ostream< CharT, TraitsT >& strm, severity_level lvl)
+{
+    static const char* const str[] =
+    {
+        "normal",
+        "notification",
+        "warning",
+        "error",
+        "critical"
+    };
+    if (static_cast< std::size_t >(lvl) < (sizeof(str) / sizeof(*str)))
+        strm << str[lvl];
+    else
+        strm << static_cast< int >(lvl);
+    return strm;
+}
+src::severity_logger<severity_level> slg(warning);//default is warning
+//]
+
+//[ example_wide_char_logging_initialization
+// Declare attribute keywords
+BOOST_LOG_ATTRIBUTE_KEYWORD(severity, "Severity", severity_level)  //make sure the is "Severity"
 //! This function is executed in multiple threads
 void thread_fun(boost::barrier& bar)
 {
@@ -60,14 +115,22 @@ void thread_fun(boost::barrier& bar)
     bar.wait();
 
     // Here we go. First, identify the thread.
-    BOOST_LOG_SCOPED_THREAD_TAG("thread-id", boost::this_thread::get_id());
+//    BOOST_LOG_SCOPED_THREAD_TAG("thread-id", boost::this_thread::get_id());
+//    logging::core::get()->add_global_attribute("thread-id", attrs::constant<pid_t>(gettid()));
+//    logging::core::get()->add_global_attribute("thread-id", attrs::mutable_constant<pid_t>(gettid()));
+//    BOOST_LOG_SCOPED_THREAD_TAG("thread-id", gettid());
+    BOOST_LOG_SCOPED_THREAD_ATTR("thread-id", attrs::mutable_constant<pid_t>(gettid()));
     logging::core::get()->add_thread_attribute("sequence-id", attrs::counter< unsigned int >());
     // Now, do some logging
     for (unsigned int i = 0; i < LOG_RECORDS_TO_WRITE; ++i)
     {
-        BOOST_LOG(test_lg::get()) << "Log record " << i;
+        BOOST_LOG(slg) << "Log record " << i;
     }
+    std::cout << "branch-LWP=" << gettid() << std::endl;
+//    sleep(5);
 }
+
+
 
 int main(int argc, char* argv[])
 {
@@ -92,20 +155,26 @@ int main(int argc, char* argv[])
             keywords::order = logging::make_attr_ordering("record-id", std::less< unsigned int >())));
 
         sink->locked_backend()->add_stream(strm);
+
 //        logging->add_global_attribute("process-id", attr::current_process_id());
+//        keywords::filter = severity >= warning;
+//        keywords::filter = min_severity || severity >= critical,
         sink->set_formatter
         (
-            expr::format("[%1%] [%2%] [%3%] [%4%] [%5%] [%6%] [%7%]")
+            expr::format("[%1%] [%2%] [%3%] [%4%] [%5%] [%6%] [%7%] [%8%]")
 		        % expr::format_date_time< boost::posix_time::ptime >("time-stamp", "%Y-%m-%d %H:%M:%S.%f")
 		        % expr::attr< std::string >("hostname")
 		        % expr::attr< std::string >("process-name")
 		        % expr::attr< pid_t >("process-id")
-                % expr::attr< boost::thread::id >("thread-id")
+		        % expr::attr< pid_t >("thread-id")
                 % expr::attr< uint32_t >("sequence-id")
+                % severity
                 % expr::smessage
         );
-
+//        sink->set_filter(expr::attr< severity_level >("severity") >= normal);
+        sink->set_filter(severity >= warning);
         // Add it to the core
+
         logging::core::get()->add_sink(sink);
 
         // Add some attributes too
@@ -126,21 +195,61 @@ int main(int argc, char* argv[])
         logging::core::get()->add_global_attribute("hostname", attrs::constant<std::string>(hostname));
         logging::core::get()->add_global_attribute("process-name", attrs::current_process_name());
         logging::core::get()->add_global_attribute("process-id", attrs::constant<pid_t>(getpid()));
-        logging::core::get()->add_global_attribute("record-id", attrs::counter< unsigned int >());
+        logging::core::get()->add_global_attribute("thread-id", attrs::mutable_constant<pid_t>(gettid()));
+//        BOOST_LOG_SCOPED_THREAD_TAG("thread-id", gettid());
+        logging::core::get()->add_global_attribute("sequence-id", attrs::counter< unsigned int >());
+
+        logging::add_common_attributes();
+
+
+        std::cout << "main-LWP=" << gettid() << std::endl;
+
+        for (unsigned int i = 0; i < 2; ++i)
+        {
+            BOOST_LOG_SEV(slg, error) << "Log record main" << i;
+        }
 
         // Create logging threads
         boost::barrier bar(THREAD_COUNT);
         boost::thread_group threads;
         for (unsigned int i = 0; i < THREAD_COUNT; ++i)
             threads.create_thread(boost::bind(&thread_fun, boost::ref(bar)));
+//        keywords::filter = expr::attr< severity_level >("Severity") >= warning;
+
+
+        BOOST_LOG_SEV(slg, critical) << "A fasdf A normal severity message, will not pass to the file";
+        pid_t p = fork();
+
+          if (p == 0)
+          {
+            std::cout << "child pid=" << getpid() << std::endl;
+            BOOST_LOG_SEV(slg, notification) << "Bchild pid= " << getpid();
+            BOOST_LOG_SEV(slg, critical) << "C A normal severity message, will not pass to the file";
+            BOOST_LOG_SEV(slg, normal) << "D A normal severity message, will not pass to the file";
+//            sleep(5);
+          }
+          else
+          {
+              std::cout << "parent pid=" << getpid() << std::endl;
+              BOOST_LOG_SEV(slg, warning) << "P1 parent pid= " << getpid();
+              BOOST_LOG_SEV(slg, critical) << "P2 A normal severity message, will not pass to the file";
+              BOOST_LOG_SEV(slg, normal) << "P3 A normal severity message, will not pass to the file";
+              BOOST_LOG(slg) << "P4 A normal severity message, will not pass to the file";
+              BOOST_LOG(slg) << "P5 A normal severity message, will not pass to the file";
+//              sleep(5);
+          }
 
         // Wait until all action ends
         threads.join_all();
 
+        for (unsigned int i = 0; i < 3; ++i)
+        {
+            BOOST_LOG_SEV(slg, warning) << "F Log record main-2 " << i;
+        }
+
         // Flush all buffered records
         sink->stop();
         sink->flush();
-        sleep(5);
 
         return 0;
     }
