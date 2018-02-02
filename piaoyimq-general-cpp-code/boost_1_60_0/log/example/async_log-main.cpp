@@ -127,7 +127,7 @@ void thread_fun(boost::barrier& bar)
     // Now, do some logging
     for (unsigned int i = 0; i < LOG_RECORDS_TO_WRITE; ++i)
     {
-//        BOOST_LOG(slg) << "Log record " << i;
+        BOOST_LOG_CHANNEL_SEV(slg, "thread-module", error) << "Log record " << i;
     }
     std::cout << "branch-LWP=" << gettid() << std::endl;
 //    sleep(5);
@@ -221,25 +221,25 @@ int main(int argc, char* argv[])
 //        keywords::filter = expr::attr< severity_level >("Severity") >= warning;
 
 
-//        BOOST_LOG_SEV(slg, critical) << "A fasdf A normal severity message, will not pass to the file";
+        BOOST_LOG_CHANNEL_SEV(slg, "module2", critical) << "A fasdf A normal severity message, will not pass to the file";
         pid_t p = fork();
 
           if (p == 0)
           {
             std::cout << "child pid=" << getpid() << std::endl;
-//            BOOST_LOG_SEV(slg, notification) << "Bchild pid= " << getpid();
-//            BOOST_LOG_SEV(slg, critical) << "C A normal severity message, will not pass to the file";
-//            BOOST_LOG_SEV(slg, normal) << "D A normal severity message, will not pass to the file";
+            BOOST_LOG_CHANNEL_SEV(slg, "child", notification) << "Bchild pid= " << getpid();
+            BOOST_LOG_CHANNEL_SEV(slg, "child", critical) << "C A normal severity message, will not pass to the file";
+            BOOST_LOG_CHANNEL_SEV(slg, "child", normal) << "D A normal severity message, will not pass to the file";
 //            sleep(5);
           }
           else
           {
               std::cout << "parent pid=" << getpid() << std::endl;
-//              BOOST_LOG_SEV(slg, warning) << "P1 parent pid= " << getpid();
-//              BOOST_LOG_SEV(slg, critical) << "P2 A normal severity message, will not pass to the file";
-//              BOOST_LOG_SEV(slg, normal) << "P3 A normal severity message, will not pass to the file";
-//              BOOST_LOG(slg) << "P4 A normal severity message, will not pass to the file";
-//              BOOST_LOG(slg) << "P5 A normal severity message, will not pass to the file";
+              BOOST_LOG_CHANNEL_SEV(slg, "module3", warning) << "P1 parent pid= " << getpid();
+              BOOST_LOG_CHANNEL_SEV(slg, "module3", critical) << "P2 A normal severity message, will not pass to the file";
+              BOOST_LOG_CHANNEL_SEV(slg, "module3", normal) << "P3 A normal severity message, will not pass to the file";
+              BOOST_LOG(slg) << "P4 A normal severity message, will not pass to the file";
+              BOOST_LOG(slg) << "P5 A normal severity message, will not pass to the file";
 //              sleep(5);
           }
 
@@ -248,7 +248,7 @@ int main(int argc, char* argv[])
 
         for (unsigned int i = 0; i < 3; ++i)
         {
-//            BOOST_LOG_SEV(slg, warning) << "F Log record main-2 " << i;
+            BOOST_LOG_CHANNEL_SEV(slg, "module3", warning) << "F Log record main-2 " << i;
         }
 
         // Flush all buffered records
