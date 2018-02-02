@@ -164,15 +164,15 @@ int main(int argc, char* argv[])
 //        keywords::filter = min_severity || severity >= critical,
         sink->set_formatter
         (
-            expr::format("%1% %2% %3%[%4%|%5%] %6% <%7%> <%8%> %9%")
+            expr::format("%1% %2% %3% %4%[%5%|%6%] %7% <%8%> %9%")
 		        % expr::format_date_time< boost::posix_time::ptime >("time-stamp", "%Y-%m-%d %H:%M:%S.%f")
+		        % severity
 		        % expr::attr< std::string >("hostname")
 		        % expr::attr< std::string >("process-name")
 		        % expr::attr< pid_t >("process-id")
 		        % expr::attr< pid_t >("thread-id")
                 % expr::attr< uint32_t >("sequence-id")
                 % channel
-                % severity
                 % expr::smessage
         );
 //        sink->set_filter(expr::attr< severity_level >("severity") >= normal);
