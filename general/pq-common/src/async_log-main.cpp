@@ -62,6 +62,8 @@ namespace keywords = boost::log::keywords;
 
 using boost::shared_ptr;
 
+const char* defaultLogFilename = "sample_%N.log";
+
 enum
 {
     LOG_RECORDS_TO_WRITE = 10,
@@ -123,10 +125,10 @@ BOOST_LOG_ATTRIBUTE_KEYWORD(channel, "Channel", std::string)
 
 
 //#define DEFAULT_MIN_LEVEL warning
-severity_level minSeverityLevel = Critical;
+severity_level minSeverity = Notice;
 
 #define LOG_TRACE_IMPL(module, severity, msg) \
-    if(severity <= minSeverityLevel) \
+    if(severity <= minSeverity) \
     { \
         BOOST_LOG_CHANNEL_SEV(slg, module, severity) << msg; \
     } \
@@ -150,7 +152,7 @@ severity_level minSeverityLevel = Critical;
 
 
 
-void initConsoleLog()
+void initConsoleLog(severity_level consoleSeverity = Warning)
 {
 #if 0
     // Create a minimal severity table filter
@@ -166,10 +168,10 @@ void initConsoleLog()
     logging::add_console_log
     (
         std::clog,
-        keywords::filter = severity <= Error,  //this severity must <= minSeverityLevel
+        keywords::filter = severity <= (consoleSeverity <= minSeverity ? consoleSeverity : minSeverity),  //this consoleSeverity must <= minSeverity, else use minSeverity
 //        keywords::filter = min_severity || severity >= critical,
         keywords::format =
-                expr::format("%1% %2% %3% %4%[%5%|%6%] %7% <%8%> %9%")
+                expr::format("%1% %2% {%3%|%4%] %5% %6%")
                                       % expr::format_date_time< boost::posix_time::ptime >("time-stamp", "%Y-%m-%d %H:%M:%S.%f")
                                       % severity
                                       % expr::attr< pid_t >("process-id")
@@ -181,11 +183,11 @@ void initConsoleLog()
 }
 
 
-void initSyncFile()
+void initSyncFileLog(const char* filename)
 {
     logging::add_file_log
     (
-        keywords::file_name = "sample_%N.log",                                        /*< file name pattern >*/
+        keywords::file_name = (filename == nullptr ? defaultLogFilename : filename),                                        /*< file name pattern >*/
         keywords::rotation_size = 10 * 1024 * 1024,                                   /*< rotate files every 10 MiB... >*/
         keywords::time_based_rotation = sinks::file::rotation_at_time_point(0, 0, 0), /*< ...or at midnight >*/
         keywords::format =
@@ -201,7 +203,7 @@ void initSyncFile()
                         % expr::smessage
     );
 
-    logging::core::get()->set_filter(severity <= minSeverityLevel);
+    logging::core::get()->set_filter(severity <= minSeverity);
 
 //    logging::core::get()->add_sink(sink);
 
@@ -228,6 +230,7 @@ void initSyncFile()
 
 void initAsyncFileLog()
 {
+#if 0
     // Open a rotating text file
      shared_ptr< std::ostream > strm(new std::ofstream("test.log"));
      if (!strm->good())
@@ -268,7 +271,7 @@ void initAsyncFileLog()
              % expr::smessage
      );
 //        sink->set_filter(expr::attr< severity_level >("severity") >= normal);
-     sink->set_filter(severity <= minSeverityLevel);
+     sink->set_filter(severity <= minSeverity);
 //     sink->set_filter(expr::attr< std::string >("Channel") == "net");
      // Add it to the core
 
@@ -298,14 +301,24 @@ void initAsyncFileLog()
 
      logging::add_common_attributes();
 
+#endif
 }
 
 
-void init()
+void initSingleProcessLog(bool enableConsoleLog = false, severity_level fileSeverity = Notice, severity_level consoleSeverity = Warning, const char* filename = defaultLogFilename)
 {
-    initConsoleLog();
-    initSyncFile();
-//    initAsncFile();
+    minSeverity = fileSeverity;
+
+    if(enableConsoleLog)
+    {
+        initConsoleLog(consoleSeverity); 
+    }
+
+#if 1
+    initSyncFileLog(filename);
+#else
+    initAsncFileLog();
+#endif
 }
 
 //! This function is executed in multiple threads
@@ -335,9 +348,9 @@ int main(int argc, char* argv[])
 {
     try
     {
-        init();
+        initSingleProcessLog(true);
 
-        std::cout << "main-LWP=" << gettid() << std::endl;
+        TRACE_NOTICE("main", "main-LWP=" << gettid());
 
         for (unsigned int i = 0; i < 2; ++i)
         {
@@ -392,7 +405,7 @@ int main(int argc, char* argv[])
     }
     catch (std::exception& e)
     {
-        std::cout << "FAILURE: " << e.what() << std::endl;
+        TRACE_EMERGENCY("main", e.what());
         return 1;
     }
 }
