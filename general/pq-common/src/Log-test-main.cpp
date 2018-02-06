@@ -14,6 +14,9 @@
 
 // #define BOOST_LOG_DYN_LINK 1
 
+#include "../include/Log.h"
+
+
 #include <stdexcept>
 #include <string>
 #include <iostream>
@@ -26,6 +29,7 @@
 #include <boost/log/support/date_time.hpp>
 #include <boost/thread/thread.hpp>
 #include <boost/thread/barrier.hpp>
+#if 0
 #include <boost/log/utility/setup/common_attributes.hpp>
 #include <boost/log/common.hpp>
 #include <boost/log/expressions.hpp>
@@ -171,7 +175,7 @@ void initConsoleLog(severity_level consoleSeverity = Warning)
         keywords::filter = severity <= (consoleSeverity <= minSeverity ? consoleSeverity : minSeverity),  //this consoleSeverity must <= minSeverity, else use minSeverity
 //        keywords::filter = min_severity || severity >= critical,
         keywords::format =
-                expr::format("%1% %2% {%3%|%4%] %5% %6%")
+                expr::format("%1% %2% [%3%|%4%] %5% %6%")
                                       % expr::format_date_time< boost::posix_time::ptime >("time-stamp", "%Y-%m-%d %H:%M:%S.%f")
                                       % severity
                                       % expr::attr< pid_t >("process-id")
@@ -214,7 +218,6 @@ void initSyncFileLog(const char* filename)
     if( gethostname(hostname,sizeof(hostname)) )
     {
      std::cout << "gethostname calling error" << std::endl;
-     return;
     }
 
     logging::core::get()->add_global_attribute("hostname", attrs::constant<std::string>(hostname));
@@ -321,6 +324,20 @@ void initSingleProcessLog(bool enableConsoleLog = false, severity_level fileSeve
 #endif
 }
 
+
+void initInThread()
+{
+    BOOST_LOG_SCOPED_THREAD_ATTR("thread-id", attrs::mutable_constant<pid_t>(gettid()));
+    logging::core::get()->add_thread_attribute("sequence-id", attrs::counter< unsigned int >());
+}
+#endif
+
+enum
+{
+    LOG_RECORDS_TO_WRITE = 10,
+    THREAD_COUNT = 2
+};
+
 //! This function is executed in multiple threads
 void thread_fun(boost::barrier& bar)
 {
@@ -331,8 +348,7 @@ void thread_fun(boost::barrier& bar)
 //    logging::core::get()->add_global_attribute("thread-id", attrs::constant<pid_t>(gettid()));
 //    logging::core::get()->add_global_attribute("thread-id", attrs::mutable_constant<pid_t>(gettid()));
 //    BOOST_LOG_SCOPED_THREAD_TAG("thread-id", gettid());
-    BOOST_LOG_SCOPED_THREAD_ATTR("thread-id", attrs::mutable_constant<pid_t>(gettid()));
-    logging::core::get()->add_thread_attribute("sequence-id", attrs::counter< unsigned int >());
+    Log::initInThread();
     // Now, do some logging
     for (unsigned int i = 0; i < LOG_RECORDS_TO_WRITE; ++i)
     {
@@ -348,7 +364,7 @@ int main(int argc, char* argv[])
 {
     try
     {
-        initSingleProcessLog(true);
+        Log::initSingleProcessLog(true);
 
         TRACE_NOTICE("main", "main-LWP=" << gettid());
 
