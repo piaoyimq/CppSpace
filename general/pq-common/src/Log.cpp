@@ -6,7 +6,7 @@
  */
 
 
-
+//#include "pq-common/include/pq-common.h"
 #include "../include/Log.h"
 #include <fstream>
 //#include <boost/smart_ptr/shared_ptr.hpp>
@@ -18,6 +18,7 @@
 //#include <boost/log/utility/record_ordering.hpp>
 //#include <boost/log/utility/setup/file.hpp>
 //#include <boost/log/utility/setup/console.hpp>
+#include <boost/filesystem.hpp>
 
 namespace logging = boost::log;
 namespace attrs = boost::log::attributes;
@@ -25,13 +26,10 @@ namespace sinks = boost::log::sinks;
 namespace expr = boost::log::expressions;
 namespace keywords = boost::log::keywords;
 
-using boost::shared_ptr;
 
 Log::SeverityLevel Log::minSeverity = Notice;
-const char* Log::defaultLogFilename = "sample_%N.log";
+const std::string Log::defaultLogFilename = createLogDirectory() + std::string("/") + boost::log::aux::get_process_name() + std::string("%N.log");
 Log::logger_type Log::slg;
-
-
 
 
 
@@ -39,7 +37,7 @@ Log::logger_type Log::slg;
 
 BOOST_LOG_ATTRIBUTE_KEYWORD(severity, "Severity", Log::SeverityLevel)
 BOOST_LOG_ATTRIBUTE_KEYWORD(channel, "Channel", std::string)
-
+BOOST_LOG_ATTRIBUTE_KEYWORD(scope, "Scope", attrs::named_scope::value_type)
 
 
 void Log::initConsoleLog(SeverityLevel consoleSeverity)
@@ -61,23 +59,26 @@ void Log::initConsoleLog(SeverityLevel consoleSeverity)
         keywords::filter = severity <= (consoleSeverity <= minSeverity ? consoleSeverity : minSeverity),  //this consoleSeverity must <= minSeverity, else use minSeverity
 //        keywords::filter = min_severity || severity >= critical,
         keywords::format =
-                expr::format("%1% %2% [%3%|%4%] %5% %6%")
-                                      % expr::format_date_time< boost::posix_time::ptime >("time-stamp", "%Y-%m-%d %H:%M:%S.%f")
+                expr::format("%1% %2% [%3%|%4%] (%5%) %6%")
+                                      % expr::format_date_time< boost::posix_time::ptime >("time-stamp", "%H:%M:%S.%f")
                                       % severity
                                       % expr::attr< pid_t >("process-id")
                                       % expr::attr< pid_t >("thread-id")
-                                      % channel
+                                      % expr::format_named_scope(scope, keywords::format = "%n (%f:%l)") //TODO: ??
+                                      //% expr::format_named_scope("Scope", keywords::format = "%n (%f:%l)")
                                       % expr::smessage
     );
+
+    logging::core::get()->add_thread_attribute("Scope", attrs::named_scope());
 #endif
 }
 
 
-void Log::initSyncFileLog(const char* filename)
+void Log::initSyncFileLog(const std::string& filename)
 {
     logging::add_file_log
     (
-        keywords::file_name = (filename == nullptr ? defaultLogFilename : filename),                                        /*< file name pattern >*/
+        keywords::file_name = (filename.size() == 0 ? defaultLogFilename.c_str() : filename.c_str()),                                        /*< file name pattern >*/
         keywords::rotation_size = 10 * 1024 * 1024,                                   /*< rotate files every 10 MiB... >*/
         keywords::time_based_rotation = sinks::file::rotation_at_time_point(0, 0, 0), /*< ...or at midnight >*/
         keywords::format =
@@ -95,15 +96,13 @@ void Log::initSyncFileLog(const char* filename)
 
     logging::core::get()->set_filter(severity <= minSeverity);
 
-//    logging::core::get()->add_sink(sink);
-
     logging::core::get()->add_global_attribute("time-stamp", attrs::local_clock());
 
     char hostname[32];
 
     if( gethostname(hostname,sizeof(hostname)) )
     {
-     std::cout << "gethostname calling error" << std::endl;
+//     TRACE_WARNING("Log", "gethostname calling failed.");
     }
 
     logging::core::get()->add_global_attribute("hostname", attrs::constant<std::string>(hostname));
@@ -113,7 +112,6 @@ void Log::initSyncFileLog(const char* filename)
     logging::core::get()->add_global_attribute("sequence-id", attrs::counter< unsigned int >());
 
     logging::add_common_attributes();
-
 }
 
 
@@ -121,7 +119,7 @@ void Log::initAsyncFileLog()
 {
 #if 1
     // Open a rotating text file
-     shared_ptr< std::ostream > strm(new std::ofstream("test.log"));
+     boost::shared_ptr< std::ostream > strm(new std::ofstream("test.log"));
      if (!strm->good())
          throw std::runtime_error("Failed to open a text log file");
 
@@ -136,7 +134,7 @@ void Log::initAsyncFileLog()
 
 //     boost::shared_ptr< sinks::synchronous_sink< sinks::text_file_backend > > sink = logging::add_file_log
 
-     shared_ptr< sink_t > sink(new sink_t(
+     boost::shared_ptr< sink_t > sink(new sink_t(
          boost::make_shared< backend_t >(),
          // We'll apply record ordering to ensure that records from different threads go sequentially in the file
          keywords::order = logging::make_attr_ordering("sequence-id", std::greater< unsigned int >())));
@@ -177,7 +175,7 @@ void Log::initAsyncFileLog()
 
      if( gethostname(hostname,sizeof(hostname)) )
      {
-      std::cout << "gethostname calling error" << std::endl;
+//      TRACE_WARNING("Log", "gethostname calling failed");
       return;
      }
 
@@ -195,7 +193,7 @@ void Log::initAsyncFileLog()
 
 
 void Log::initSingleProcessLog(bool enableConsoleLog, SeverityLevel fileSeverity, SeverityLevel consoleSeverity,
-        const char* filename)
+        const std::string& filename)
 {
     minSeverity = fileSeverity;
 
@@ -218,3 +216,21 @@ void Log::initInThread()
     logging::core::get()->add_thread_attribute("sequence-id", attrs::counter< unsigned int >());
 }
 
+
+std::string Log::createLogDirectory()
+{
+    try
+    {
+        std::string directory = std::string("/var/") + boost::log::aux::get_process_name();
+        boost::filesystem::create_directory(directory);
+        return directory;
+    }
+    catch(std::exception& e)
+    {
+        std::string directory = std::string("./") + boost::log::aux::get_process_name() + std::string("-log");
+//        TRACE_WARNING("Log", e.what() << ", use: " << directory );
+
+        boost::filesystem::create_directory(directory);
+        return directory;
+    }
+}

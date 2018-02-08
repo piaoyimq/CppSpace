@@ -47,7 +47,7 @@ public:
     typedef src::severity_channel_logger< SeverityLevel, std::string > logger_type;
 
     static void initSingleProcessLog(bool enableConsoleLog = false, SeverityLevel fileSeverity = Notice,
-            SeverityLevel consoleSeverity = Warning, const char* filename = defaultLogFilename);
+            SeverityLevel consoleSeverity = Warning, const std::string& filename = defaultLogFilename);
 
     static void initInThread();
 
@@ -55,13 +55,15 @@ public:
 
     static void initConsoleLog(SeverityLevel consoleSeverity = Warning);
 
-    static void initSyncFileLog(const char* filename);
+    static void initSyncFileLog(const std::string& filename);
 
     static void initAsyncFileLog();
 
+    static std::string createLogDirectory();
+
     static SeverityLevel minSeverity;
 
-    static const char* defaultLogFilename;
+    static const std::string defaultLogFilename;
 
     static logger_type slg;
 };
