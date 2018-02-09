@@ -65,6 +65,8 @@ public:
 
     static const std::string defaultLogFilename;
 
+    static bool consoleEnable;
+
     static logger_type slg;
 };
 
@@ -100,7 +102,15 @@ inline std::basic_ostream< CharT, TraitsT >& operator<< (std::basic_ostream< Cha
 #define LOG_TRACE_IMPL(module, severity, msg) \
     if(severity <= Log::minSeverity) \
     { \
-        BOOST_LOG_CHANNEL_SEV(Log::slg, module, severity) << msg; \
+        if(Log::consoleEnable) \
+        { \
+            BOOST_LOG_NAMED_SCOPE(__FUNCTION__);\
+            BOOST_LOG_CHANNEL_SEV(Log::slg, module, severity) << msg; \
+        } \
+        else \
+        { \
+            BOOST_LOG_CHANNEL_SEV(Log::slg, module, severity) << msg; \
+        } \
     } \
 
 
