@@ -36,7 +36,7 @@ enum
     LOG_RECORDS_TO_WRITE = 10,
     THREAD_COUNT = 2
 };
-
+Log lg;
 //! This function is executed in multiple threads
 void thread_fun(boost::barrier& bar)
 {
@@ -47,7 +47,7 @@ void thread_fun(boost::barrier& bar)
 //    logging::core::get()->add_global_attribute("thread-id", attrs::constant<pid_t>(gettid()));
 //    logging::core::get()->add_global_attribute("thread-id", attrs::mutable_constant<pid_t>(gettid()));
 //    BOOST_LOG_SCOPED_THREAD_TAG("thread-id", gettid());
-    Log::initInThread();
+    lg.initInThread();
     // Now, do some logging
     for (unsigned int i = 0; i < LOG_RECORDS_TO_WRITE; ++i)
     {
@@ -58,11 +58,13 @@ void thread_fun(boost::barrier& bar)
 
 
 
+
 int main(int argc, char* argv[])
 {
     try
     {
-        Log::initSingleProcessLog(true);
+
+        lg.initSingleProcessLog(true, Log::Debug, Log::Notice);
 
         TRACE_NOTICE("main", "main-LWP=" << gettid());
 

@@ -26,12 +26,17 @@ namespace sinks = boost::log::sinks;
 namespace expr = boost::log::expressions;
 namespace keywords = boost::log::keywords;
 
+#define FILE_NAME  boost::log::aux::get_process_name() + std::string("%N.log")
+
+std::multimap<Log::SeverityLevel, std::string> Log::previousLog;  //should declare before Log::defaultLogFilename
 
 Log::SeverityLevel Log::minSeverity = Notice;
-const std::string Log::defaultLogFilename = createLogDirectory() + std::string("/") + boost::log::aux::get_process_name() + std::string("%N.log");
-Log::logger_type Log::slg;
-bool Log::consoleEnable = true;
 
+const std::string Log::defaultLogFilename = createLogDirectory() + FILE_NAME ;
+
+Log::logger_type Log::slg;
+
+bool Log::consoleEnable = true;
 
 
 
@@ -101,7 +106,7 @@ void Log::initSyncFileLog(const std::string& filename)
 
     if( gethostname(hostname,sizeof(hostname)) )
     {
-//     TRACE_WARNING("Log", "gethostname calling failed.");
+        previousLog.emplace(std::make_pair(Warning, "gethostname calling failed."));
     }
 
     logging::add_common_attributes();
@@ -172,7 +177,8 @@ void Log::initAsyncFileLog()
      if( gethostname(hostname,sizeof(hostname)) )
      {
 //      TRACE_WARNING("Log", "gethostname calling failed");
-      return;
+//         previousLog[Warning] = "gethostname calling failed.";
+         previousLog.emplace(std::make_pair(Warning, "gethostname calling failed."));
      }
 
      logging::core::get()->add_global_attribute("hostname", attrs::constant<std::string>(hostname));
@@ -203,8 +209,17 @@ void Log::initSingleProcessLog(bool enableConsoleLog, SeverityLevel fileSeverity
 #else
     initAsncFileLog();
 #endif
+    printPreviousLog();
 }
 
+void Log::printPreviousLog()
+{
+    for(auto& log: previousLog)
+    {
+
+        LOG_TRACE_IMPL("Log", log.first, log.second);
+    }
+}
 
 void Log::initInThread()
 {
@@ -215,18 +230,19 @@ void Log::initInThread()
 
 std::string Log::createLogDirectory()
 {
+    std::string directory;
     try
     {
-        std::string directory = std::string("/var/") + boost::log::aux::get_process_name();
+        directory = std::string("/var/") + boost::log::aux::get_process_name() + std::string("/");
         boost::filesystem::create_directory(directory);
-        return directory;
     }
     catch(std::exception& e)
     {
-        std::string directory = std::string("./") + boost::log::aux::get_process_name() + std::string("-log");
-//        TRACE_WARNING("Log", e.what() << ", use: " << directory );
-
+        directory = std::string("./") + boost::log::aux::get_process_name() + std::string("-log/");
         boost::filesystem::create_directory(directory);
-        return directory;
     }
+
+    previousLog.emplace(std::make_pair(Notice, std::string("The log file is: ") + directory + FILE_NAME));
+
+    return directory;
 }

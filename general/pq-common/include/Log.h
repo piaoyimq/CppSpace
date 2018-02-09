@@ -8,6 +8,8 @@
 #ifndef GENERAL_PQ_COMMON_INCLUDE_LOG_H_
 #define GENERAL_PQ_COMMON_INCLUDE_LOG_H_
 
+#include <map>
+#include <utility>
 #include <sys/syscall.h>
 #include <boost/log/common.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
@@ -61,6 +63,8 @@ public:
 
     static std::string createLogDirectory();
 
+    static void printPreviousLog();
+
     static SeverityLevel minSeverity;
 
     static const std::string defaultLogFilename;
@@ -68,6 +72,8 @@ public:
     static bool consoleEnable;
 
     static logger_type slg;
+
+    static std::multimap<SeverityLevel, std::string> previousLog;
 };
 
 
