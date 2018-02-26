@@ -26,24 +26,27 @@ namespace sinks = boost::log::sinks;
 namespace expr = boost::log::expressions;
 namespace keywords = boost::log::keywords;
 
-#define FILE_NAME  boost::log::aux::get_process_name() + std::string("%N.log")
+//#define FILE_NAME  boost::log::aux::get_process_name() + std::string("%N.log")
 
-std::multimap<Log::SeverityLevel, std::string> Log::previousLog;  //should declare before Log::defaultLogFilename
+//std::multimap<Log::SeverityLevel, std::string> Log::previousLog;  //should declare before Log::defaultLogFilename
 
-Log::SeverityLevel Log::minSeverity = Notice;
+//Log::SeverityLevel Log::minSeverity = Notice;
 
-const std::string Log::defaultLogFilename = createLogDirectory() + FILE_NAME ;
+//const std::string Log::defaultLogFilename = createLogDirectory() + FILE_NAME ;
 
-Log::logger_type Log::slg;
+//Log::logger_type Log::slg;
 
-bool Log::consoleEnable = true;
+//bool Log::consoleEnable = true;
 
+Log* Log::_instance = nullptr;
 
+Log::AutoRelease Log::release;
 
 
 BOOST_LOG_ATTRIBUTE_KEYWORD(severity, "Severity", Log::SeverityLevel)
 BOOST_LOG_ATTRIBUTE_KEYWORD(channel, "Channel", std::string)
 BOOST_LOG_ATTRIBUTE_KEYWORD(scope, "Scope", attrs::named_scope::value_type)
+
 
 void Log::initConsoleLog(SeverityLevel consoleSeverity)
 {
@@ -74,6 +77,8 @@ void Log::initConsoleLog(SeverityLevel consoleSeverity)
                                       % expr::smessage
     );
 
+    previousLog.emplace(std::make_pair(Notice, std::string("The log file is: ") + createLogDirectory() + FILE_NAME));
+
 #endif
 }
 
@@ -83,7 +88,7 @@ void Log::initSyncFileLog(const std::string& filename)
     logging::add_file_log
     (
         keywords::file_name = (filename.size() == 0 ? defaultLogFilename.c_str() : filename.c_str()),                                        /*< file name pattern >*/
-        keywords::rotation_size = 10 * 1024 * 1024,                                   /*< rotate files every 10 MiB... >*/
+        keywords::rotation_size = 100 * 1024 * 1024,                                   /*< rotate files every 10 MiB... >*/
         keywords::time_based_rotation = sinks::file::rotation_at_time_point(0, 0, 0), /*< ...or at midnight >*/
         keywords::format =
                     expr::format("%1% %2% %3% %4%[%5%|%6%] %7% <%8%> %9%")
@@ -194,10 +199,11 @@ void Log::initAsyncFileLog()
 }
 
 
-void Log::initSingleProcessLog(bool enableConsoleLog, SeverityLevel fileSeverity, SeverityLevel consoleSeverity,
-        const std::string& filename)
+Log::Log(LogType logType, bool enableConsoleLog, SeverityLevel fileSeverity, SeverityLevel consoleSeverity,
+        const std::string& filename):
+        consoleEnable(enableConsoleLog), minSeverity(fileSeverity)
 {
-    minSeverity = fileSeverity;
+    defaultLogFilename = createLogDirectory() + FILE_NAME;
 
     if(enableConsoleLog)
     {
@@ -221,9 +227,10 @@ void Log::printPreviousLog()
     }
 }
 
+
 void Log::initInThread()
 {
-    BOOST_LOG_SCOPED_THREAD_ATTR("thread-id", attrs::mutable_constant<pid_t>(gettid()));
+    logging::core::get()->add_thread_attribute("thread-id", attrs::mutable_constant<pid_t>(gettid())); //    BOOST_LOG_SCOPED_THREAD_ATTR("thread-id", attrs::mutable_constant<pid_t>(gettid()));
     logging::core::get()->add_thread_attribute("sequence-id", attrs::counter< unsigned int >());
 }
 
@@ -241,8 +248,6 @@ std::string Log::createLogDirectory()
         directory = std::string("./") + boost::log::aux::get_process_name() + std::string("-log/");
         boost::filesystem::create_directory(directory);
     }
-
-    previousLog.emplace(std::make_pair(Notice, std::string("The log file is: ") + directory + FILE_NAME));
 
     return directory;
 }

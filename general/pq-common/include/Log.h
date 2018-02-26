@@ -28,11 +28,18 @@ inline pid_t gettid()
 {
   return static_cast<pid_t>(::syscall(SYS_gettid));
 }
-
+#define FILE_NAME  boost::log::aux::get_process_name() + std::string("%N.log")
 
 class Log
 {
 public:
+
+    enum LogType
+    {
+        SingleHostSingleProcess,
+        SingleHostMutipleProcess,
+        MutipleHost
+    };
 
     enum SeverityLevel
     {
@@ -46,39 +53,86 @@ public:
         Debug            //   7       Debug: debug-level messages
     };
 
-    typedef src::severity_channel_logger< SeverityLevel, std::string > logger_type;
-
-    static void initSingleProcessLog(bool enableConsoleLog = false, SeverityLevel fileSeverity = Notice,
-            SeverityLevel consoleSeverity = Warning, const std::string& filename = defaultLogFilename);
+    static Log *instance(LogType logType=SingleHostSingleProcess, bool enableConsoleLog = false, SeverityLevel fileSeverity = Notice,
+            SeverityLevel consoleSeverity = Warning, const std::string& filename = createLogDirectory() + FILE_NAME)
+    {
+        if (nullptr == _instance)
+        {
+            _instance = new Log(logType, enableConsoleLog, fileSeverity, consoleSeverity, filename);
+        }
+        return _instance;
+    }
 
     static void initInThread();
 
-//private:
+    SeverityLevel getMinSeverity()
+    {
+        return minSeverity;
+    }
 
-    static void initConsoleLog(SeverityLevel consoleSeverity = Warning);
+    bool isConsoleEnable()
+    {
+        return consoleEnable;
+    }
 
-    static void initSyncFileLog(const std::string& filename);
+private:
 
-    static void initAsyncFileLog();
+    void initConsoleLog(SeverityLevel consoleSeverity = Warning);
+
+    void initSyncFileLog(const std::string& filename);
+
+    void initAsyncFileLog();
 
     static std::string createLogDirectory();
 
-    static void printPreviousLog();
+    void printPreviousLog();
 
-    static SeverityLevel minSeverity;
+    struct AutoRelease //资源回收机制
+    {
+        /*
+         * 这种方式提供的处理方式显然要比Singleton1的Free(), 来的要便捷，因为它依靠内部提供的Garbo嵌套类来提供服务，
+         * 当Singleton类生命周期结束时，Garbo的类对象garbo_也要销毁， 它将调用析构函数,
+         * 而在析构函数中又自动地释放了Singleton单例类申请的一些资源，这种实现就比较智能化。不需要手动释放资源。这是它的优势。
+         * */
+        ~AutoRelease()
+        {
+            delete _instance;
+            _instance = nullptr;
+            std::cout <<__PRETTY_FUNCTION__ << std::endl;
+        }
+    };
 
-    static const std::string defaultLogFilename;
+    //no copy
+    Log(LogType logType=SingleHostSingleProcess, bool enableConsoleLog = false, SeverityLevel fileSeverity = Notice,
+            SeverityLevel consoleSeverity = Warning, const std::string& filename = createLogDirectory() + FILE_NAME);
 
-    static bool consoleEnable;
+    //no assign
+    Log(const Log& log){}
 
-    static logger_type slg;
+    Log& operator=(const Log& log){}
 
-    static std::multimap<SeverityLevel, std::string> previousLog;
+
+    ~Log(){}
+
+    /****attribute****/
+
+    SeverityLevel minSeverity;
+
+    std::string defaultLogFilename;
+
+    bool consoleEnable;
+
+    std::multimap<SeverityLevel, std::string> previousLog;
+
+    static Log *_instance; //引用性声明
+
+    static AutoRelease release;  //引用性声明
 };
 
 
 template< typename CharT, typename TraitsT >
-inline std::basic_ostream< CharT, TraitsT >& operator<< (std::basic_ostream< CharT, TraitsT >& strm, Log::SeverityLevel lvl)
+inline std::basic_ostream< CharT, TraitsT >& operator<< (std::basic_ostream< CharT, TraitsT >& strm,
+        Log::SeverityLevel lvl)
 {
  static const char* const str[] =
  {
@@ -104,18 +158,22 @@ inline std::basic_ostream< CharT, TraitsT >& operator<< (std::basic_ostream< Cha
  return strm;
 }
 
+namespace
+{
+typedef src::severity_channel_logger< Log::SeverityLevel, std::string > logger_type;
+logger_type slg;
 
 #define LOG_TRACE_IMPL(module, severity, msg) \
-    if(severity <= Log::minSeverity) \
+    if(severity <= Log::instance()->getMinSeverity()) \
     { \
-        if(Log::consoleEnable) \
+        if(Log::instance()->isConsoleEnable()) \
         { \
             BOOST_LOG_NAMED_SCOPE(__FUNCTION__);\
-            BOOST_LOG_CHANNEL_SEV(Log::slg, module, severity) << msg; \
+            BOOST_LOG_CHANNEL_SEV(slg, module, severity) << msg; \
         } \
         else \
         { \
-            BOOST_LOG_CHANNEL_SEV(Log::slg, module, severity) << msg; \
+            BOOST_LOG_CHANNEL_SEV(slg, module, severity) << msg; \
         } \
     } \
 
@@ -136,5 +194,5 @@ inline std::basic_ostream< CharT, TraitsT >& operator<< (std::basic_ostream< Cha
 
 #define TRACE_DEBUG(module, msg)            LOG_TRACE_IMPL(module, Log::Debug, msg)
 
-
+}
 #endif /* GENERAL_PQ_COMMON_INCLUDE_LOG_H_ */
