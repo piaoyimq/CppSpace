@@ -20,6 +20,11 @@
 
 extern std::string get_name_by_pid(pid_t pid);
 
+inline pid_t gettid()
+{
+  return static_cast<pid_t>(::syscall(SYS_gettid));
+}
+
 //vector print
 template<typename T>
 std::ostream& operator<<(std::ostream& s, const std::vector<T>& v)

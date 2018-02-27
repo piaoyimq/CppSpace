@@ -12,23 +12,14 @@
 #include <utility>
 #include <sys/syscall.h>
 #include <boost/log/common.hpp>
-#include <boost/smart_ptr/shared_ptr.hpp>
-#include <boost/log/support/date_time.hpp>
-#include <boost/log/utility/setup/common_attributes.hpp>
-#include <boost/log/expressions.hpp>
-#include <boost/log/attributes.hpp>
-#include <boost/log/sinks.hpp>
-#include <boost/log/utility/record_ordering.hpp>
-#include <boost/log/utility/setup/file.hpp>
-#include <boost/log/utility/setup/console.hpp>
+#include "pq-common.h"
 
 namespace src = boost::log::sources;
 
-inline pid_t gettid()
-{
-  return static_cast<pid_t>(::syscall(SYS_gettid));
-}
-#define FILE_NAME  boost::log::aux::get_process_name() + std::string("%N.log")
+
+
+//        sink->stop();  //TODO
+//        sink->flush();
 
 class Log
 {
@@ -36,8 +27,7 @@ public:
 
     enum LogType
     {
-        SingleHostSingleProcess,
-        SingleHostMutipleProcess,
+        SingleHost,
         MutipleHost
     };
 
@@ -53,8 +43,8 @@ public:
         Debug            //   7       Debug: debug-level messages
     };
 
-    static Log *instance(LogType logType=SingleHostSingleProcess, bool enableConsoleLog = false, SeverityLevel fileSeverity = Notice,
-            SeverityLevel consoleSeverity = Warning, const std::string& filename = createLogDirectory() + FILE_NAME)
+    static Log *instance(LogType logType=SingleHost, bool enableConsoleLog = false, SeverityLevel fileSeverity = Notice,
+            SeverityLevel consoleSeverity = Warning, const std::string& filename = createLogFile())
     {
         if (nullptr == _instance)
         {
@@ -79,32 +69,25 @@ private:
 
     void initConsoleLog(SeverityLevel consoleSeverity = Warning);
 
-    void initSyncFileLog(const std::string& filename);
+    void initSyncFileLog(const std::string& filename, LogType logType = SingleHost);
 
     void initAsyncFileLog();
 
-    static std::string createLogDirectory();
+    static std::string createLogFile();
 
     void printPreviousLog();
 
-    struct AutoRelease //资源回收机制
+    struct AutoRelease
     {
-        /*
-         * 这种方式提供的处理方式显然要比Singleton1的Free(), 来的要便捷，因为它依靠内部提供的Garbo嵌套类来提供服务，
-         * 当Singleton类生命周期结束时，Garbo的类对象garbo_也要销毁， 它将调用析构函数,
-         * 而在析构函数中又自动地释放了Singleton单例类申请的一些资源，这种实现就比较智能化。不需要手动释放资源。这是它的优势。
-         * */
         ~AutoRelease()
         {
             delete _instance;
             _instance = nullptr;
-            std::cout <<__PRETTY_FUNCTION__ << std::endl;
         }
     };
 
     //no copy
-    Log(LogType logType=SingleHostSingleProcess, bool enableConsoleLog = false, SeverityLevel fileSeverity = Notice,
-            SeverityLevel consoleSeverity = Warning, const std::string& filename = createLogDirectory() + FILE_NAME);
+    Log(LogType logType, bool enableConsoleLog, SeverityLevel fileSeverity, SeverityLevel consoleSeverity, const std::string& filename);
 
     //no assign
     Log(const Log& log){}
@@ -124,9 +107,9 @@ private:
 
     std::multimap<SeverityLevel, std::string> previousLog;
 
-    static Log *_instance; //引用性声明
+    static Log *_instance;
 
-    static AutoRelease release;  //引用性声明
+    static AutoRelease release;
 };
 
 

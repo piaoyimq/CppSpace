@@ -9,15 +9,15 @@
 //#include "pq-common/include/pq-common.h"
 #include "../include/Log.h"
 #include <fstream>
-//#include <boost/smart_ptr/shared_ptr.hpp>
-//#include <boost/log/support/date_time.hpp>
-//#include <boost/log/utility/setup/common_attributes.hpp>
-//#include <boost/log/expressions.hpp>
-//#include <boost/log/attributes.hpp>
-//#include <boost/log/sinks.hpp>
-//#include <boost/log/utility/record_ordering.hpp>
-//#include <boost/log/utility/setup/file.hpp>
-//#include <boost/log/utility/setup/console.hpp>
+#include <boost/smart_ptr/shared_ptr.hpp>
+#include <boost/log/support/date_time.hpp>
+#include <boost/log/utility/setup/common_attributes.hpp>
+#include <boost/log/expressions.hpp>
+#include <boost/log/attributes.hpp>
+#include <boost/log/sinks.hpp>
+#include <boost/log/utility/record_ordering.hpp>
+#include <boost/log/utility/setup/file.hpp>
+#include <boost/log/utility/setup/console.hpp>
 #include <boost/filesystem.hpp>
 
 namespace logging = boost::log;
@@ -26,17 +26,6 @@ namespace sinks = boost::log::sinks;
 namespace expr = boost::log::expressions;
 namespace keywords = boost::log::keywords;
 
-//#define FILE_NAME  boost::log::aux::get_process_name() + std::string("%N.log")
-
-//std::multimap<Log::SeverityLevel, std::string> Log::previousLog;  //should declare before Log::defaultLogFilename
-
-//Log::SeverityLevel Log::minSeverity = Notice;
-
-//const std::string Log::defaultLogFilename = createLogDirectory() + FILE_NAME ;
-
-//Log::logger_type Log::slg;
-
-//bool Log::consoleEnable = true;
 
 Log* Log::_instance = nullptr;
 
@@ -60,7 +49,7 @@ void Log::initConsoleLog(SeverityLevel consoleSeverity)
     min_severity["network"] = Warning;
     min_severity["gui"] = Error;
 #endif
-#if 1
+
     logging::add_console_log
     (
         std::clog,
@@ -73,35 +62,57 @@ void Log::initConsoleLog(SeverityLevel consoleSeverity)
                                       % expr::attr< pid_t >("process-id")
                                       % expr::attr< pid_t >("thread-id")
                                       % expr::format_named_scope(scope, keywords::format = "%n/%f:%l")
-//                                      % expr::format_named_scope("Scope", keywords::format = "%n/%f:%l")
                                       % expr::smessage
     );
 
-    previousLog.emplace(std::make_pair(Notice, std::string("The log file is: ") + createLogDirectory() + FILE_NAME));
+    previousLog.emplace(std::make_pair(Notice, std::string("The log file is: ") + createLogFile()));
 
-#endif
 }
 
 
-void Log::initSyncFileLog(const std::string& filename)
+void Log::initSyncFileLog(const std::string& filename, LogType logType)
 {
-    logging::add_file_log
-    (
-        keywords::file_name = (filename.size() == 0 ? defaultLogFilename.c_str() : filename.c_str()),                                        /*< file name pattern >*/
-        keywords::rotation_size = 100 * 1024 * 1024,                                   /*< rotate files every 10 MiB... >*/
-        keywords::time_based_rotation = sinks::file::rotation_at_time_point(0, 0, 0), /*< ...or at midnight >*/
-        keywords::format =
-                    expr::format("%1% %2% %3% %4%[%5%|%6%] %7% <%8%> %9%")
-                        % expr::format_date_time< boost::posix_time::ptime >("time-stamp", "%Y-%m-%d %H:%M:%S.%f")
-                        % severity
-                        % expr::attr< std::string >("hostname")
-                        % expr::attr< std::string >("process-name")
-                        % expr::attr< pid_t >("process-id")
-                        % expr::attr< pid_t >("thread-id")
-                        % expr::attr< uint32_t >("sequence-id")
-                        % channel
-                        % expr::smessage
-    );
+    const char* logFilename = (filename.size() == 0 ? defaultLogFilename.c_str() : filename.c_str());
+    size_t rotationSize = 100 * 1024 * 1024;
+    auto rotationTimePoint = sinks::file::rotation_at_time_point(0, 0, 0);
+
+    if (SingleHost == logType)
+    {
+        logging::add_file_log
+        (
+            keywords::file_name = logFilename,                                        /*< file name pattern >*/
+            keywords::rotation_size = rotationSize,                                   /*< rotate files every 10 MiB... >*/
+            keywords::time_based_rotation = rotationTimePoint, /*< ...or at midnight >*/
+            keywords::format = expr::format("%1% %2% %3%[%4%|%5%] %6% <%7%> %8%")
+                % expr::format_date_time< boost::posix_time::ptime >("time-stamp", "%Y-%m-%d %H:%M:%S.%f")
+                % severity
+                % expr::attr< std::string >("process-name")
+                % expr::attr< pid_t >("process-id")
+                % expr::attr< pid_t >("thread-id")
+                % expr::attr< uint32_t >("sequence-id")
+                % channel
+                % expr::smessage
+         );
+    }
+    else
+    {
+        logging::add_file_log
+        (
+            keywords::file_name = logFilename,                                        /*< file name pattern >*/
+            keywords::rotation_size = rotationSize,                                   /*< rotate files every 10 MiB... >*/
+            keywords::time_based_rotation = rotationTimePoint, /*< ...or at midnight >*/
+            keywords::format = expr::format("%1% %2% %3% %4%[%5%|%6%] %7% <%8%> %9%")
+                % expr::format_date_time< boost::posix_time::ptime >("time-stamp", "%Y-%m-%d %H:%M:%S.%f")
+                % severity
+                % expr::attr< std::string >("hostname")
+                % expr::attr< std::string >("process-name")
+                % expr::attr< pid_t >("process-id")
+                % expr::attr< pid_t >("thread-id")
+                % expr::attr< uint32_t >("sequence-id")
+                % channel
+                % expr::smessage
+         );
+    }
 
     logging::core::get()->set_filter(severity <= minSeverity);
 
@@ -126,7 +137,7 @@ void Log::initSyncFileLog(const std::string& filename)
 }
 
 
-void Log::initAsyncFileLog()
+void Log::initAsyncFileLog() //TODO
 {
 #if 1
     // Open a rotating text file
@@ -203,7 +214,7 @@ Log::Log(LogType logType, bool enableConsoleLog, SeverityLevel fileSeverity, Sev
         const std::string& filename):
         consoleEnable(enableConsoleLog), minSeverity(fileSeverity)
 {
-    defaultLogFilename = createLogDirectory() + FILE_NAME;
+    defaultLogFilename = createLogFile();
 
     if(enableConsoleLog)
     {
@@ -218,6 +229,7 @@ Log::Log(LogType logType, bool enableConsoleLog, SeverityLevel fileSeverity, Sev
     printPreviousLog();
 }
 
+
 void Log::printPreviousLog()
 {
     for(auto& log: previousLog)
@@ -230,18 +242,18 @@ void Log::printPreviousLog()
 
 void Log::initInThread()
 {
-    logging::core::get()->add_thread_attribute("thread-id", attrs::mutable_constant<pid_t>(gettid())); //    BOOST_LOG_SCOPED_THREAD_ATTR("thread-id", attrs::mutable_constant<pid_t>(gettid()));
+    logging::core::get()->add_thread_attribute("thread-id", attrs::mutable_constant<pid_t>(gettid())); // BOOST_LOG_SCOPED_THREAD_ATTR("thread-id", attrs::mutable_constant<pid_t>(gettid()));
     logging::core::get()->add_thread_attribute("sequence-id", attrs::counter< unsigned int >());
 }
 
 
-std::string Log::createLogDirectory()
+std::string Log::createLogFile()
 {
     std::string directory;
     try
     {
         directory = std::string("/var/") + boost::log::aux::get_process_name() + std::string("/");
-        boost::filesystem::create_directory(directory);
+        boost::filesystem::create_directory(directory);//TODO: c++17 provide filesystem library
     }
     catch(std::exception& e)
     {
@@ -249,5 +261,5 @@ std::string Log::createLogDirectory()
         boost::filesystem::create_directory(directory);
     }
 
-    return directory;
+    return directory + boost::log::aux::get_process_name() + std::string("%N.log");
 }
