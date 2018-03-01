@@ -22,6 +22,7 @@ protected:
 TEST_F(LotTest, SingleHost)
 {
     TRACE_NOTICE("LotTest", "SingleHost");
+    TRACE_NOTICE("LotTest", "Only TEST");
 }
 #if 0
 namespace attrs = boost::log::attributes;

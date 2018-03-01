@@ -60,7 +60,7 @@ void Log::initConsoleLog(SeverityLevel consoleSeverity)
                                       % severity
                                       % expr::attr< pid_t >("process-id")
                                       % expr::attr< pid_t >("thread-id")
-                                      % expr::format_named_scope(scope, keywords::format = "%n/%f:%l")
+                                      % expr::format_named_scope(scope, keywords::format = "%n|%f:%l")
                                       % expr::smessage
     );
 

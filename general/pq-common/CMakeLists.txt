@@ -3,8 +3,6 @@ add_compile_options(
 )
 
 
-
-
 cpp_add_lib("pqcommon"
     #TEST LINUX
     SRC
@@ -25,6 +23,7 @@ cpp_add_executable(CommonTest
         gtest_main
 )
 
+
 cpp_add_executable(LogTest
     #TEST LINUX
     BASE_DIR "general/pq-common/test"
@@ -40,7 +39,7 @@ cpp_add_executable(LogTest
         boost_thread 
         boost_locale 
         boost_filesystem
-        gtest	   
-	    gtest_main
+        gtest      
+        gtest_main
 )
 
