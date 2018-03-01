@@ -10,6 +10,9 @@
 #include <stddef.h>
 #include <sys/types.h>
 #include <sstream>
+#include <sys/syscall.h>
+#include <utility>
+#include <unistd.h>
 #include <iomanip>
 #include <map>
 #include <vector>

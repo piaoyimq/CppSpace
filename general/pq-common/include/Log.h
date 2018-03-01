@@ -9,8 +9,6 @@
 #define GENERAL_PQ_COMMON_INCLUDE_LOG_H_
 
 #include <map>
-#include <utility>
-#include <sys/syscall.h>
 #include <boost/log/common.hpp>
 #include "pq-common.h"
 
