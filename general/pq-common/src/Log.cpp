@@ -6,8 +6,7 @@
  */
 
 
-//#include "pq-common/include/pq-common.h"
-#include "../include/Log.h"
+#include "pq-common/include/Log.h"
 #include <fstream>
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <boost/log/support/date_time.hpp>

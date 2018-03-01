@@ -64,7 +64,7 @@ int test_regex_search2()
 	std::regex re(pattern);
 	std::string str { "my csdn blog addr is: http://blog.csdn.net/fengbingchun , my github addr is: https://github.com/fengbingchun " };
 	std::smatch results;
-	while (std::regex_search(str, results, re))
+	while (std::regex_search(str, results, re)) //search all
 	{
 		for (auto x : results)
 			std::cout << x << " ";
