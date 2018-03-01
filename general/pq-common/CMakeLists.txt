@@ -10,6 +10,12 @@ cpp_add_lib("pqcommon"
 
     PUBLIC
         pthread
+        boost_system 
+        boost_log_setup 
+        boost_log 
+        boost_thread 
+        boost_locale 
+        boost_filesystem
 )
 
 cpp_add_executable(CommonTest
@@ -32,13 +38,6 @@ cpp_add_executable(LogTest
       
     PUBLIC
         pqcommon
-        pthread 
-        boost_system 
-        boost_log_setup 
-        boost_log 
-        boost_thread 
-        boost_locale 
-        boost_filesystem
         gtest      
         gtest_main
 )
