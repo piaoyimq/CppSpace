@@ -34,9 +34,9 @@ std::ostream& operator<<(std::ostream& s, const std::vector<T>& v)
 {
 	s.put('[');
 	char comma[3] = { '\0', ' ', '\0' };
-	for (const auto& e : v)
+	for(int i=0; i< v.size(); ++i)
 	{
-		s << comma << e;
+		s << comma << e[i];
 		comma[0] = ',';
 	}
 	return s << ']';
@@ -48,9 +48,10 @@ std::ostream& operator<<(std::ostream& s, const std::list<T>& v)
 {
 	s.put('[');
 	char comma[3] = { '\0', ' ', '\0' };
-	for (const auto& e : v)
+//	for (const auto& e : v)
+    for(int i=0; i< v.size(); ++i)
 	{
-		s << comma << e;
+		s << comma << e[i];
 		comma[0] = ',';
 		// std::cout << s <<std::endl;
 	}

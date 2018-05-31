@@ -24,7 +24,7 @@ void f2(int& n)
 	{
 		std::cout << "Thread 2 executing\n";
 		++n;
-		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	}
 }
 
@@ -39,29 +39,30 @@ void test_join()
 	std::cout << "t2.joinable=" << t2.joinable() << '\n';
 
 	std::thread t3(f2, std::ref(n)); // pass by reference
-	std::cout << "t3.joinable=" << t3.joinable() << '\n';
+	t3.join();
+	std::cout << "t3.joinable=" << t3.joinable() << "\n\n";
 
 	std::thread::id t3_id_1 = t3.get_id();
 
-	std::thread t4(std::move(t3)); // t4 is now running f2(). t3 is no longer a thread
-	std::cout << "t3.joinable=" << t3.joinable() << '\n';
-	std::cout << "t4.joinable=" << t4.joinable() << '\n';
-
-	std::thread::id t1_id = t1.get_id();
-	std::thread::id t2_id = t2.get_id();
-	std::thread::id t3_id = t3.get_id();
-	std::thread::id t4_id = t4.get_id();
-
-	std::cout << "t1_id=" << t1_id << std::endl;
-	std::cout << "t2_id=" << t2_id << std::endl;
-	std::cout << "t3_id_1=" << t3_id_1 << std::endl;
-	std::cout << "t3_id=" << t3_id << std::endl;
-	std::cout << "t4_id=" << t4_id << std::endl;
-
-	std::cout << "std::this_thread::get_id()=" << std::this_thread::get_id() << std::endl;
-	t2.join();
-	t4.join();
-	std::cout << "Final value of n is " << n << '\n';
+//	std::thread t4(std::move(t3)); // t4 is now running f2(). t3 is no longer a thread
+//	std::cout << "t3.joinable=" << t3.joinable() << '\n';
+//	std::cout << "t4.joinable=" << t4.joinable() << '\n';
+//
+//	std::thread::id t1_id = t1.get_id();
+//	std::thread::id t2_id = t2.get_id();
+//	std::thread::id t3_id = t3.get_id();
+//	std::thread::id t4_id = t4.get_id();
+//
+//	std::cout << "t1_id=" << t1_id << std::endl;
+//	std::cout << "t2_id=" << t2_id << std::endl;
+//	std::cout << "t3_id_1=" << t3_id_1 << std::endl;
+//	std::cout << "t3_id=" << t3_id << std::endl;
+//	std::cout << "t4_id=" << t4_id << std::endl;
+//
+//	std::cout << "std::this_thread::get_id()=" << std::this_thread::get_id() << std::endl;
+//	t2.join();
+//	t4.join();
+//	std::cout << "Final value of n is " << n << '\n';
 
 	std::cout << "std::thread::id()=" << std::thread::id() << std::endl;
 }
@@ -91,13 +92,14 @@ void test_detach()
 }
 
 class ThreadClass{
+public:
     int myThread(int arg){
      // do something
     }
 
-    void createThread(){
-        thread t = thread(myThread,10);
-    }
+//    void createThread(){
+//        std::thread t = std::thread(myThread,10);
+//    }
 
 } ;
 
@@ -106,6 +108,7 @@ int main()
 {
 	test_join();
 	test_detach();
-	thread t(&ThreadClass::myThread, this, 10);
+//	ThreadClass tc;
+//	std::thread t(tc.myThread,  10);
 
 }
