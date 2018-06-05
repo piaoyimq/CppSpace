@@ -23,7 +23,7 @@
 
 extern std::string get_name_by_pid(pid_t pid);
 
-inline pid_t gettid()
+inline pid_t get_tid()
 {
   return static_cast<pid_t>(::syscall(SYS_gettid));
 }
@@ -36,7 +36,7 @@ std::ostream& operator<<(std::ostream& s, const std::vector<T>& v)
 	char comma[3] = { '\0', ' ', '\0' };
 	for(int i=0; i< v.size(); ++i)
 	{
-		s << comma << e[i];
+		s << comma << v[i];
 		comma[0] = ',';
 	}
 	return s << ']';
@@ -51,7 +51,7 @@ std::ostream& operator<<(std::ostream& s, const std::list<T>& v)
 //	for (const auto& e : v)
     for(int i=0; i< v.size(); ++i)
 	{
-		s << comma << e[i];
+		s << comma << v[i];
 		comma[0] = ',';
 		// std::cout << s <<std::endl;
 	}

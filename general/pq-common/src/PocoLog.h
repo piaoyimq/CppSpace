@@ -31,7 +31,7 @@ public:
 
 
     static Log *instance(const std::string& filename="", Poco::Message::Priority fileSeverity = Poco::Message::PRIO_INFORMATION,
-            bool enableConsoleLog = false, Poco::Message::Priority consoleSeverity = Poco::Message::PRIO_WARNING, LogType logType=SingleProcess)
+            bool enableConsoleLog = false, Poco::Message::Priority consoleSeverity = Poco::Message::PRIO_NOTICE, LogType logType=SingleProcess)
     {
         if (nullptr == _instance)
         {
@@ -98,17 +98,23 @@ private:
 };
 
 
-
-#define LOG_TRACE_IMPL(severity, msg) \
+#define CONSOLE_TRACE_IMPL(severity, msg) \
     if(nullptr != Log::instance()->getConsoleStream()) \
     { \
-        Log::instance()->getConsoleStream()->severity() << msg << std::endl; \
+        Log::instance()->getConsoleStream()->severity() << get_tid() << " " << __FILE__ << ":" << __LINE__ << " " <<msg << std::endl; \
     } \
+
+
+#define FILE_TRACE_IMPL(severity, msg) \
     if(nullptr != Log::instance()->getFileStream()) \
     { \
-        Log::instance()->getFileStream()->severity() << msg << std::endl; \
+        Log::instance()->getFileStream()->severity() << get_tid() << " " << __FILE__ << ":" << __LINE__ << " " <<msg << std::endl; \
     }
 
+
+#define LOG_TRACE_IMPL(severity, msg) \
+        CONSOLE_TRACE_IMPL(severity, msg) \
+        FILE_TRACE_IMPL(severity, msg)
 
 
 #define TRACE_FATAL(msg)                    LOG_TRACE_IMPL(fatal, msg)
