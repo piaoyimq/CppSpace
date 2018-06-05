@@ -10,6 +10,7 @@
 
 #include <map>
 #include <iostream>
+#include <memory>
 //#include "pq-common.h"
 #include "Poco/Logger.h"
 #include "Poco/Message.h"
@@ -18,61 +19,43 @@
 #include "Poco/SplitterChannel.h"
 #include "Poco/FileChannel.h"
 
-using Poco::SplitterChannel;
-using Poco::Channel;
-
-using Poco::Message;
-using Poco::Logger;
-using Poco::AutoPtr;
-
-Logger* logger;
 
 class Log
 {
 public:
     enum LogType
     {
-        SingleHost,
-        MutipleHost
+        SingleProcess,
+        MutipleProcess
     };
 
 
-//    std::cout << "____function=" << __FUNCTION__ << ", line=" << __LINE__ << std::endl;
-    static Log *instance(LogType logType=SingleHost, bool enableConsoleLog = false, Message::Priority fileSeverity = Message::PRIO_NOTICE,
-            Message::Priority consoleSeverity = Message::PRIO_WARNING, const std::string& filename = createLogFile())
+    static Log *instance(const std::string& filename="", Poco::Message::Priority fileSeverity = Poco::Message::PRIO_INFORMATION,
+            bool enableConsoleLog = false, Poco::Message::Priority consoleSeverity = Poco::Message::PRIO_WARNING, LogType logType=SingleProcess)
     {
         if (nullptr == _instance)
         {
-            _instance = new Log(logType, enableConsoleLog, fileSeverity, consoleSeverity, filename);
+            _instance = new Log(filename, fileSeverity, enableConsoleLog, consoleSeverity, logType);
         }
 
         return _instance;
     }
 
-
-//    Message::Priority getMinSeverity()
-//    {
-//        return minSeverity;
-//    }
-
-    bool isConsoleEnable()
+    std::unique_ptr<Poco::LogStream>& getFileStream()
     {
-        return consoleEnable;
+        return _fileStream;
     }
 
-
-    Poco::LogStream* getLoggerStream()
+    std::unique_ptr<Poco::LogStream>& getConsoleStream()
     {
-        return _ls;
+        return _consoleStream;
     }
 
 
 private:
-    void initConsoleLog(Message::Priority consoleSeverity, AutoPtr<SplitterChannel>& splitterChannel);
+    void initConsoleLog(Poco::Message::Priority consoleSeverity, const std::string& filename);
 
-    void initSyncFileLog(const std::string& filename, LogType logType, AutoPtr<SplitterChannel>& splitterChannel);
-
-    void initAsyncFileLog();
+    void initFileLog(const std::string& filename, LogType logType, Poco::Message::Priority fileSeverity);
 
     static std::string createLogFile();
 
@@ -88,7 +71,8 @@ private:
     };
 
     //no copy
-    Log(LogType logType, bool enableConsoleLog, Message::Priority fileSeverity, Message::Priority consoleSeverity, const std::string& filename);
+//    Log(LogType logType, bool enableConsoleLog, Message::Priority fileSeverity, Message::Priority consoleSeverity, const std::string& filename);
+    Log(const std::string& filename, Poco::Message::Priority fileSeverity, bool enableConsoleLog, Poco::Message::Priority consoleSeverity, LogType logType);
 
     //no assign
     Log(const Log& log){}
@@ -96,28 +80,36 @@ private:
     Log& operator=(const Log& log){}
 
 
-    ~Log(){}
+    ~Log()
+    {
+    }
 
     /****attribute****/
 
-    Message::Priority minSeverity;
-
-    std::string defaultLogFilename;
-
-    bool consoleEnable;
-
-    std::multimap<Message::Priority, std::string> previousLog;
+    std::multimap<Poco::Message::Priority, std::string> previousLog;
 
     static Log *_instance;
 
-    Poco::LogStream* _ls;
+    std::unique_ptr<Poco::LogStream> _consoleStream;
+
+    std::unique_ptr<Poco::LogStream> _fileStream;
 
     static AutoRelease release;
 };
 
 
 
-#define LOG_TRACE_IMPL(severity, msg)       Log::instance()->getLoggerStream()->severity() << msg << std::endl;
+#define LOG_TRACE_IMPL(severity, msg) \
+    if(nullptr != Log::instance()->getConsoleStream()) \
+    { \
+        Log::instance()->getConsoleStream()->severity() << msg << std::endl; \
+    } \
+    if(nullptr != Log::instance()->getFileStream()) \
+    { \
+        Log::instance()->getFileStream()->severity() << msg << std::endl; \
+    }
+
+
 
 #define TRACE_FATAL(msg)                    LOG_TRACE_IMPL(fatal, msg)
 
