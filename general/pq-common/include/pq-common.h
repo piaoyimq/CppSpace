@@ -34,9 +34,9 @@ std::ostream& operator<<(std::ostream& s, const std::vector<T>& v)
 {
 	s.put('[');
 	char comma[3] = { '\0', ' ', '\0' };
-	for(int i=0; i< v.size(); ++i)
+	for(typename std::vector<T>::const_iterator it=v.begin(); it!=v.end(); ++it)
 	{
-		s << comma << v[i];
+		s << comma << *it;
 		comma[0] = ',';
 	}
 	return s << ']';
@@ -48,13 +48,11 @@ std::ostream& operator<<(std::ostream& s, const std::list<T>& v)
 {
 	s.put('[');
 	char comma[3] = { '\0', ' ', '\0' };
-//	for (const auto& e : v)
-    for(int i=0; i< v.size(); ++i)
-	{
-		s << comma << v[i];
-		comma[0] = ',';
-		// std::cout << s <<std::endl;
-	}
+    for(typename std::list<T>::const_iterator it=v.begin(); it!=v.end(); ++it)
+    {
+        s << comma << *it;
+        comma[0] = ',';
+    }
 	return s << ']';
 }
 
@@ -64,9 +62,9 @@ std::ostream& operator<<(std::ostream& s, const std::map<TK, TV>& m)
 {
 	s.put('{');
 	char comma[3] = { '\0', ' ', '\0' };
-	for (const auto& e : m)
+	for(typename std::map<TK, TV>::const_iterator it = m.begin(); it !=m.end(); ++it)
 	{
-		s << comma << e.first << ": " << e.second;
+		s << comma << it->first << ": " << it->second;
 		comma[0] = ',';
 	}
 	return s << '}';

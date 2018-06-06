@@ -1,12 +1,12 @@
 /*
- * Log.cpp
+ * PocoLog.cpp
  *
  *  Created on: Jun 5, 2018
  *      Author: azhweib
  */
 
-#include "PocoLog.h"
-#include "../include/pq-common.h"
+
+#include "pq-common/include/PocoLog.h"
 #include "Poco/ConsoleChannel.h"
 #include "Poco/PatternFormatter.h"
 #include "Poco/FormattingChannel.h"
@@ -18,13 +18,13 @@
 
 
 
-Log* Log::_instance = nullptr;
+PocoLog* PocoLog::_instance = nullptr;
 
-Log::AutoRelease Log::release;
+PocoLog::AutoRelease PocoLog::release;
 
 
 
-void Log::initConsoleLog(Poco::Message::Priority consoleSeverity, const std::string& filename)
+void PocoLog::_initConsoleLog(Poco::Message::Priority consoleSeverity, const std::string& filename)
 {
     Poco::FormattingChannel* pFCConsole = new Poco::FormattingChannel(new Poco::PatternFormatter("%H:%M:%S.%i %p %P|%t"));//this pointer will be release in the wrapper class
     pFCConsole->setChannel(new Poco::ColorConsoleChannel);
@@ -34,24 +34,22 @@ void Log::initConsoleLog(Poco::Message::Priority consoleSeverity, const std::str
 
     if(filename != "")
     {
-        _consoleStream->notice() << get_tid() << " " << __FILE__ << ":" << __LINE__ << " " << "Detail log reference \"" << filename << "\""<< std::endl;
+        _consoleStream->notice() << get_tid() << " " << Poco::Path(__FILE__).getBaseName() << ":" << __LINE__ << " " << "Detail log reference \"" << filename << "\""<< std::endl;
+
     }
 }
 
 
-void Log::initFileLog(const std::string& filename, LogType logType, Poco::Message::Priority fileSeverity)
+void PocoLog::_initFileLog(const std::string& filename, LogType logType, Poco::Message::Priority fileSeverity)
 {
     Poco::FileChannel* fileChannel = new Poco::FileChannel(filename);
 
-    fileChannel->setProperty("rotation", "100 M");
+    fileChannel->setProperty("rotation", "300 M");
     fileChannel->setProperty("archive", "number");  //fileChannel->setProperty("archive", "timestamp");
-    fileChannel->setProperty("purgeCount", "5");
+    fileChannel->setProperty("purgeCount", "3");
     fileChannel->setProperty("compress", "true");
 
-    //[%p %Y-%m-%d %H:%M:%S %i %P %I]\n%U:%u\n%t
-    //%Y-%m-%d %H:%M:%S.%c %N[%P]:%s:%q:%t
-    //%Y-%m-%d %H:%M:%S.%c %p %t
-    Poco::FormattingChannel* pFCFile = new Poco::FormattingChannel(new Poco::PatternFormatter("%Y-%m-%d %H:%M:%S.%i%z %p %P|%t"));
+    Poco::FormattingChannel* pFCFile = new Poco::FormattingChannel(new Poco::PatternFormatter("%L%Y-%m-%d %H:%M:%S.%i%z %p %P|%t"));
 
     pFCFile->setChannel(fileChannel);
 
@@ -63,70 +61,18 @@ void Log::initFileLog(const std::string& filename, LogType logType, Poco::Messag
 }
 
 
-Log::Log(const std::string& filename, Poco::Message::Priority fileSeverity, bool enableConsoleLog,
+PocoLog::PocoLog(const std::string& filename, Poco::Message::Priority fileSeverity, bool enableConsoleLog,
         Poco::Message::Priority consoleSeverity, LogType logType):
         _fileStream(nullptr), _consoleStream(nullptr)
 {
     if(enableConsoleLog)
     {
-        initConsoleLog(consoleSeverity, filename);
+        _initConsoleLog(consoleSeverity, filename);
     }
 
-    if(filename!="")
+    if(filename!="" && SingleHostSingleProcess == logType)
     {
-        initFileLog(filename, logType, fileSeverity);
+        _initFileLog(filename, logType, fileSeverity);
     }
-
-//    printPreviousLog();
-}
-
-
-void Log::printPreviousLog()
-{
-//    for(auto& log: previousLog)
-//    {
-//
-//        LOG_TRACE_IMPL("Log", log.first, log.second);
-//    }
-}
-
-#include <thread>
-void f()
-{
-    for(int i=0 ; i < 1; i++)
-    {
-        TRACE_DEBUG("line=" << __LINE__);
-        TRACE_INFO("line=" << __LINE__);
-        TRACE_NOTICE("line=" << __LINE__);
-        TRACE_WARNING("line=" << __LINE__);
-        TRACE_ERROR("line=" << __LINE__);
-        TRACE_CRITICAL("line=" << __LINE__);
-        TRACE_FATAL("line=" << __LINE__);
-    }
-    sleep(2000);
-}
-
-
-int main (int, char**)
-{
-//    Log::instance(); // log nothing
-//    Log::instance("", Message::PRIO_TRACE, true, Message::PRIO_TRACE);// only print console log
-    Log::instance("my-test.log", Poco::Message::PRIO_TRACE, true, Poco::Message::PRIO_TRACE);// print file log and console log
-
-    for(int i=0 ; i < 1; i++)
-    {
-        TRACE_DEBUG("line=" << __LINE__);
-        TRACE_INFO("line=" << __LINE__);
-        TRACE_NOTICE("line=" << __LINE__);
-        TRACE_WARNING("line=" << __LINE__);
-        TRACE_ERROR("line=" << __LINE__);
-        TRACE_CRITICAL("line=" << __LINE__);
-        TRACE_FATAL("line=" << __LINE__);
-    }
-
-    std::thread t(f);
-    sleep(2000);
-    t.join();
-	return 0;
 }
 

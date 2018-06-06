@@ -8,34 +8,33 @@
 #ifndef GENERAL_PQ_COMMON_INCLUDE_POCOLOG_H_
 #define GENERAL_PQ_COMMON_INCLUDE_POCOLOG_H_
 
-#include <map>
 #include <iostream>
 #include <memory>
-//#include "pq-common.h"
+#include "pq-common/include/pq-common.h"
 #include "Poco/Logger.h"
+#include "Poco/Path.h"
 #include "Poco/Message.h"
 #include "Poco/LogStream.h"
-#include "Poco/AutoPtr.h"
-#include "Poco/SplitterChannel.h"
 #include "Poco/FileChannel.h"
 
 
-class Log
+class PocoLog
 {
 public:
     enum LogType
     {
-        SingleProcess,
-        MutipleProcess
+        SingleHostSingleProcess,
+        SingleHostMutipleProcess,
+        MutilpleHostMutipleProcess
     };
 
 
-    static Log *instance(const std::string& filename="", Poco::Message::Priority fileSeverity = Poco::Message::PRIO_INFORMATION,
-            bool enableConsoleLog = false, Poco::Message::Priority consoleSeverity = Poco::Message::PRIO_NOTICE, LogType logType=SingleProcess)
+    static PocoLog *instance(const std::string& filename="", Poco::Message::Priority fileSeverity = Poco::Message::PRIO_INFORMATION,
+            bool enableConsoleLog = false, Poco::Message::Priority consoleSeverity = Poco::Message::PRIO_NOTICE, LogType logType=SingleHostSingleProcess)
     {
         if (nullptr == _instance)
         {
-            _instance = new Log(filename, fileSeverity, enableConsoleLog, consoleSeverity, logType);
+            _instance = new PocoLog(filename, fileSeverity, enableConsoleLog, consoleSeverity, logType);
         }
 
         return _instance;
@@ -53,13 +52,9 @@ public:
 
 
 private:
-    void initConsoleLog(Poco::Message::Priority consoleSeverity, const std::string& filename);
+    void _initConsoleLog(Poco::Message::Priority consoleSeverity, const std::string& filename);
 
-    void initFileLog(const std::string& filename, LogType logType, Poco::Message::Priority fileSeverity);
-
-    static std::string createLogFile();
-
-    void printPreviousLog();
+    void _initFileLog(const std::string& filename, LogType logType, Poco::Message::Priority fileSeverity);
 
     struct AutoRelease
     {
@@ -70,25 +65,20 @@ private:
         }
     };
 
-    //no copy
-//    Log(LogType logType, bool enableConsoleLog, Message::Priority fileSeverity, Message::Priority consoleSeverity, const std::string& filename);
-    Log(const std::string& filename, Poco::Message::Priority fileSeverity, bool enableConsoleLog, Poco::Message::Priority consoleSeverity, LogType logType);
+    PocoLog(const std::string& filename, Poco::Message::Priority fileSeverity, bool enableConsoleLog, Poco::Message::Priority consoleSeverity, LogType logType);
 
-    //no assign
-    Log(const Log& log){}
+    PocoLog(const PocoLog& log){}
 
-    Log& operator=(const Log& log){}
+    PocoLog& operator=(const PocoLog& log){}
 
 
-    ~Log()
+    ~PocoLog()
     {
     }
 
     /****attribute****/
 
-    std::multimap<Poco::Message::Priority, std::string> previousLog;
-
-    static Log *_instance;
+    static PocoLog *_instance;
 
     std::unique_ptr<Poco::LogStream> _consoleStream;
 
@@ -99,16 +89,16 @@ private:
 
 
 #define CONSOLE_TRACE_IMPL(severity, msg) \
-    if(nullptr != Log::instance()->getConsoleStream()) \
+    if(nullptr != PocoLog::instance()->getConsoleStream()) \
     { \
-        Log::instance()->getConsoleStream()->severity() << get_tid() << " " << __FILE__ << ":" << __LINE__ << " " <<msg << std::endl; \
+        PocoLog::instance()->getConsoleStream()->severity() << get_tid() << " " << Poco::Path(__FILE__).getBaseName() << ":" << __LINE__ << " " <<msg << std::endl; \
     } \
 
 
 #define FILE_TRACE_IMPL(severity, msg) \
-    if(nullptr != Log::instance()->getFileStream()) \
+    if(nullptr != PocoLog::instance()->getFileStream()) \
     { \
-        Log::instance()->getFileStream()->severity() << get_tid() << " " << __FILE__ << ":" << __LINE__ << " " <<msg << std::endl; \
+        PocoLog::instance()->getFileStream()->severity() << get_tid() << " " << Poco::Path(__FILE__).getBaseName() << ":" << __LINE__ << " " <<msg << std::endl; \
     }
 
 

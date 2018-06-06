@@ -129,7 +129,7 @@ void Log::initSyncFileLog(const std::string& filename, LogType logType)
     logging::core::get()->add_global_attribute("hostname", attrs::constant<std::string>(hostname));
     logging::core::get()->add_global_attribute("process-name", attrs::current_process_name());
     logging::core::get()->add_global_attribute("process-id", attrs::constant<pid_t>(getpid()));
-    logging::core::get()->add_global_attribute("thread-id", attrs::mutable_constant<pid_t>(gettid()));
+    logging::core::get()->add_global_attribute("thread-id", attrs::mutable_constant<pid_t>(get_tid()));
     logging::core::get()->add_global_attribute("sequence-id", attrs::counter< unsigned int >());
     logging::core::get()->add_global_attribute("Scope", attrs::named_scope());
 
@@ -199,8 +199,8 @@ void Log::initAsyncFileLog() //TODO
      logging::core::get()->add_global_attribute("hostname", attrs::constant<std::string>(hostname));
      logging::core::get()->add_global_attribute("process-name", attrs::current_process_name());
      logging::core::get()->add_global_attribute("process-id", attrs::constant<pid_t>(getpid()));
-     logging::core::get()->add_global_attribute("thread-id", attrs::mutable_constant<pid_t>(gettid()));
-//        BOOST_LOG_SCOPED_THREAD_TAG("thread-id", gettid());
+     logging::core::get()->add_global_attribute("thread-id", attrs::mutable_constant<pid_t>(get_tid()));
+//        BOOST_LOG_SCOPED_THREAD_TAG("thread-id", get_tid());
      logging::core::get()->add_global_attribute("sequence-id", attrs::counter< unsigned int >());
 
      logging::add_common_attributes();
@@ -241,7 +241,7 @@ void Log::printPreviousLog()
 
 void Log::initInThread()
 {
-    logging::core::get()->add_thread_attribute("thread-id", attrs::mutable_constant<pid_t>(gettid())); // BOOST_LOG_SCOPED_THREAD_ATTR("thread-id", attrs::mutable_constant<pid_t>(gettid()));
+    logging::core::get()->add_thread_attribute("thread-id", attrs::mutable_constant<pid_t>(get_tid())); // BOOST_LOG_SCOPED_THREAD_ATTR("thread-id", attrs::mutable_constant<pid_t>(get_tid()));
     logging::core::get()->add_thread_attribute("sequence-id", attrs::counter< unsigned int >());
 }
 

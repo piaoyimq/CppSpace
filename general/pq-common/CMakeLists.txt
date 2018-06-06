@@ -18,6 +18,16 @@ cpp_add_lib("pqcommon"
         boost_filesystem
 )
 
+cpp_add_lib("pqlog"
+    #TEST LINUX
+    SRC
+        src/PocoLog.cpp
+
+    PUBLIC
+        PocoUtil 
+        PocoFoundation
+)
+
 cpp_add_executable(CommonTest
     #TEST LINUX
     BASE_DIR "general/pq-common/test"
@@ -42,3 +52,15 @@ cpp_add_executable(LogTest
         gtest_main
 )
 
+cpp_add_executable(PocoLogTest
+    #TEST LINUX
+    BASE_DIR "general/pq-common/test"
+    SRC
+        test/PocoLogMainTest.cpp
+      
+    PUBLIC
+        pqcommon
+        pqlog
+        gtest      
+        gtest_main
+)
