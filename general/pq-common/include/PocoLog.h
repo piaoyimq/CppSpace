@@ -91,14 +91,14 @@ private:
 #define CONSOLE_TRACE_IMPL(severity, msg) \
     if(nullptr != PocoLog::instance()->getConsoleStream()) \
     { \
-        PocoLog::instance()->getConsoleStream()->severity() << get_tid() << " " << Poco::Path(__FILE__).getBaseName() << ":" << __LINE__ << " " <<msg << std::endl; \
+        PocoLog::instance()->getConsoleStream()->severity() << get_tid() << " <" << Poco::Path(__FILE__).getBaseName() << ":" << __LINE__ << "> " <<msg << std::endl; \
     } \
 
 
 #define FILE_TRACE_IMPL(severity, msg) \
     if(nullptr != PocoLog::instance()->getFileStream()) \
     { \
-        PocoLog::instance()->getFileStream()->severity() << get_tid() << " " << Poco::Path(__FILE__).getBaseName() << ":" << __LINE__ << " " <<msg << std::endl; \
+        PocoLog::instance()->getFileStream()->severity() << get_tid() << " <" << Poco::Path(__FILE__).getBaseName() << ":" << __LINE__ << "> " <<msg << std::endl; \
     }
 
 

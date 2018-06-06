@@ -26,7 +26,8 @@ PocoLog::AutoRelease PocoLog::release;
 
 void PocoLog::_initConsoleLog(Poco::Message::Priority consoleSeverity, const std::string& filename)
 {
-    Poco::FormattingChannel* pFCConsole = new Poco::FormattingChannel(new Poco::PatternFormatter("%H:%M:%S.%i %p %P|%t"));//this pointer will be release in the wrapper class
+    //this pointer will be release in the wrapper class
+    Poco::FormattingChannel* pFCConsole = new Poco::FormattingChannel(new Poco::PatternFormatter("%H:%M:%S.%i %p %P|%t"));
     pFCConsole->setChannel(new Poco::ColorConsoleChannel);
     pFCConsole->open();
     Poco::Logger& consoleLogger = Poco::Logger::create("ConsoleLogger", pFCConsole, consoleSeverity);
@@ -34,8 +35,7 @@ void PocoLog::_initConsoleLog(Poco::Message::Priority consoleSeverity, const std
 
     if(filename != "")
     {
-        _consoleStream->notice() << get_tid() << " " << Poco::Path(__FILE__).getBaseName() << ":" << __LINE__ << " " << "Detail log reference \"" << filename << "\""<< std::endl;
-
+        _consoleStream->notice() << get_tid() << " <" << Poco::Path(__FILE__).getBaseName() << ":" << __LINE__ << "> " << "Detail log reference \"" << filename << "\""<< std::endl;
     }
 }
 

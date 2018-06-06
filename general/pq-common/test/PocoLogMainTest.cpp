@@ -44,7 +44,7 @@ protected:
 
 TEST_F(LotTest, SingleHostSingleProcess)
 {
-    for(int i=0 ; i < 1; i++)
+    for(int i=0 ; i < 100; i++)
     {
         TRACE_DEBUG("line=" << __LINE__);
         TRACE_INFO("line=" << __LINE__);
