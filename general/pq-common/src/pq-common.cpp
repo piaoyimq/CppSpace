@@ -4,12 +4,12 @@
 #define DIR_LENGTH 200
 
 
-std::string get_name_by_pid(pid_t pid)
+std::string get_process_name(pid_t pid)
 {    //should become a un inline function after move to common.
     char procPidPath[DIR_LENGTH + 1] = { '\0' };
     char buf[BUF_SIZE] = { '\0' };
     char processName[BUF_SIZE]={'\0'};
-    sprintf(procPidPath, "/proc/%d/status", pid);
+    sprintf(procPidPath, "/proc/%d/status", getpid());
     FILE* fp = fopen(procPidPath, "r");
     if (nullptr != fp)
     {

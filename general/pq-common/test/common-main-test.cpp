@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_SUITE (test_suite_common_function)
         BOOST_TEST_MESSAGE("--------------- test_get_name_by_pid ---------------");
         std::string processName;
         pid_t pid = getpid();
-        processName=get_name_by_pid(pid);
+        processName=get_process_name(pid);
         BOOST_TEST_MESSAGE("processName=" << processName);
         BOOST_TEST(processName.find("CommonTest") !=std::string::npos);
     }

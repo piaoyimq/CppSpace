@@ -24,8 +24,8 @@ public:
     enum LogType
     {
         SingleHostSingleProcess,
-        SingleHostMutipleProcess,
-        MutilpleHostMutipleProcess
+        SingleHostMutipleProcess, //TODO
+        MutilpleHostMutipleProcess //TODO
     };
 
 
@@ -34,7 +34,14 @@ public:
     {
         if (nullptr == _instance)
         {
-            _instance = new PocoLog(filename, fileSeverity, enableConsoleLog, consoleSeverity, logType);
+            if("" == filename && false == enableConsoleLog)
+            {
+                _instance = new PocoLog(get_process_name(getpid())+ ".log", fileSeverity, true, consoleSeverity, logType);
+            }
+            else
+            {
+                _instance = new PocoLog(filename, fileSeverity, enableConsoleLog, consoleSeverity, logType);
+            }
         }
 
         return _instance;
@@ -50,6 +57,12 @@ public:
         return _consoleStream;
     }
 
+    static void release()
+    {
+        Poco::Logger::shutdown();
+        delete _instance;
+        _instance = nullptr;
+    }
 
 private:
     void _initConsoleLog(Poco::Message::Priority consoleSeverity, const std::string& filename);
@@ -60,8 +73,7 @@ private:
     {
         ~AutoRelease()
         {
-            delete _instance;
-            _instance = nullptr;
+            release();
         }
     };
 
@@ -84,7 +96,7 @@ private:
 
     std::unique_ptr<Poco::LogStream> _fileStream;
 
-    static AutoRelease release;
+    static AutoRelease _release;
 };
 
 

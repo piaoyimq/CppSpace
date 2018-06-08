@@ -21,7 +21,7 @@
 #include "RangeImpl.h"
 #include "pq-macro.h"
 
-extern std::string get_name_by_pid(pid_t pid);
+extern std::string get_process_name(pid_t pid);  //only can get the process first 15 charaters name.
 
 inline pid_t get_tid()
 {
