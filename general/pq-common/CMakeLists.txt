@@ -63,4 +63,5 @@ cpp_add_executable(PocoLogTest
         pqlog
         gtest      
         gtest_main
+        pthread
 )

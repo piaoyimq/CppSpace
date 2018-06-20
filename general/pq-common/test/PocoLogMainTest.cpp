@@ -17,18 +17,33 @@
 #include "Poco/PipeStream.h"
 #include "Poco/StreamCopier.h"
 #include "pq-common/include/PocoLog.h"
-#if 1
 #include <gtest/gtest.h>
 
 #define LOG_FILE_NAME       "test.log"
 
-//const char* processName =
+const std::string processName(get_process_name(getpid())+ ".log");
+
+
 class PocoLogTestSuite2: public ::testing::Test
 {
 protected:
-    void removeLog()
+    virtual void SetUp()  //excute before every TEST_F
     {
-        Poco::File defaultLog(get_process_name(getpid())+ ".log");
+        _removeLog();
+        PocoLog::release();
+    }
+
+    virtual void TearDown()//excute after every TEST_F
+    {
+        _removeLog();
+        PocoLog::release();
+    }
+
+
+private:
+    void _removeLog()
+    {
+        Poco::File defaultLog(processName);
         if(defaultLog.exists())
         {
             defaultLog.remove();
@@ -41,30 +56,28 @@ protected:
         }
     }
 
-    virtual void SetUp()  //excute before every TEST_F
-    {
-        removeLog();
-    }
 
-    virtual void TearDown()
-    {
-        removeLog();
-    }
+
+
 };
+int _debugLine;
+int _infoLine;
+int _noticeLine;
+int _warningLine;
+int _errorLine;
+int _criticalLine;
+int _fatalLine;
+void _printLog()
+{
+    TRACE_DEBUG(__FUNCTION__ << " " << __LINE__);    _debugLine    = __LINE__;
+    TRACE_INFO(__FUNCTION__ << " " << __LINE__);     _infoLine     = __LINE__;
+    TRACE_NOTICE(__FUNCTION__ << " " << __LINE__);   _noticeLine   = __LINE__;
+    TRACE_WARNING(__FUNCTION__ << " " << __LINE__);  _warningLine  = __LINE__;
+    TRACE_ERROR(__FUNCTION__ << " " << __LINE__);    _errorLine    = __LINE__;
+    TRACE_CRITICAL(__FUNCTION__ << " " << __LINE__); _criticalLine = __LINE__;
+    TRACE_FATAL(__FUNCTION__ << " " << __LINE__);    _fatalLine    = __LINE__;
+}
 
-//void threadFunction()
-//{
-//    for(int i=0 ; i < 1; i++)
-//    {
-//        TRACE_DEBUG("line=" << __LINE__);
-//        TRACE_INFO("line=" << __LINE__);
-//        TRACE_NOTICE("line=" << __LINE__);
-//        TRACE_WARNING("line=" << __LINE__);
-//        TRACE_ERROR("line=" << __LINE__);
-//        TRACE_CRITICAL("line=" << __LINE__);
-//        TRACE_FATAL("line=" << __LINE__);
-//    }
-//}
 TEST(PocoLogTestSuite1, nullPtr)
 {
     EXPECT_EQ(PocoLog::instance(), PocoLog::instance());
@@ -117,9 +130,9 @@ TEST(PocoLogTestSuite1, instance)
 }
 
 
-TEST_F(PocoLogTestSuite2, logging)
+TEST_F(PocoLogTestSuite2, defaultLogging)
 {
-    EXPECT_FALSE(Poco::File(get_process_name(getpid())+ ".log").exists());
+    EXPECT_FALSE(Poco::File(processName).exists());
 
     TRACE_DEBUG("PocoLogTest.logging");
     TRACE_INFO("PocoLogTest.logging"); std::string infoLine = std::to_string(__LINE__);
@@ -129,72 +142,19 @@ TEST_F(PocoLogTestSuite2, logging)
     //TODO: how to check console output?
 
     // Check log file if exist Information log
-    EXPECT_TRUE(Poco::File(get_process_name(getpid())+ ".log").exists());
+    EXPECT_TRUE(Poco::File(processName).exists());
 
-    std::ifstream file(get_process_name(getpid())+ ".log");
+    std::ifstream file(processName);
     std::ostringstream ss;
     ss << file.rdbuf();
     std::string expertString("Information " +  std::to_string(getpid()) + "|" + std::to_string(get_tid()) + " <PocoLogMainTest:" + infoLine + "> PocoLogTest.logging");
     EXPECT_NE(std::string::npos, ss.str().find(expertString));
-
 }
 
-//TEST_F(LotTest, SingleHostSingleProcess)
-//{
-//    for(int i=0 ; i < 100; i++)
-//    {
-//        TRACE_DEBUG("line=" << __LINE__);
-//        TRACE_INFO("line=" << __LINE__);
-//        TRACE_NOTICE("line=" << __LINE__);
-//        TRACE_WARNING("line=" << __LINE__);
-//        TRACE_ERROR("line=" << __LINE__);
-//        TRACE_CRITICAL("line=" << __LINE__);
-//        TRACE_FATAL("line=" << __LINE__);
-//    }
-//
-////    std::thread t(threadFunction);
-////    t.join();
-//}
-#else
-int main()
+TEST_F(PocoLogTestSuite2, allLogLevel)
 {
-    {
-        PocoLog::instance()->getFileStream();
-        PocoLog::instance()->getConsoleStream();
-        PocoLog::release();
-    }
 
-    {
-        auto itsPocoLog = PocoLog::instance("", Poco::Message::PRIO_INFORMATION, true, Poco::Message::PRIO_NOTICE);
-        std::cout << "____function=" << __FUNCTION__ << ", line=" << __LINE__ << ", itsPocoLog=" << itsPocoLog << std::endl;
-        PocoLog::instance()->getFileStream();
-        PocoLog::instance()->getConsoleStream();
-        PocoLog::release();
-    }
 
-    {
-        auto itsPocoLog = PocoLog::instance("my-test.log", Poco::Message::PRIO_INFORMATION, false);
-        std::cout << "____function=" << __FUNCTION__ << ", line=" << __LINE__ << ", itsPocoLog=" << itsPocoLog << std::endl;
-        PocoLog::instance()->getFileStream();
-        PocoLog::instance()->getConsoleStream();
-        PocoLog::release();
-    }
-
-    {
-//        PocoLog::instance()->getFileStream();
-//        PocoLog::instance()->getConsoleStream();
-        std::cout << "____function=" << __FUNCTION__ << ", line=" << __LINE__ << std::endl;
-        auto itsPocoLog = PocoLog::instance("my-test2.log", Poco::Message::PRIO_INFORMATION, true);
-        std::cout << "____function=" << __FUNCTION__ << ", line=" << __LINE__ << ", itsPocoLog=" << itsPocoLog << std::endl;
-//        assert(PocoLog::instance()->getFileStream());
-//        assert(PocoLog::instance()->getConsoleStream());
-        PocoLog::release();
-    }
-
-    std::string s("good");
-    if("good" != s)
-    {
-        std::cout <<"not eq" << std::endl;
-    }
+    std::thread t(_printLog);
+    t.join();
 }
-#endif
