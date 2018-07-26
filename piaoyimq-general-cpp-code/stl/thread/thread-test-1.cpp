@@ -93,13 +93,20 @@ void test_detach()
 
 class ThreadClass{
 public:
-    int myThread(int arg){
+    static int myThread(int arg) //must is static
+    {
      // do something
     }
 
-//    void createThread(){
-//        std::thread t = std::thread(myThread,10);
-//    }
+    void createThread()
+    {
+#if 0
+        std::thread t = std::thread(&myThread,10);
+#else
+        std::thread t = std::thread(ThreadClass::myThread,10);
+#endif
+
+    }
 
 } ;
 
