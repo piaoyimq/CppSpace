@@ -93,7 +93,7 @@ void test_detach()
 
 class ThreadClass{
 public:
-    static int myThread(int arg) //must is static
+    static int myThread(int arg) //must be static
     {
      // do something
     }
