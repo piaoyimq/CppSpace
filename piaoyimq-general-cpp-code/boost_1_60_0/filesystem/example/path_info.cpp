@@ -42,6 +42,9 @@ int main(int argc, char* argv[])
     cout << "  " << element << '\n';
 
   cout  <<  "\nobservers, native format:" << endl;
+
+  cout << "____is directory=" << is_directory(p) << endl;//??
+  cout << "____is is_regular_file=" << is_regular_file(p) << endl;//??
 # ifdef BOOST_POSIX_API
   cout  <<  "  native()-------------: " << p.native() << endl;
   cout  <<  "  c_str()--------------: " << p.c_str() << endl;

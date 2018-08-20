@@ -69,7 +69,7 @@ std::ostream& operator<<(std::ostream& s, const std::map<TK, TV>& m)
 	}
 	return s << '}';
 }
-
+std::tolower()
 template<class out_type, class in_value>
 out_type convert(const in_value &t)
 {
