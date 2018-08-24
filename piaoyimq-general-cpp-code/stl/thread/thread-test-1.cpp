@@ -95,12 +95,18 @@ class ThreadClass{
 public:
     int myThread(int arg)
     {
+        std::cout << arg << std::endl;
      // do something
+    }
+    ~ThreadClass()
+    {
+
     }
 
     void createThread()
     {
-        std::thread t = std::thread(&ThreadClass::myThread, this, 10);
+        std::thread t(&ThreadClass::myThread, this, 10);
+        t.join();
     }
 
 } ;

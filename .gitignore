@@ -4,3 +4,5 @@
 .project
 staging/
 3pl/sources/boost_1_60_0/
+.autotools
+.settings/
