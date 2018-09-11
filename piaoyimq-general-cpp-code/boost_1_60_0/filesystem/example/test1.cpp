@@ -1,3 +1,9 @@
+// Compile with:
+//    if define BOOST_ERROR_CODE_HEADER_ONLY, use:
+//        g++  --std=c++11 test1.cpp -lboost_system  -lboost_filesystem
+//     if not define BOOST_ERROR_CODE_HEADER_ONLY
+//      g++  --std=c++11 test1.cpp -lboost_filesystem
+
 /*
  * test1.cpp
  *
@@ -10,10 +16,10 @@
  *
  *       Filename:  filesystem.cpp
  *
- *    Description:  简单C++，boost filesystem 指南
+ *    Description:  ������C++���boost filesystem ������
  *
  *        Version:  1.0
- *        Created:  2009年08月17日 17时16分32秒
+ *        Created:  2009���08���17��� 17���16���32���
  *       Revision:  none
  *       Compiler:  gcc -Wall -Wextra filesystem.cpp -lboost_filesystem-mt
  *
@@ -22,7 +28,7 @@
  *
  * =====================================================================================
  */
-
+#define BOOST_ERROR_CODE_HEADER_ONLY    // Note: should keep before #include<boost/filesystem.hpp>
 #include<iostream>
 #include<fstream>
 #include<boost/filesystem.hpp>
@@ -31,22 +37,28 @@ int main()
 {
 	try{
 	namespace bf = boost::filesystem;
-	//简单别名
 
-	//filesystem中最基本的类型
 	bf::path path("./tmp");
 
-	//对当前的目录的操作
-	bf::path old_cpath = bf::current_path(); //取得当前目录
+	bf::path old_cpath = bf::current_path();
 	std::cout << "old_cpath=" << old_cpath << std::endl;
 	std::cout << "old_cpath.string()=" << old_cpath.string() << std::endl;
 
-	bf::path file_path = path / "file"; //path重载了 / 运算符
+	bf::path file_path = path / "file";
+
+    if (bf::exists(file_path))
+    {
+        std::cout << file_path << " exist \n";
+    }
+    else
+    {
+        std::cout << file_path << "not exist \n";
+    }
 
 	std::cout << "file_path=" << file_path << std::endl;
-	//判断文件存在性
 	if (bf::exists(path))
 	{
+	    std::cout << path << " exist \n";
 		std::ofstream out(file_path.string());
 		if (!out)
 		{
@@ -54,12 +66,13 @@ int main()
 			return 1;
 		}
 
-		out << "一个测试文件\n";
+		out << "open " << file_path.string() << std::endl;
+		out.close();
 	}
 	else
 	{
-		std::cout << path << "不存在\n";
-		//目录不存在，创建
+		std::cout << path << "not exist \n";
+
 		bool ret =bf::create_directory(path);
 		if(false ==ret)
 		{
@@ -72,22 +85,41 @@ int main()
 			return 1;
 		}
 
-		out << "一个测试文件\n";
+		out << "open " << file_path.string() << std::endl;
 	}
 
-	bf::current_path(path); //设置当前为/home
+	bf::current_path(path);// go to path, equal to "cd path"
 
-	if (bf::is_regular_file(file_path))
+	std::cout << "current path=" << path.string() << std::endl;
+
+	if (bf::exists(file_path))
 	{
-		std::cout << path << "是普通文件\n";
-		std::cout << path << ": 大小为" << bf::file_size(path) << '\n';
-		bf::create_symlink(file_path, "/tmp/test/file-symlink");
+	    std::cout << file_path << " exist \n";
+	}
+	else
+	{
+	    std::cout << file_path << "not exist \n";
 	}
 
+	if (bf::is_regular_file(bf::path("file")))
+	{
+		std::cout << bf::path("file") << " is regular file\n";
+		std::cout << bf::path("file") << ": size=" << bf::file_size(bf::path("file")) << '\n';
+		bf::create_symlink(bf::path("file"), "/tmp/file-symlink");// should make sure /tmp exists.
+
+		std::cout << bf::path("file") << " create symlink" << std::endl;
+	}
+	else
+	{
+	    std::cout << file_path << " is not regular file\n";
+	}
+
+	bf::path p = bf::read_symlink(bf::path("/tmp/file-symlink"));
+	std::cout << "read_symlink=" << p << std::endl;
 	bf::current_path(old_cpath);
 
-//	bf::remove(file_path); //删除文件file_path
-//	bf::remove_all(path); //递归地删除
+//	bf::remove(file_path);
+//	bf::remove_all(path);
 	}
 	catch (std::exception& e)
 	  {

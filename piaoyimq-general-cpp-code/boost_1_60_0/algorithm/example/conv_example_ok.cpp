@@ -1,22 +1,27 @@
-//  Boost string_algo library example file  ---------------------------------//
-
-//  Copyright Pavol Droba 2002-2003. Use, modification and
-//  distribution is subject to the Boost Software License, Version
-//  1.0. (See accompanying file LICENSE_1_0.txt or copy at
-//  http://www.boost.org/LICENSE_1_0.txt)
-
-//  See http://www.boost.org for updates, documentation, and revision history.
-
 #include <string>
 #include <vector>
 #include <iostream>
+#include <sstream>
 #include <iterator>
 #include <boost/algorithm/string/case_conv.hpp>
 
 using namespace std;
 using namespace boost;
 
-int main()
+void test_to_upper()
+{
+    string str1("AbCdEfG");
+    std::string strUpper = boost::to_upper_copy(str1);
+
+    std::cout << "strUpper=" << strUpper << std::endl;
+
+    boost::to_upper(str1);
+
+    std::cout << "str1, to_upper=" << str1 << std::endl;
+}
+
+
+void test_to_lower()
 {  
     cout << "* Case Conversion Example *" << endl << endl;
 
@@ -26,8 +31,14 @@ int main()
     
     // Convert vector of chars to lower case
     cout << "lower-cased copy of vec1: ";
-    to_lower_copy( ostream_iterator<char>(cout), vec1 );
+    to_lower_copy( ostream_iterator<char>(cout, "-"), vec1 );
     cout << endl;
+
+    std::stringstream ss;
+    to_lower_copy( ostream_iterator<char>(ss, "_"), vec1 );
+
+    std::cout << "stringstream, to_lower_copy="<< ss.str() << std::endl;
+
 
     // Conver string str1 to upper case ( copy the input )
     cout << "upper-cased copy of str1: " << to_upper_copy( str1 ) << endl;
@@ -38,5 +49,11 @@ int main()
 
     cout << endl;
 
-    return 0;
+}
+
+
+int main()
+{
+    test_to_upper();
+    test_to_lower();
 }

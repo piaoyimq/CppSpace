@@ -17,14 +17,28 @@ using namespace std;
 using namespace boost;
 
 
-void test_string_find_string()
+//find_last, find_nth, same as find_first.
+void test_find_first()
 {
+    string str11("abc___cde___efg");
+
+    // find "cde" substring
+    iterator_range<string::iterator> range=find_first( str11, string("cde") );
+
+    // convert a substring to upper case
+    // note that iterator range can be directly passed to the algorithm
+    to_upper( range );
+    assert(str11 == "abc___CDE___efg");
+
+
     std::string str1("a1234_first_nth_first_nth_");
     boost::iterator_range<std::string::iterator> ir;
 
     ir = boost::find_first(str1, "first");
 
     assert(std::string(ir.begin(), ir.end()) == "first");
+    assert("a1234_" == std::string(str1.begin(), ir.begin()));
+    assert("_nth_first_nth_" == std::string(ir.end(), str1.end()));
     assert(ir.begin() - str1.begin() == 6 && ir.end() - str1.begin() == 6 + 5);
 
     boost::to_upper(ir);
@@ -38,10 +52,53 @@ void test_string_find_string()
     std::ostringstream osstr;
     osstr << boost::find_first(str1, "_first_");
     assert(osstr.str() == "_first_");
+
+    ir = boost::ifind_first(str1, "FIRst");
+    assert(std::string(ir.begin(), ir.end()) == "first");
+
+    // char processing
+    char text[]="hello dolly!";
+    iterator_range<char*> crange=find_last(text,"lly");
+
+    // transform the range ( add 1 )
+    transform( crange.begin(), crange.end(), crange.begin(), bind2nd( plus<char>(), 1 ) );
+    // uppercase the range
+    to_upper( crange );
+
+    cout << text << endl;
+
+    std::string st("good Moon hello");
+    range=find_nth(st, "oo", 0);
+    assert(std::string(range.end(), st.end())== "d Moon hello");
+
+    range=find_nth(st, "oo", 1);
+    assert(std::string(range.end(), st.end())== "n hello");
 }
 
 
-void test_string_find_token()
+//find_tail same as find_head
+void test_find_head()
+{
+    cout << "* Find Example *" << endl << endl;
+
+    string str1("abc___cde___efg");
+    string str2("abc");
+
+
+    // get a head of the string
+    iterator_range<string::iterator> head=find_head( str1, 3 );
+    cout << "head(3) of the str1: " << string( head.begin(), head.end() ) << endl;
+
+    // get the tail
+    head=find_tail( str2, 5 );
+    cout << "tail(5) of the str2: " << string( head.begin(), head.end() ) << endl;
+
+    cout << endl;
+
+}
+
+
+void test_find_token()
 {
     using namespace boost;
 
@@ -65,10 +122,7 @@ void test_string_find_token()
 }
 
 
-// ???????
-// #include <boost/algorithm/string/regex.hpp>
-// find_regex, find_all_regex
-void test_string_find_regex()
+void test_find_regex()
 {
     using namespace boost;
 
@@ -109,51 +163,11 @@ void test_string_find_regex()
 }
 
 
-void find_first_or_head_or_last()
-{  
-    cout << "* Find Example *" << endl << endl;
-
-    string str1("abc___cde___efg");
-    string str2("abc");
-
-    // find "cde" substring
-    iterator_range<string::iterator> range=find_first( str1, string("cde") );
-
-    // convert a substring to upper case 
-    // note that iterator range can be directly passed to the algorithm
-    to_upper( range );
-
-    cout << "str1 with upper-cased part matching cde: " << str1 << endl;
-
-    // get a head of the string
-    iterator_range<string::iterator> head=find_head( str1, 3 );
-    cout << "head(3) of the str1: " << string( head.begin(), head.end() ) << endl;
-
-    // get the tail
-    head=find_tail( str2, 5 );
-    cout << "tail(5) of the str2: " << string( head.begin(), head.end() ) << endl;
-
-    // char processing
-    char text[]="hello dolly!";
-    iterator_range<char*> crange=find_last(text,"lly");
-
-    // transform the range ( add 1 )
-    transform( crange.begin(), crange.end(), crange.begin(), bind2nd( plus<char>(), 1 ) );
-    // uppercase the range
-    to_upper( crange );
-
-    cout << text << endl;
-
-    cout << endl;
-
-}
-
-
 int main()
 {
-//    test_string_find_string();
-    test_string_find_token();
-//    test_string_find_regex();
-//    find_first_or_head_or_last();
+    test_find_first();
+    test_find_head();
+//    test_find_token();
+//    test_find_regex();
 
 }

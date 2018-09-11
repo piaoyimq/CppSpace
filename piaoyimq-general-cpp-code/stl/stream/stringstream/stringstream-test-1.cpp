@@ -1,6 +1,9 @@
 #include <iostream>
 #include <sstream>
+#include <vector>
+#include <iterator>
 #include <typeinfo> //typeid()
+#include <stdio.h>
 using namespace std;
 
 
@@ -145,20 +148,32 @@ void test_3() {
 }
 
 
-void test_4()
+void test_getline()
 {
     std::stringstream ss;
     std::string message("hello\ngood\nhi\n");
 
     ss << message;
-    log.debug() << "____ss=" << ss.str() << std::endl;
+    std::cout << "____ss=" << ss.str() << std::endl;
 
     std::string line;
 
     while (getline(ss, line))
     {
-        log.debug() << "____line=" << line << std::endl;
+        std::cout << "____line=" << line << std::endl;
     }
+}
+
+
+void test_iterator()
+{
+    std::vector<int> v1={1, 2, 3, 4};
+
+    std::stringstream ss;
+    std::ostream_iterator<int> oIt(ss, "_");
+    std::copy(v1.begin(), v1.end(), oIt);
+
+    std::cout << ss.str() << std::endl;
 }
 
 
@@ -168,4 +183,6 @@ int main()
 //	test_2();
 //	convert_test();
 //	test_3();
+	test_getline();
+	test_iterator();
 }

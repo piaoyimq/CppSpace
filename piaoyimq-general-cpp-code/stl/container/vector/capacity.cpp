@@ -27,7 +27,7 @@
  * 	Fax: (617) 848-7047
 */ 
 
-#include "seq_preamble.h"
+#include "../vector/seq_preamble.h"
 
 
 int main()
