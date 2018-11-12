@@ -69,8 +69,10 @@ int main()
         memset(buffer,0,sizeof(buffer));
         int len = recv(conn, buffer, sizeof(buffer),0);
         //?????exit???????,??
-        if(strcmp(buffer,"exit\n")==0 || len<=0)
+        if(strcmp(buffer,"exit\n")==0 || len<=0) //len ==0, stand for socket was closed by client
             break;
+
+
         printf("???????:%s\n",buffer);
         send(conn, buffer, len, 0);
         printf("????????:%s\n",buffer);

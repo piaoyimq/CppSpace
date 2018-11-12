@@ -102,7 +102,7 @@ void test_find_token()
 {
     using namespace boost;
 
-    std::string str1("ab1234_first_nth_first_nth_");
+    std::string str1("ab1234_first_567nth_first_nth_");
     iterator_range<std::string::iterator> ir;
 
     ir = find_token(str1, is_any_of("irfst"));
@@ -119,6 +119,15 @@ void test_find_token()
 
     ir = find_token(str1, is_lower(), token_compress_on);
     assert(std::string(ir.begin(), ir.end()) == "ab");
+
+    ir = find_token(str1, is_digit(), token_compress_on);
+    assert(std::string(ir.begin(), ir.end()) == "1234");
+
+    ir = find_token(str1, is_alnum(), token_compress_on);
+    assert(std::string(ir.begin(), ir.end()) == "ab1234");
+
+    ir = find_token(str1, is_alnum());
+    assert(std::string(ir.begin(), ir.end()) == "a");
 }
 
 
@@ -141,12 +150,12 @@ void test_find_regex()
     assert(tokens[1] == "b22_");
     assert(tokens[2] == "b333_");
 
-    // ???????????
     std::string value = "123a1cxxxxa56c";
     regex pattern("a[0-9]+c");
     iterator_range<std::string::iterator> find_result;
     find_result = algorithm::find_regex(value, pattern);
     assert(!find_result.empty());
+    assert(std::string(find_result.begin(), find_result.end())== "a1c");
 
     std::vector<std::string> results;
     find_all_regex(results, value, pattern);
@@ -154,12 +163,15 @@ void test_find_regex()
     assert("a56c" == results[1]);
     assert(!results.empty());
 
-    value = "10.10.10.10 1.1.1.1";
-    boost::regex ip_pattern("(\\d{1, 3}.){3}\\d{1, 3}");
+    value = "110.10.10.1068 1.1.1.1";
+    boost::regex ip_pattern("(\\d{1, 3}\\.){3}\\d{1, 3}");
     find_all_regex(results, value, ip_pattern);
-    assert("10.10.10.10" == results[0]);
-    assert("1.1.1.1" == results[1]);
-    assert(!results.empty());
+//    assert("10.10.10.106" == results[0]);
+//    assert("1.1.1.1" == results[1]);
+//    assert(results.size() == 3);
+    std::cout << results[0] << std::endl;
+    std::cout << results[1] << std::endl;
+    std::cout << results[2] << std::endl;
 }
 
 
@@ -167,7 +179,7 @@ int main()
 {
     test_find_first();
     test_find_head();
-//    test_find_token();
-//    test_find_regex();
+    test_find_token();
+    test_find_regex();
 
 }
