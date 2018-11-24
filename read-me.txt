@@ -1,6 +1,6 @@
 Function:
 
-    Store some general cpp code
+    Store some general cpp code.
     Named Rules:
     1. Generally, files and directories use Lower case and middle line (include c files);
     2. If a cpp only has one class, use the class name fs the file name(iles use upper case);
