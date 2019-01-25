@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -x
 # Generate a .c-file containing version info symbol "bin_version_raw" to embed into an executable.
 # Required by SEOS SDK for linkingusing the SEOS genver.sh as input.
 # $1 - Target executable

@@ -57,19 +57,19 @@ public:
 		return *this;
 	}
 
-	//移动构造函数，参数s不能是const Pointer&& s，因为要改变s的成员数据的值
+	//���������������������������s���������const Pointer&& s������������������s���������������������
 //	Pointer(Pointer&& s)=delete;
 //	{
 //		cout << __PRETTY_FUNCTION__ << endl;
 //		length = s.getlen();
 //		mptr = s.getmptr();
-//		name = s.name + "-" + __PRETTY_FUNCTION__; //调用移动构造函数时，加一个标记
+//		name = s.name + "-" + __PRETTY_FUNCTION__; //���������������������������������������������
 //		s.mptr = nullptr;
 //
 //		showID();
 //	}
 
-	//移动赋值运算符
+	//���������������������
 	Pointer& operator=(Pointer&& s)
 	{
 		if (this == &s)
@@ -78,7 +78,7 @@ public:
 			delete[] mptr;
 		length = s.getlen();
 		mptr = s.mptr;
-		name = s.name + "-" + __PRETTY_FUNCTION__; //调用移动赋值运算符时，加一个标记
+		name = s.name + "-" + __PRETTY_FUNCTION__; //������������������������������������������������
 		s.mptr = nullptr;
 		cout << __PRETTY_FUNCTION__ << endl;
 //		showID();
@@ -87,7 +87,7 @@ public:
 
 	void showID()
 	{
-		cout << "length：" << length << " mptr：" << mptr << "  name：" << name << endl;
+		cout << "length���" << length << " mptr���" << mptr << "  name���" << name << endl;
 	}
 
 	int getlen() const
@@ -103,7 +103,7 @@ public:
 private:
 	int* mptr;
 	int length;
-	string name = "#NULL"; //该参数用来标记不同的对象，c++11支持直接在类的数据成员定义处初始化
+	string name = "#NULL"; //���������������������������������������c++11���������������������������������������������������
 };
 
 Pointer test()
@@ -112,9 +112,10 @@ Pointer test()
 	return a;
 }
 
+//TODO: To verify invokeing which constructor when existing copy assignment function and move assignment funciton
 int main(int argc, char* argv[])
 {
-	//加花括号是为了观察析构函数的调用
+	//������������������������������������������������
 	{
 		cout << string(50, '*') << endl;
 //		Pointer(4, "notname1");
@@ -124,13 +125,13 @@ int main(int argc, char* argv[])
 
 //		cout << string(50, '*') << endl;
 //		Pointer a2;
-//		a2 = Pointer(5, "notname2"); //调用移动赋值运算符
+//		a2 = Pointer(5, "notname2"); //���������������������������
 
 //		cout << string(50, '*') << endl;
 //		Pointer a3(Pointer(7, "notname3")); //Call move constructor
 //
 //		cout << "a3.showID():\n";
-//		a3.showID(); //验证a3确实是Pointer(7, "notname3")
+//		a3.showID(); //������a3���������Pointer(7, "notname3")
 	}
 
 	cout << endl;

@@ -235,6 +235,7 @@ void load(School * & school, const char *filename){
 int main(int argc, char *argv[]){
     std::string filename(boost::archive::tmpdir());
     filename += "/demofile.txt";
+    std::cout << "____filename=" << filename << std::endl;
 
     School *school = new School();
     std::cout << "1. student count = " << Student::count << std::endl;
@@ -245,14 +246,17 @@ int main(int argc, char *argv[]){
     save(school, filename.c_str());
     delete school;
     school = NULL;
+
     std::cout << "5. student count = " << Student::count << std::endl;
     std::cout << "6. class count = " << Course::count << std::endl;
+
     load(school, filename.c_str());
     std::cout << "7. student count = " << Student::count << std::endl;
     std::cout << "8. class count = " << Course::count << std::endl;
     delete school;
+
     std::cout << "9. student count = " << Student::count << std::endl;
     std::cout << "10. class count = " << Course::count << std::endl;
-    std::remove(filename.c_str());
+//    std::remove(filename.c_str());
     return Student::count + Course::count;
 }

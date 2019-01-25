@@ -77,4 +77,10 @@ int main()
 	{
 	    std::cout << "Execute the command failed" << std::endl;
 	}
+
+	ret = ::system("lss");
+	if(ret)
+	{
+	    std::cout << "Execute the command failed" << std::endl;
+	}
 }

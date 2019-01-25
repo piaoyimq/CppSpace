@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
     std::cout << original_schedule;
     
     std::string filename(boost::archive::tmpdir());
-    filename += "/demo_save.xml";
+    filename += "/demo_save2.xml";
 
     // save the schedule
     save_schedule(original_schedule, filename.c_str());
