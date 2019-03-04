@@ -18,7 +18,7 @@ void trim_test()
 {
     string str1("     1x x x x1     ");
     string str2("<>trim<>");
-    string str3("\"123abs343");
+    string str3("{[\"abs\"]}");
 
 
     trim_left(str1);
@@ -31,7 +31,7 @@ void trim_test()
     assert("trim<>" == trim_left_copy_if(std::string("<>trim<>"), is_any_of("<>")));
 
     std::cout << "____str3=" << str3 << std::endl;
-    trim_if(str3, is_any_of("\"123"));
+    trim_if(str3, is_any_of("{[\"]}"));
     std::cout << "____str3=" << str3 << std::endl;
 
 //trim, trim_right, trim_all, trim_fill same as trim_left, have 4 kinds of types.
