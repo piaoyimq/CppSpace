@@ -5,6 +5,7 @@
 #include <vector>
 #include <list>
 
+#if 0
 template<typename T>
 std::ostream& operator<<(std::ostream& s, const std::vector<T>& v) {
     s.put('[');
@@ -15,6 +16,20 @@ std::ostream& operator<<(std::ostream& s, const std::vector<T>& v) {
     }
     return s << ']';
 }
+#else
+template<typename T>
+std::ostream& operator<<(std::ostream& s, const std::vector<T>& v)
+{
+    s.put('[');
+    char comma[3] = { '\0', ' ', '\0' };
+    for (typename std::vector<T>::const_iterator it = v.begin(); it != v.end(); ++it)
+    {
+        s << comma << *it;
+        comma[0] = ',';
+    }
+    return s << ']';
+}
+#endif
 
 template<typename T>
 std::ostream& operator<<(std::ostream& s, const std::list<T>& v) {
@@ -29,6 +44,7 @@ std::ostream& operator<<(std::ostream& s, const std::list<T>& v) {
 }
 
 
+#if 0
 template<typename TK, typename TV>
 std::ostream& operator<<(std::ostream& s, const std::map<TK, TV>& m) {
     s.put('{');
@@ -39,7 +55,20 @@ std::ostream& operator<<(std::ostream& s, const std::map<TK, TV>& m) {
     }
     return s << '}';
 }
-
+#else
+template<typename TK, typename TV>
+std::ostream& operator<<(std::ostream& s, const std::map<TK, TV>& m)
+{
+    s.put('{');
+    char comma[3] = { '\0', ' ', '\0' };
+    for (typename std::map<TK, TV>::const_iterator it=m.begin(); it != m.end(); it++)
+    {
+        s << comma << it->first << ':' << it->second;
+        comma[0] = ',';
+    }
+    return s << '}';
+}
+#endif
 
 int main()
 {
