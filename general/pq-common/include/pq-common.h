@@ -16,6 +16,7 @@
 #include <iomanip>
 #include <map>
 #include <vector>
+#include <set>
 #include <list>
 #include "PrintClass.h"
 #include "RangeImpl.h"
@@ -56,6 +57,22 @@ std::ostream& operator<<(std::ostream& s, const std::list<T>& v)
 	return s << ']';
 }
 
+
+//set print
+template<typename T>
+std::ostream& operator<<(std::ostream& s, const std::set<T>& v)
+{
+    s.put('[');
+    char comma[3] = { '\0', ' ', '\0' };
+    for(typename std::set<T>::const_iterator it=v.begin(); it!=v.end(); ++it)
+    {
+        s << comma << *it;
+        comma[0] = ',';
+    }
+    return s << ']';
+}
+
+
 //map
 template<typename TK, typename TV>
 std::ostream& operator<<(std::ostream& s, const std::map<TK, TV>& m)
@@ -69,7 +86,9 @@ std::ostream& operator<<(std::ostream& s, const std::map<TK, TV>& m)
 	}
 	return s << '}';
 }
-std::tolower()
+//std::tolower()
+
+
 template<class out_type, class in_value>
 out_type convert(const in_value &t)
 {

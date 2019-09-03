@@ -16,10 +16,10 @@
  *
  *       Filename:  filesystem.cpp
  *
- *    Description:  ������C++���boost filesystem ������
+ *    Description:  ������������������C++���������boost filesystem ������������������
  *
  *        Version:  1.0
- *        Created:  2009���08���17��� 17���16���32���
+ *        Created:  2009���������08���������17��������� 17���������16���������32���������
  *       Revision:  none
  *       Compiler:  gcc -Wall -Wextra filesystem.cpp -lboost_filesystem-mt
  *
@@ -33,10 +33,14 @@
 #include<fstream>
 #include<boost/filesystem.hpp>
 
-int main()
+
+namespace bf = boost::filesystem;
+
+
+int test()
 {
 	try{
-	namespace bf = boost::filesystem;
+
 
 	bf::path path("./tmp");
 
@@ -118,7 +122,7 @@ int main()
 	std::cout << "read_symlink=" << p << std::endl;
 	bf::current_path(old_cpath);
 
-//	bf::remove(file_path);
+	bf::remove(file_path);
 //	bf::remove_all(path);
 	}
 	catch (std::exception& e)
@@ -128,3 +132,21 @@ int main()
 	return 0;
 }
 
+
+void testRemvoe()
+{
+    if(bf::remove("/tmp/report"))
+    {
+        std::cout << "removed" << std::endl;
+    }
+    else
+    {
+        std::cout << "removed failed" << std::endl;
+    }
+}
+
+int main()
+{
+//    test();
+    testRemvoe();
+}

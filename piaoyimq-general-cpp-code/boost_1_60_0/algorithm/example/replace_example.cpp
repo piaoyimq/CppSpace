@@ -62,6 +62,10 @@ int main()
     cout << "str1 with all '___' replaced with '---': " << 
         replace_all_copy( str1, "___", "---" ) << endl;
 
+    std::string st("abc\\*cde");
+    replace_all(st, "\\*", ".*");
+    std::cout << "____st=" << st << std::endl;
+
     // Erase all '___'
     cout << "str1 without all '___': " << 
         erase_all_copy( str1, "___" ) << endl;

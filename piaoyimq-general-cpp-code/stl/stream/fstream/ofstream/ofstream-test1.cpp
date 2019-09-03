@@ -5,20 +5,44 @@
  *      Author: azhweib
  */
 
-
-
-
 // ofstream::open / ofstream::close
 #include <fstream>      // std::ofstream
+#include <iostream>
+#include <cstring>
+#include <cerrno>
+#include <sstream>
 
-int main () {
+void testOfstream()
+{
 
-  std::ofstream ofs;
-  ofs.open ("test.txt", std::ofstream::out | std::ofstream::app);
+    std::ofstream ofs("test.txt", std::ofstream::trunc);
+    if (!ofs.is_open())
+    {
+        std::cout << "Open test.txt failed:" << std::strerror(errno) << std::endl;
+    }
 
-  ofs << " more lorem ipsum";
+    ofs << " more lorem ipsum";
+    std::cout << "____tellp=" << ofs.tellp() << std::endl;
 
-  ofs.close();
+}
 
-  return 0;
+void testOfstream2()
+{
+    std::stringstream ss("test...");
+    std::ofstream ofs("test.txt", std::ofstream::app);
+    if (!ofs.is_open())
+    {
+        std::cout << "Open test.txt failed:" << std::strerror(errno) << std::endl;
+    }
+
+//    ofs << ss;
+    ofs << ss.str();
+    std::cout << "____tellp=" << ofs.tellp() << std::endl;
+
+}
+
+int main()
+{
+//    testOfstream();
+    testOfstream2();
 }

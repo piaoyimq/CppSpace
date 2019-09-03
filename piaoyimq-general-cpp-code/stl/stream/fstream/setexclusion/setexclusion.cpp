@@ -49,6 +49,7 @@ ifstream& open_file(ifstream &in,const string &file)
 {
     in.close();
     in.clear();
+    in.tellg();
     in.open(file.c_str());
     return in;
 }

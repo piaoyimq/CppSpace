@@ -31,7 +31,24 @@
 #include <iostream>
 using std::string; using std::cout; using std::endl;
 
-int main() 
+
+void testFindStar()
+{
+    std::string st("hello good");
+    if(std::string::npos != st.find(".*"))
+    {
+        std::cout << "____find it" << std::endl;
+    }
+    else
+    {
+        std::cout << "____not find it" << std::endl;
+    }
+
+}
+
+
+
+void findTest()
 {
     string name("AnnaBelle");
     string::size_type pos1 = name.find("Anna"); // pos1 == 0
@@ -42,5 +59,11 @@ int main()
         cout << " " << pos1 << endl;
     else
         cout << "not found!" << endl;
-    return 0;
 }
+
+
+int main()
+{
+    testFindStar();
+}
+
